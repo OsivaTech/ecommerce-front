@@ -75,13 +75,13 @@ export default function Header() {
       {/* Menu Mobile */}
       {menuOpen && (
         <nav className="md:hidden flex flex-col items-center gap-4 p-4 bg-white border-t">
-          <Link href="/loja" className="hover:text-blue-600">
+          <Link href="/store" className="hover:text-blue-600">
             Loja
           </Link>
-          <Link href="/sobre" className="hover:text-blue-600">
+          <Link href="/about" className="hover:text-blue-600">
             Sobre
           </Link>
-          <Link href="/contato" className="hover:text-blue-600">
+          <Link href="/contact" className="hover:text-blue-600">
             Contate-nos
           </Link>
           <button className="w-full bg-blue-600 text-white py-2 rounded-lg">
