@@ -1,4 +1,4 @@
-// firestoreService.ts
+/* // firestoreService.ts
 
 import { doc, getDoc } from 'firebase/firestore'
 
@@ -22,3 +22,4 @@ class GetUserService {
 }
 
 export const getUserService = new GetUserService()
+ */

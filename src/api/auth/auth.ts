@@ -1,4 +1,4 @@
-import { auth } from '@/config/firebaseConfig'
+/* import { auth } from '@/config/firebaseConfig'
 import {
   browserLocalPersistence,
   browserSessionPersistence,
@@ -38,3 +38,4 @@ export const logout = async () => {
     throw error
   }
 }
+ */

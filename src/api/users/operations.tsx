@@ -1,4 +1,4 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+/* import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { getUserService } from './services'
 import { PropsGetUser } from './types'
 
@@ -30,3 +30,4 @@ async function getUserOperation(uid: string): Promise<PropsGetUser> {
 }
 
 export { getUserOperation, getCurrentUserUid }
+ */

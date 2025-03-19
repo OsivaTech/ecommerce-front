@@ -1,4 +1,7 @@
+'use client'
+
 import Header from '@/components/header/Header'
+import { usePathname } from 'next/navigation'
 import { ReactNode } from 'react'
 
 interface LayoutProps {
@@ -6,6 +9,13 @@ interface LayoutProps {
 }
 
 export default function MainLayout({ children }: LayoutProps) {
+  const pathname = usePathname()
+
+  const hiddenRoutes = ['/admin']
+
+  if (hiddenRoutes.includes(pathname)) {
+    return <>{children}</>
+  }
   return (
     <div>
       <Header />
