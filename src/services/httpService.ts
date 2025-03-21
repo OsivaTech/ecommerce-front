@@ -4,6 +4,7 @@ export const httpService = {
   get: async (url: string, params = {}) => {
     try {
       const response = await api.get(url, { params })
+
       return response.data
     } catch (error: unknown) {
       if (error instanceof Error) {

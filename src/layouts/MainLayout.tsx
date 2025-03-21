@@ -1,6 +1,6 @@
 'use client'
 
-import Header from '@/components/header/Header'
+import Header from '@/module/home/header/Header'
 import { usePathname } from 'next/navigation'
 import { ReactNode } from 'react'
 

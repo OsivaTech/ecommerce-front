@@ -2,13 +2,13 @@ import axios from 'axios'
 
 const api = axios.create({
   baseURL:
-    process.env.NEXT_PUBLIC_API_URL || 'https://jsonplaceholder.typicode.com',
+    process.env.NEXT_PUBLIC_API_URL || 'https://ecommerce-stg.osiva.tech:8443',
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-api.interceptors.request.use(
+/* api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -17,6 +17,6 @@ api.interceptors.request.use(
     return config
   },
   (error) => Promise.reject(error),
-)
+) */
 
 export default api

@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" className={workSansInstance.variable}>
-      <body>
+      <body cz-shortcut-listen="true">
         <MainLayout>{children}</MainLayout>
       </body>
     </html>
