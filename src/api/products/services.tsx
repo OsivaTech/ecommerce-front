@@ -1,10 +1,20 @@
 import { userService } from '@/services/userService'
-import { PropsProducts } from './types'
+import { PropsProductsAll, PropsProductsFeatured } from './types'
 
 class GetProductService {
-  async getProducts(): Promise<PropsProducts[]> {
+  async getProductsFeatured(): Promise<PropsProductsFeatured[]> {
     try {
-      const result = await userService.getProducts()
+      const result = await userService.getProductsFeatured()
+
+      return result
+    } catch (error) {
+      throw new Error('Ocorreu um erro ao obter os Produtos.')
+    }
+  }
+
+  async getProductsAll(): Promise<PropsProductsAll[]> {
+    try {
+      const result = await userService.getProductsAll()
 
       return result
     } catch (error) {

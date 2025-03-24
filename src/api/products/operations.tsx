@@ -1,13 +1,24 @@
 import { getProductService } from './services'
-import { PropsProducts } from './types'
+import { PropsProductsFeatured } from './types'
 
-async function getProductsOperation(): Promise<PropsProducts[]> {
-  try {
-    const result = await getProductService.getProducts()
-    return result
-  } catch (error) {
-    throw new Error('Ocorreu ao buscar Produtos')
+class GetProductOperation {
+  async Featured(): Promise<PropsProductsFeatured[]> {
+    try {
+      const result = await getProductService.getProductsFeatured()
+      return result
+    } catch (error) {
+      throw new Error('Ocorreu ao buscar Produtos')
+    }
+  }
+
+  async All(): Promise<PropsProductsFeatured[]> {
+    try {
+      const result = await getProductService.getProductsAll()
+      return result
+    } catch (error) {
+      throw new Error('Ocorreu ao buscar Produtos')
+    }
   }
 }
 
-export { getProductsOperation }
+export const getProductOperation = new GetProductOperation()

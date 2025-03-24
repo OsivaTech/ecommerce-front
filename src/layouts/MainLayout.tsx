@@ -17,7 +17,7 @@ export default function MainLayout({ children }: LayoutProps) {
     return <>{children}</>
   }
   return (
-    <div>
+    <div className={'bg-gray-100'}>
       <Header />
       <main>{children}</main>
       <footer

@@ -2,20 +2,23 @@
 
 import { useState } from 'react'
 import {
-  MagnifyingGlassIcon,
   HeartIcon,
   Bars3Icon,
   XMarkIcon,
-  ShoppingCartIcon,
+  ShoppingBagIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import Logo from '@/assets/svg/logo'
+
+import SearchInput from '../../../components/InputSearch/InputSearch'
+import Button from '@/components/Button/Button'
+import IconButton from '@/components/ButtonIcon/IconButton'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-gray-100 shadow-md">
       <div className="container mx-auto flex items-center justify-between p-4">
         {/* Esquerda - Logo e Links */}
         <div className="flex items-center gap-6">
@@ -39,27 +42,16 @@ export default function Header() {
 
         {/* Direita - Barra de Pesquisa e Botões */}
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center border rounded-lg px-3 py-1">
-            <MagnifyingGlassIcon className="w-5 h-5 text-gray-500" />
-            <input
-              type="text"
-              placeholder="Buscar..."
-              className="ml-2 outline-none border-none"
-            />
-          </div>
+          <SearchInput />
 
           <Link href="/create-account">
-            <button className="hidden md:block bg-blue-600 text-white px-4 py-2 rounded-lg">
-              Entrar / Cadastrar
-            </button>
+            <Button text="Entrar / Cadastrar" />
           </Link>
-          <button className="p-2 rounded-lg hover:bg-gray-100">
-            <HeartIcon className="w-6 h-6 text-red-500" />
-          </button>
+          <IconButton icon={<HeartIcon className="h-6 w-6 text-[#0D141C]" />} />
           <Link href="/cart">
-            <button className="p-2 rounded-lg hover:bg-gray-100">
-              <ShoppingCartIcon className="w-6 h-6 text-blue-500" />
-            </button>
+            <IconButton
+              icon={<ShoppingBagIcon className="h-6 w-6 text-[#0D141C]" />}
+            />
           </Link>
           {/* Menu Mobile */}
           <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
@@ -93,7 +85,7 @@ export default function Header() {
             </button>
             <Link href="/cart">
               <button className="p-2 rounded-lg hover:bg-gray-100">
-                <ShoppingCartIcon className="w-6 h-6 text-blue-500" />
+                <ShoppingBagIcon className="w-6 h-6 text-blue-500" />
               </button>
             </Link>
           </div>
