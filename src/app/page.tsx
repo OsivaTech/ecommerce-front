@@ -1,6 +1,6 @@
 import { getProductOperation } from '@/api/products/operations'
 
-import { FeaturedProduct } from '@/module/home/client/FeaturedProduct/FeaturedProduct'
+import { FeaturedProduct } from '@/client/home/client/FeaturedProduct/FeaturedProduct'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
 import Image from 'next/image'

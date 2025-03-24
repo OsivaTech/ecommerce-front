@@ -1,7 +1,7 @@
 'use client'
 import { ReactNode } from 'react'
 
-import Header from '@/module/home/header/Header'
+import Header from '@/client/home/header/Header'
 
 interface LayoutProps {
   children: ReactNode
