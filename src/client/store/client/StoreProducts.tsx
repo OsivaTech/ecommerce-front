@@ -4,35 +4,38 @@ import { useState } from 'react'
 import { PropsProductsAll } from '@/api/products/types'
 import SearchInput from '@/components/InputSearch/InputSearch'
 import ImageCard from '@/components/ImageCard/ImageCard'
+import { PropsCategoriesAll } from '@/api/categories/types'
+import Button from '@/components/Button/Button'
 
-interface FeaturedProductProps {
+interface StoreProductsProps {
   products: PropsProductsAll[]
+  categories: PropsCategoriesAll[]
 }
 
-export default function StoreProducts({ products }: FeaturedProductProps) {
-  const categorias = ['All', 'Skin', 'Hair', 'Body', 'Oral', 'Dental', 'Gut']
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState('All')
-
+export default function StoreProducts({
+  products,
+  categories,
+}: StoreProductsProps) {
+  const [categoriaSelecionada, setCategoriaSelecionada] =
+    useState<PropsCategoriesAll>()
+  console.log('categoriaSelecionada', categoriaSelecionada)
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Categorias */}
+    <div className="container mx-auto px-4 py-8 justify-items-start">
       <div className="flex gap-3 justify-center mb-6">
-        {categorias.map((cat) => (
-          <button
-            key={cat}
-            className={`px-4 py-2 rounded-md border ${categoriaSelecionada === cat ? 'bg-gray-700 text-white' : 'bg-gray-200'}`}
-            onClick={() => setCategoriaSelecionada(cat)}
-          >
-            {cat}
-          </button>
+        {categories.map((cat) => (
+          <div key={cat.id}>
+            <Button
+              text={cat.name}
+              onClick={() => setCategoriaSelecionada(cat)}
+            />
+          </div>
         ))}
       </div>
 
-      {/* Input de busca */}
       <div className="relative w-full mb-8 ">
         <SearchInput className="h-[60px]" />
       </div>
-      {/* Lista de produtos */}
+
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
         {products.map((product) => (
           <div

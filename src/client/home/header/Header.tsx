@@ -45,7 +45,7 @@ export default function Header() {
           <SearchInput />
 
           <Link href="/create-account">
-            <Button text="Entrar / Cadastrar" />
+            <Button text="Entrar / Cadastrar" className="w-[145px]" />
           </Link>
           <IconButton icon={<HeartIcon className="h-6 w-6 text-[#0D141C]" />} />
           <Link href="/cart">
