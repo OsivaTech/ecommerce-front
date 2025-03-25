@@ -17,9 +17,9 @@ export default function MainLayout({ children }: LayoutProps) {
     return <>{children}</>
   }
   return (
-    <div className={'bg-gray-100'}>
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <Header />
-      <main>{children}</main>
+      <main className="flex-grow">{children}</main>
       <footer
         style={{ background: '#eee', padding: '10px', marginTop: '20px' }}
       >
