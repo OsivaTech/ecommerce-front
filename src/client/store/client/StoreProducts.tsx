@@ -38,7 +38,15 @@ export default function StoreProducts({
       <div className="flex flex-wrap gap-3 justify-center mb-6">
         {categoriasWithAll.map((cat) => (
           <div key={cat.id}>
-            <Button text={cat.name} onClick={() => setCategoriaSelected(cat)} />
+            <Button
+              text={cat.name}
+              onClick={() => setCategoriaSelected(cat)}
+              isActive={
+                categoriaSelected?.id === cat.id ||
+                (!categoriaSelected && cat.id === 0)
+              }
+              className="active:bg-cyan-700"
+            />
           </div>
         ))}
       </div>
