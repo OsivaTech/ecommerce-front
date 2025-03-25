@@ -64,7 +64,7 @@ export default function Header() {
       </div>
 
       {menuOpen && (
-        <nav className="lg:hidden flex flex-col items-center gap-4 p-4 bg-white border-t">
+        <nav className="lg:hidden flex flex-col items-center gap-4 p-4 bg-gray-100 ">
           <Link href="/store" className="hover:text-blue-600">
             Loja
           </Link>
@@ -74,17 +74,15 @@ export default function Header() {
           <Link href="/contact" className="hover:text-blue-600">
             Contate-nos
           </Link>
-          <button className="w-full bg-blue-600 text-white py-2 rounded-lg">
-            Entrar / Cadastrar
-          </button>
+          <Button text="Entrar / Cadastrar" className="w-[145px]" />
           <div className="flex gap-4">
-            <button className="p-2 rounded-lg hover:bg-gray-100">
-              <HeartIcon className="w-6 h-6 text-red-500" />
-            </button>
+            <IconButton
+              icon={<HeartIcon className="h-6 w-6 text-[#0D141C]" />}
+            />
             <Link href="/cart">
-              <button className="p-2 rounded-lg hover:bg-gray-100">
-                <ShoppingBagIcon className="w-6 h-6 text-blue-500" />
-              </button>
+              <IconButton
+                icon={<ShoppingBagIcon className="h-6 w-6 text-[#0D141C]" />}
+              />
             </Link>
           </div>
         </nav>
