@@ -35,7 +35,7 @@ export default function StoreProducts({
   })
   return (
     <div className="container mx-auto px-4 py-8 justify-items-start">
-      <div className="flex gap-3 justify-center mb-6">
+      <div className="flex flex-wrap gap-3 justify-center mb-6">
         {categoriasWithAll.map((cat) => (
           <div key={cat.id}>
             <Button text={cat.name} onClick={() => setCategoriaSelected(cat)} />
@@ -51,7 +51,7 @@ export default function StoreProducts({
       </div>
 
       {productsFilter.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {productsFilter.map((product) => (
             <div
               key={product.id}

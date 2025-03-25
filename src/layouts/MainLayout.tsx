@@ -17,7 +17,7 @@ export default function MainLayout({ children }: LayoutProps) {
     return <>{children}</>
   }
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100 w-full px-4">
       <Header />
       <main className="flex-grow">{children}</main>
       <footer

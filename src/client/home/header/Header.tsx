@@ -26,8 +26,7 @@ export default function Header() {
             <Logo />
           </Link>
 
-          {/* Menu Desktop */}
-          <nav className="hidden md:flex gap-4">
+          <nav className="hidden lg:flex gap-4">
             <Link href="/store" className="hover:text-blue-600">
               Loja
             </Link>
@@ -40,10 +39,10 @@ export default function Header() {
           </nav>
         </div>
 
-        {/* Direita - Barra de Pesquisa e Botões */}
-        <div className="flex items-center gap-4">
-          <SearchInput />
-
+        <div className="hidden lg:flex items-center gap-4">
+          <div className="w-[160px]">
+            <SearchInput />
+          </div>
           <Link href="/create-account">
             <Button text="Entrar / Cadastrar" className="w-[145px]" />
           </Link>
@@ -54,26 +53,25 @@ export default function Header() {
             />
           </Link>
           {/* Menu Mobile */}
-          <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-            {menuOpen ? (
-              <XMarkIcon className="w-6 h-6" />
-            ) : (
-              <Bars3Icon className="w-6 h-6" />
-            )}
-          </button>
         </div>
+        <button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+          {menuOpen ? (
+            <XMarkIcon className="w-6 h-6" />
+          ) : (
+            <Bars3Icon className="w-6 h-6" />
+          )}
+        </button>
       </div>
 
-      {/* Menu Mobile */}
       {menuOpen && (
-        <nav className="md:hidden flex flex-col items-center gap-4 p-4 bg-white border-t">
-          <Link href="/loja" className="hover:text-blue-600">
+        <nav className="lg:hidden flex flex-col items-center gap-4 p-4 bg-white border-t">
+          <Link href="/store" className="hover:text-blue-600">
             Loja
           </Link>
-          <Link href="/sobre" className="hover:text-blue-600">
+          <Link href="/about" className="hover:text-blue-600">
             Sobre
           </Link>
-          <Link href="/contato" className="hover:text-blue-600">
+          <Link href="/contact" className="hover:text-blue-600">
             Contate-nos
           </Link>
           <button className="w-full bg-blue-600 text-white py-2 rounded-lg">
