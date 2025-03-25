@@ -50,20 +50,26 @@ export default function StoreProducts({
         />
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
-        {productsFilter.map((product) => (
-          <div
-            key={product.id}
-            className="flex flex-col items-center text-center"
-          >
-            <ImageCard
-              imageSrc={product.imageUrl}
-              title={product.name}
-              price={product.price}
-            />
-          </div>
-        ))}
-      </div>
+      {productsFilter.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
+          {productsFilter.map((product) => (
+            <div
+              key={product.id}
+              className="flex flex-col items-center text-center"
+            >
+              <ImageCard
+                imageSrc={product.imageUrl}
+                title={product.name}
+                price={product.price}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center text-gray-500">
+          <p>Não há produtos disponíveis.</p>
+        </div>
+      )}
     </div>
   )
 }
