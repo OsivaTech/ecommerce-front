@@ -18,7 +18,17 @@ export default function StoreProducts({
 }: StoreProductsProps) {
   const [categoriaSelecionada, setCategoriaSelecionada] =
     useState<PropsCategoriesAll>()
-  console.log('categoriaSelecionada', categoriaSelecionada)
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const productsFilter = products.filter((product) => {
+    const matchesCategory = categoriaSelecionada
+      ? product.categoryId === categoriaSelecionada.id
+      : true
+    const matchesSearchTerm = product.name
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+    return matchesCategory && matchesSearchTerm
+  })
   return (
     <div className="container mx-auto px-4 py-8 justify-items-start">
       <div className="flex gap-3 justify-center mb-6">
@@ -33,11 +43,14 @@ export default function StoreProducts({
       </div>
 
       <div className="relative w-full mb-8 ">
-        <SearchInput className="h-[60px]" />
+        <SearchInput
+          className="h-[60px]"
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6 justify-center">
-        {products.map((product) => (
+        {productsFilter.map((product) => (
           <div
             key={product.id}
             className="flex flex-col items-center text-center"
