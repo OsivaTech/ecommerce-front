@@ -16,14 +16,18 @@ export default function StoreProducts({
   products,
   categories,
 }: StoreProductsProps) {
-  const [categoriaSelecionada, setCategoriaSelecionada] =
+  const [categoriaSelected, setCategoriaSelected] =
     useState<PropsCategoriesAll>()
   const [searchTerm, setSearchTerm] = useState('')
 
+  const allCategory = { id: 0, name: 'Todos' }
+  const categoriasWithAll = [allCategory, ...categories]
+
   const productsFilter = products.filter((product) => {
-    const matchesCategory = categoriaSelecionada
-      ? product.categoryId === categoriaSelecionada.id
-      : true
+    const matchesCategory =
+      categoriaSelected && categoriaSelected.id !== 0
+        ? product.categoryId === categoriaSelected.id
+        : true
     const matchesSearchTerm = product.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
@@ -32,12 +36,9 @@ export default function StoreProducts({
   return (
     <div className="container mx-auto px-4 py-8 justify-items-start">
       <div className="flex gap-3 justify-center mb-6">
-        {categories.map((cat) => (
+        {categoriasWithAll.map((cat) => (
           <div key={cat.id}>
-            <Button
-              text={cat.name}
-              onClick={() => setCategoriaSelecionada(cat)}
-            />
+            <Button text={cat.name} onClick={() => setCategoriaSelected(cat)} />
           </div>
         ))}
       </div>
