@@ -12,13 +12,13 @@ export default async function Home() {
     <div>
       <div className="relative w-full max-w-5xl mx-auto aspect-[928/480] mt-8">
         <Image
-          src="/fundocontent.png"
+          src="/fundocontent.jpg"
           alt="Banner"
           layout="fill"
           objectFit="cover"
           className="rounded-lg"
         />
-        <div className="absolute inset-0 flex flex-col justify-end items-center text-white text-center bg-black/50 p-4">
+        <div className="absolute inset-0 flex flex-col justify-end items-center text-white text-center p-4">
           <h1 className="text-3xl md:text-5xl font-bold">
             Lorem ipsum dolor sit amet
           </h1>
