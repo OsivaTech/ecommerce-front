@@ -1,10 +1,10 @@
-import { getCategorieService } from './services'
+import { categorieService } from './services'
 import { PropsCategoriesAll } from './types'
 
-class GetCategorieOperation {
+class CategorieOperation {
   async CategoriesAll(): Promise<PropsCategoriesAll[]> {
     try {
-      const result = await getCategorieService.getCategoriesAll()
+      const result = await categorieService.getCategoriesAll()
       return result
     } catch (error) {
       throw new Error('Ocorreu ao buscar Categories')
@@ -12,4 +12,4 @@ class GetCategorieOperation {
   }
 }
 
-export const getCategorieOperation = new GetCategorieOperation()
+export const categorieOperation = new CategorieOperation()

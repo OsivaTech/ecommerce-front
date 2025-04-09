@@ -1,10 +1,10 @@
-import { userService } from '@/services/userService'
+import { urlService } from '@/services/urlService'
 import { PropsCategoriesAll } from './types'
 
-class GetCategorieService {
+class CategorieService {
   async getCategoriesAll(): Promise<PropsCategoriesAll[]> {
     try {
-      const result = await userService.getCategoriesAll()
+      const result = await urlService.getCategoriesAll()
 
       return result
     } catch (error) {
@@ -13,4 +13,4 @@ class GetCategorieService {
   }
 }
 
-export const getCategorieService = new GetCategorieService()
+export const categorieService = new CategorieService()

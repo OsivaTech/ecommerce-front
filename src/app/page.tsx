@@ -1,4 +1,4 @@
-import { getProductOperation } from '@/api/products/operations'
+import { productOperation } from '@/api/products/operations'
 
 import { FeaturedProduct } from '@/client/home/client/FeaturedProduct/FeaturedProduct'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
@@ -6,7 +6,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 
 export default async function Home() {
-  const products = await getProductOperation.Featured()
+  const products = await productOperation.Featured()
 
   return (
     <div>

@@ -4,6 +4,7 @@ interface CustomButtonProps {
   className?: string
   isActive?: boolean
   type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
 }
 
 export default function Button({
@@ -12,13 +13,15 @@ export default function Button({
   className,
   isActive = false,
   type = 'submit',
+  disabled = false,
 }: CustomButtonProps) {
   return (
     <button
       onClick={onClick}
       type={type}
+      disabled={disabled}
       className={`h-10 min-w-[80px] w-full px-4 rounded-[12px] flex items-center justify-center 
-        font-medium transition text-[12px] 
+        font-medium transition text-[12px] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer
         ${isActive ? 'bg-cyan-700 text-white' : 'bg-[#E8EDF2] text-[#0D141C] hover:bg-cyan-600 hover:text-white'} 
         ${className}`}
     >

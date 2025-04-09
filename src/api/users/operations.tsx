@@ -1,33 +1,12 @@
-/* import { getAuth, onAuthStateChanged } from 'firebase/auth'
-import { getUserService } from './services'
-import { PropsGetUser } from './types'
+import { PropsRequestBodyCreateUser, PropsRequestCreateUser } from './types'
+import { userService } from './services'
 
-const auth = getAuth()
-
-async function getCurrentUserUid(): Promise<string | null> {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = onAuthStateChanged(
-      auth,
-      (user) => {
-        unsubscribe()
-        if (user) {
-          resolve(user.uid)
-        } else {
-          resolve(null)
-        }
-      },
-      reject,
-    )
-  })
-}
-
-async function getUserOperation(uid: string): Promise<PropsGetUser> {
-  try {
-    return await getUserService.getUser(uid)
-  } catch (error) {
-    throw new Error('Ocorreu um erro ao criar o usuário.')
+class UserOperation {
+  async postCreateUser(
+    data: PropsRequestBodyCreateUser,
+  ): Promise<PropsRequestCreateUser> {
+    return await userService.postCreateUser(data)
   }
 }
 
-export { getUserOperation, getCurrentUserUid }
- */
+export const userOperation = new UserOperation()
