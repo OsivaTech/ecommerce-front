@@ -5,6 +5,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        app: {
+          text: '#121417',
+          primary: '#F0F2F5',
+        },
         gray: {
           100: '#ffffff',
           200: '#edf2f7',
@@ -31,5 +35,6 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  mode: 'jit',
+  plugins: [require('tailwindcss-animate')],
 }

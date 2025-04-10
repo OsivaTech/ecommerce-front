@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+
 export default function AdminPage() {
-  return <div className="flex flex-col md:flex-row h-screen">AdminPage</div>
+  redirect('/admin/dashboard')
 }
