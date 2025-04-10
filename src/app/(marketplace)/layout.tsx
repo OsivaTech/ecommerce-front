@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
 
-import MainLayout from '@/layouts/MainLayout'
-
 import { Work_Sans as workSans } from 'next/font/google'
-import './globals.css'
+import '../globals.css'
 import { ToastProvider } from '@/providers/Toast/ToastProvider'
+import Header from '@/client/home/header/Header'
 
 const workSansInstance = workSans({
   subsets: ['latin'],
@@ -26,7 +25,15 @@ export default function RootLayout({
     <html lang="pt-BR" className={workSansInstance.variable}>
       <body cz-shortcut-listen="true">
         <ToastProvider />
-        <MainLayout>{children}</MainLayout>
+        <div className="flex flex-col min-h-screen bg-gray-100 w-full">
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <footer
+            style={{ background: '#eee', padding: '10px', marginTop: '20px' }}
+          >
+            <p>© 2025 Meu Site</p>
+          </footer>
+        </div>
       </body>
     </html>
   )
