@@ -5,6 +5,7 @@ import MainLayout from '@/layouts/MainLayout'
 import { Work_Sans as workSans } from 'next/font/google'
 import './globals.css'
 import { ToastProvider } from '@/providers/Toast/ToastProvider'
+import { AuthProvider } from '@/providers/Auth/AuthContext'
 
 const workSansInstance = workSans({
   subsets: ['latin'],
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang="pt-BR" className={workSansInstance.variable}>
       <body cz-shortcut-listen="true">
         <ToastProvider />
-        <MainLayout>{children}</MainLayout>
+        <AuthProvider>
+          <MainLayout>{children}</MainLayout>
+        </AuthProvider>
       </body>
     </html>
   )

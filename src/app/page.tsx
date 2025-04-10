@@ -19,9 +19,7 @@ export default async function Home() {
           className="rounded-lg"
         />
         <div className="absolute inset-0 flex flex-col justify-end items-center text-white text-center p-4">
-          <h1 className="text-3xl md:text-5xl font-bold">
-            Lorem ipsum dolor sit amet
-          </h1>
+          <h1 className="text-3xl md:text-5xl font-bold"></h1>
           <div className="mt-4 flex items-center bg-white rounded-lg overflow-hidden w-full max-w-lg">
             <MagnifyingGlassIcon className="w-6 h-6 text-gray-500 ml-3" />
             <input
