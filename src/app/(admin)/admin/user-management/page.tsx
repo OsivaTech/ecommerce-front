@@ -1,19 +1,22 @@
+import { getPendingRegistrations } from '@/http/Registration'
 import { AdminTitle } from '@/components/AdminTitle'
-import { getPendingRegistrations } from '@/app/types/Registration'
 import { DataTable } from '@/components/ui/data-table'
 import { columns } from '@/app/(admin)/admin/user-management/components/columns'
+import { Suspense } from 'react'
 
 export default async function UserManagement() {
   const pendingRegistrations = await getPendingRegistrations()
-
+  console.log(pendingRegistrations)
   return (
     <div className="flex flex-col gap-4">
       <AdminTitle
-        title="Gestão de Usuários"
+        title="Gestão de Cadastros"
         description="Análise de Perfil e Validações de Usuários"
       />
       <div>
-        <DataTable columns={columns} data={pendingRegistrations} />
+        <Suspense key={Math.random()} fallback={<div>Loading...</div>}>
+          <DataTable columns={columns} data={pendingRegistrations} />
+        </Suspense>
       </div>
     </div>
   )

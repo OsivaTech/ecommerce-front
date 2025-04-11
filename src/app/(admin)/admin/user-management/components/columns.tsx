@@ -1,48 +1,42 @@
 'use client'
-import { RegistrationPending } from '@/app/types/api/Response/RegistrationPendingResponse'
+import { DateCell } from '@/app/(admin)/admin/user-management/components/cells/dateCell'
+import { CustomerNameCell } from '@/app/(admin)/admin/user-management/components/cells/customerName'
+import { EmailCell } from '@/app/(admin)/admin/user-management/components/cells/emailCell'
+import { ProfileCell } from '@/app/(admin)/admin/user-management/components/cells/profileCell'
+import { RegistrationPending } from '@/types/api/Response/RegistrationPendingResponse'
 import { ColumnDef } from '@tanstack/react-table'
+import { StatusCell } from '@/app/(admin)/admin/user-management/components/cells/statusCell'
+import { DocumentCell } from '@/app/(admin)/admin/user-management/components/cells/documentCell'
 
 export const columns: ColumnDef<RegistrationPending>[] = [
   {
     header: 'Perfil',
     accessorKey: 'type',
-    cell: ({ row }) => {
-      return <div>{row.original.professionalDocument?.type}</div>
-    },
+    cell: ProfileCell,
   },
   {
     header: 'Data',
     accessorKey: 'date',
-    cell: ({ row }) => {
-      return <div>DATA</div>
-    },
+    cell: DateCell,
   },
   {
     header: 'Cliente',
     accessorKey: 'name',
-    cell: ({ row }) => {
-      return <div>{row.original.name}</div>
-    },
+    cell: CustomerNameCell,
   },
   {
     header: 'E-mail',
     accessorKey: 'email',
-    cell: ({ row }) => {
-      return <div>{row.original.email}</div>
-    },
+    cell: EmailCell,
   },
   {
     header: 'Status',
     accessorKey: 'status',
-    cell: ({ row }) => {
-      return <div>status</div>
-    },
+    cell: StatusCell,
   },
   {
     header: 'Documentos',
     accessorKey: 'documents',
-    cell: ({ row }) => {
-      return <div>actions items</div>
-    },
+    cell: DocumentCell,
   },
 ]

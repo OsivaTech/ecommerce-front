@@ -1,5 +1,6 @@
 'use server'
 import { decrypt } from '@/lib/session'
+import { ResponseError } from '@/types/Error'
 import { JWTPayload } from 'jose'
 import { cookies } from 'next/headers'
 
@@ -57,7 +58,7 @@ export async function post(
   })
 }
 
-export async function put(
+export async function put<T>(
   url: string,
   requestInit: RequestInit,
   useAuth: boolean,
@@ -65,7 +66,8 @@ export async function put(
   if (useAuth) {
     requestInit = await withAuth(requestInit)
   }
-  return fetch(url, {
+
+  return await fetch(url, {
     ...requestInit,
     method: 'PUT',
     headers: { ...requestInit.headers, 'Content-Type': 'application/json' },

@@ -1,9 +1,8 @@
 'use client'
-import { menuItems } from '@/components/AdminSideMenu/constants'
+import { menuItems } from '@/constants/SideMenu'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-
 export const AdminSideMenu = () => {
   const pathname = usePathname()
   const selectedItem = pathname.split('/').pop()

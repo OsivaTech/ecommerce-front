@@ -1,7 +1,12 @@
-import { ChartBarIcon, ClockIcon } from '@heroicons/react/24/outline'
+import {
+  ChartBarIcon,
+  ClockIcon,
+  ShoppingCartIcon,
+} from '@heroicons/react/24/outline'
 import {
   ChartBarIcon as ChartBarIconSolid,
   ClockIcon as ClockIconSolid,
+  ShoppingCartIcon as ShoppingCartIconSolid,
 } from '@heroicons/react/24/solid'
 export const menuItems = [
   {
@@ -18,12 +23,13 @@ export const menuItems = [
     iconSolid: <ClockIconSolid className="h-6 w-6 " />,
     href: '/admin/user-management',
   },
-  // {
-  //   id: 'orders',
-  //   title: 'Pedidos',
-  //   icon: <ShoppingCartIcon className="h-6 w-6" />,
-  //   href: '/admin/orders',
-  // },
+  {
+    id: 'orders',
+    title: 'Pedidos',
+    icon: <ShoppingCartIcon className="h-6 w-6" />,
+    iconSolid: <ShoppingCartIconSolid className="h-6 w-6" />,
+    href: '/admin/order',
+  },
   // {
   //   id: 'notifications',
   //   title: 'Notificações',

@@ -1,6 +1,7 @@
 import '../globals.css'
 import { AdminSideMenu } from '@/components/AdminSideMenu'
 import Header from '@/client/home/header/Header'
+import { ToastProvider } from '@/providers/Toast/ToastProvider'
 
 export default function RootAdminLayout({
   children,
@@ -10,6 +11,7 @@ export default function RootAdminLayout({
   return (
     <html lang="pt-BR">
       <body className="h-[calc(100vh - 72px)] ">
+        <ToastProvider />
         <Header />
         <div className="h-full py-5 px-6 flex">
           <AdminSideMenu />
