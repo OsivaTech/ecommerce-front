@@ -4,10 +4,9 @@ import { StatusPopover } from '@/components/StatusPopover'
 import { ConfirmationModal } from '@/components/ConfirmationModal'
 import { useState, useTransition } from 'react'
 import { RegistrationPending } from '@/types/api/Response/RegistrationResponse'
-import { approveRegistration } from '@/http/Registration'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
-
+import { RegistrationHttp } from '@/http/Registration'
 export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [wasRejected, setWasRejected] = useState(false)
@@ -31,8 +30,10 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
 
   const handleApprove = async () => {
     startTransition(async () => {
-      const response = await approveRegistration(row.original.id!.toString())
-      console.log('response', response)
+      const response = await RegistrationHttp.approveRegistration(
+        row.original.id!.toString(),
+      )
+      console.log('response 123', response)
       if (response?.code) {
         toast.error(response.message)
       } else {

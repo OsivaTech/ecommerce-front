@@ -7,6 +7,12 @@ class UserOperation {
   ): Promise<PropsRequestCreateUser> {
     return await userService.postCreateUser(data)
   }
+
+  async createUser(
+    data: PropsRequestBodyCreateUser,
+  ): Promise<PropsRequestCreateUser> {
+    return await userService.postCreateUser(data)
+  }
 }
 
 export const userOperation = new UserOperation()

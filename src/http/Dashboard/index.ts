@@ -1,5 +1,4 @@
 'use server'
-import { Sales } from '@/http/types/Sales'
 
 export type DashboardData = {
   summaryCardData: {
@@ -13,7 +12,15 @@ export type DashboardData = {
     labels: string[]
     data: number[]
   }
-  recentSales: Sales[]
+  recentSales: {
+    id: string
+    orderId: string
+    date: string
+    customerName: string
+    totalItems: string
+    paymentMethod: string
+    totalPrice: string
+  }[]
 }
 export async function getDashBoardData() {
   return {

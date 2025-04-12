@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const api = axios.create({
+export const api = axios.create({
   baseURL:
     process.env.NEXT_PUBLIC_API_URL || 'https://ecommerce-stg.osiva.tech:8443',
   headers: {
@@ -18,5 +18,3 @@ const api = axios.create({
   },
   (error) => Promise.reject(error),
 ) */
-
-export default api

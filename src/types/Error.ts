@@ -1,4 +1,4 @@
-export type ResponseError = {
+export interface ResponseError {
   code: string
   message: string
 }
