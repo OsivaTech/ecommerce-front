@@ -36,7 +36,6 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
       const response = await RegistrationHttp.approveRegistration(
         row.original.id!.toString(),
       )
-      console.log('response 123', response)
       if (response?.code) {
         toast.error(response.message)
       } else {
@@ -53,7 +52,6 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
         row.original.id!.toString(),
         rejectReason,
       )
-      console.log('response 123', response)
       if (response?.code) {
         toast.error(response.message)
       } else {

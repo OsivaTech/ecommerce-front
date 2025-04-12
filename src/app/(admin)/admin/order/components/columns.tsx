@@ -1,30 +1,29 @@
 'use client'
 
 import { Order } from '@/types/api/Response/OrderResponse'
-import { formatPrice } from '@/utils/mask'
 import { ColumnDef } from '@tanstack/react-table'
+import { OrderIdCell } from './cells/orderIdCell'
+import { DateCell } from '@/app/(admin)/admin/order/components/cells/dateCell'
+import { CustomerCell } from '@/app/(admin)/admin/order/components/cells/customerCell'
+import { StatusCell } from '@/app/(admin)/admin/order/components/cells/statusCell'
+import { TotalCell } from '@/app/(admin)/admin/order/components/cells/totalCell'
+import { ActionCell } from '@/app/(admin)/admin/order/components/cells/actionCell'
 
 export const columns: ColumnDef<Order>[] = [
   {
     header: 'Pedido',
     accessorKey: 'id',
-    cell: ({ row }) => {
-      return <div>{row.original.id}</div>
-    },
+    cell: OrderIdCell,
   },
   {
     header: 'Data',
     accessorKey: 'createdAt',
-    cell: () => {
-      return <div>row.original.createdAt</div>
-    },
+    cell: DateCell,
   },
   {
     header: 'Cliente',
     accessorKey: 'cliente',
-    cell: ({ row }) => {
-      return <div>{row.original.user.name}</div>
-    },
+    cell: CustomerCell,
   },
   {
     header: 'Itens',
@@ -36,15 +35,16 @@ export const columns: ColumnDef<Order>[] = [
   {
     header: 'Status',
     accessorKey: 'status',
-    cell: ({ row }) => {
-      return <div>{row.original.status}</div>
-    },
+    cell: StatusCell,
   },
   {
     header: 'Total',
     accessorKey: 'total',
-    cell: ({ row }) => {
-      return <div>{formatPrice(row.original.totalAmount || 0)}</div>
-    },
+    cell: TotalCell,
+  },
+  {
+    header: 'Ações',
+    accessorKey: 'actions',
+    cell: ActionCell,
   },
 ]

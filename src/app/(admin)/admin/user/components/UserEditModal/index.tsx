@@ -17,6 +17,10 @@ import {
 } from '@/components/ui/select'
 import { userStatus } from '@/constants/utils'
 import { Form, FormField } from '@/components/ui/form'
+import { UserHttp } from '@/http/User'
+import { toast } from 'react-hot-toast'
+import { useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 
 export const UserEditModal = ({
   user,
@@ -27,13 +31,16 @@ export const UserEditModal = ({
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
 }) => {
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
     defaultValues: {
       id: user.id,
       name: user.name,
       email: user.email,
-      status: 'Blocked',
+      status: user.status,
       address: user.address,
       professionalDocument: user.professionalDocument,
       personalDocument: user.personalDocument,
@@ -53,8 +60,20 @@ export const UserEditModal = ({
     return 'txt'
   }
 
-  const handleSubmit = (data: UserFormData) => {
-    console.log(data)
+  const handleSubmit = async (data: UserFormData) => {
+    startTransition(async () => {
+      const response = await UserHttp.updateUserStatus(
+        user.id.toString(),
+        data.status,
+      )
+      if (response && 'code' in response && 'message' in response) {
+        toast.error(response.message)
+      } else {
+        toast.success('Usuário atualizado com sucesso')
+        setIsOpen(false)
+        router.refresh()
+      }
+    })
   }
 
   return (
@@ -95,7 +114,7 @@ export const UserEditModal = ({
             <div className="flex flex-col gap-2 flex-1">
               <FormField
                 control={form.control}
-                name="email"
+                name="status"
                 render={({ field }) => (
                   <>
                     <Label htmlFor="status">Status</Label>
@@ -248,7 +267,8 @@ export const UserEditModal = ({
             <Button
               type="submit"
               className="flex-1 cursor-pointer"
-              disabled={!form.formState.isDirty}
+              disabled={!form.formState.isDirty || isPending}
+              isLoading={isPending}
             >
               Salvar
             </Button>

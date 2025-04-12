@@ -6,6 +6,7 @@ import { ProfileCell } from '@/app/(admin)/admin/user/components/cells/profileCe
 import { ColumnDef } from '@tanstack/react-table'
 import { User } from '@/types/api/Response/UserResponse'
 import { ActionsCell } from '@/app/(admin)/admin/user/components/cells/actionsCell'
+import { StatusCell } from '@/app/(admin)/admin/user/components/cells/statusCell'
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -22,6 +23,11 @@ export const columns: ColumnDef<User>[] = [
     header: 'Cliente',
     accessorKey: 'name',
     cell: CustomerNameCell,
+  },
+  {
+    header: 'Status',
+    accessorKey: 'status',
+    cell: StatusCell,
   },
   {
     header: 'E-mail',

@@ -54,23 +54,47 @@ export class BaseHttp {
   }
 
   async put<T>(url: string, options?: RequestInit): Promise<T | ResponseError> {
-    try {
-      const response = await fetch(`${this.baseUrl}${url}`, {
-        ...options,
-        method: 'PUT',
-        headers: {
-          ...options?.headers,
-          'Content-Type': 'application/json',
-        },
-      })
-      if (response.ok) {
+    const response = await fetch(`${this.baseUrl}${url}`, {
+      ...options,
+      method: 'PUT',
+      headers: {
+        ...options?.headers,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (response.ok) {
+      try {
         return (await response.json()) as T
-      } else {
-        console.log('response 456', response)
-        return this.handleHttpError(response)
+      } catch (error) {
+        return {} as T
       }
-    } catch (error) {
-      return this.handleHttpError(error)
+    } else {
+      return this.handleHttpError(response)
+    }
+  }
+
+  async patch<T>(
+    url: string,
+    options?: RequestInit,
+  ): Promise<T | ResponseError> {
+    const response = await fetch(`${this.baseUrl}${url}`, {
+      ...options,
+      method: 'PATCH',
+      headers: {
+        ...options?.headers,
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (response.ok) {
+      try {
+        return (await response.json()) as T
+      } catch (error) {
+        return {} as T
+      }
+    } else {
+      return this.handleHttpError(response)
     }
   }
 
@@ -98,7 +122,6 @@ export class BaseHttp {
   }
 
   async handleHttpError(error: unknown): Promise<ResponseError> {
-    console.log('error 789', error)
     if (error && typeof error === 'object' && 'status' in error) {
       const responseError = error as unknown as Response
 
@@ -116,7 +139,6 @@ export class BaseHttp {
           message: errorResponse.message,
         }
       } catch (error) {
-        console.log('Taylor Switch', error)
         switch (responseError.status) {
           case 400:
             return {

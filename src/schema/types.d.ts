@@ -289,7 +289,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/status/{status}": {
+    "/users/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -297,21 +297,29 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
         /**
          * Change user status
          * @description Change the status of a user
          */
-        put: {
+        patch: {
             parameters: {
                 query?: never;
                 header?: never;
                 path: {
                     id: number;
-                    status: components["schemas"]["UserStatus"];
                 };
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateUserStatusRequest"];
+                };
+            };
             responses: {
                 /** @description No Content */
                 204: {
@@ -336,11 +344,6 @@ export interface paths {
                 };
             };
         };
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
         trace?: never;
     };
     "/products": {
@@ -930,7 +933,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get all orders */
+        /**
+         * Get all orders
+         * @description Get all orders in the database
+         */
         get: {
             parameters: {
                 query?: never;
@@ -952,7 +958,10 @@ export interface paths {
             };
         };
         put?: never;
-        /** Create order */
+        /**
+         * Create order
+         * @description Create order with specified items
+         */
         post: {
             parameters: {
                 query?: never;
@@ -975,6 +984,31 @@ export interface paths {
                         "application/json": components["schemas"]["OrderResponse"];
                     };
                 };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
             };
         };
         delete?: never;
@@ -990,7 +1024,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get order by Id */
+        /**
+         * Get order by Id
+         * @description Get order by Id
+         */
         get: {
             parameters: {
                 query?: never;
@@ -1013,35 +1050,12 @@ export interface paths {
                 };
             };
         };
-        /** Update order */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["UpdateOrderRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["OrderResponse"];
-                    };
-                };
-            };
-        };
+        put?: never;
         post?: never;
-        /** Delete order */
+        /**
+         * Delete order
+         * @description Delete order
+         */
         delete: {
             parameters: {
                 query?: never;
@@ -1060,11 +1074,72 @@ export interface paths {
                     };
                     content?: never;
                 };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
             };
         };
         options?: never;
         head?: never;
-        patch?: never;
+        /**
+         * Update order status
+         * @description Update order status
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateOrderStatusRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["OrderResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
         trace?: never;
     };
     "/auth/signin": {
@@ -1737,9 +1812,11 @@ export interface components {
             totalAmount: number;
             items: components["schemas"]["OrderItemResponse"][];
             user: components["schemas"]["UserResponse"];
+            /** Format: date-time */
+            createdAt: string;
         };
         /** @enum {unknown} */
-        OrderStatus: "Pending" | "Processing" | "Completed" | "Canceled";
+        OrderStatus: "None" | "Pending" | "Processing" | "Approved" | "Completed" | "Canceled";
         /** @enum {unknown} */
         PaymentMethod: "CreditCard" | "DebitCard" | "Boleto" | "Pix";
         PersonalDocument: {
@@ -1868,8 +1945,8 @@ export interface components {
         UpdateCategoryRequest: {
             name?: string;
         };
-        UpdateOrderRequest: {
-            items?: components["schemas"]["OrderItemRequest"][];
+        UpdateOrderStatusRequest: {
+            status: components["schemas"]["OrderStatus"];
         };
         UpdateProductRequest: {
             name: string;
@@ -1886,6 +1963,9 @@ export interface components {
             quantity?: number;
             movementType?: components["schemas"]["StockMovementType"];
             source?: string;
+        };
+        UpdateUserStatusRequest: {
+            status: components["schemas"]["UserStatus"];
         };
         UserResponse: {
             /** Format: int32 */
