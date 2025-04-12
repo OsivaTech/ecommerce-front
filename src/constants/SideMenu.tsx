@@ -2,12 +2,17 @@ import {
   ChartBarIcon,
   ClockIcon,
   ShoppingCartIcon,
+  CubeIcon,
+  UsersIcon,
 } from '@heroicons/react/24/outline'
 import {
   ChartBarIcon as ChartBarIconSolid,
   ClockIcon as ClockIconSolid,
   ShoppingCartIcon as ShoppingCartIconSolid,
+  CubeIcon as CubeIconSolid,
+  UsersIcon as UsersIconSolid,
 } from '@heroicons/react/24/solid'
+
 export const menuItems = [
   {
     id: 'dashboard',
@@ -30,18 +35,20 @@ export const menuItems = [
     iconSolid: <ShoppingCartIconSolid className="h-6 w-6" />,
     href: '/admin/order',
   },
-  // {
-  //   id: 'notifications',
-  //   title: 'Notificações',
-  //   icon: <BellIcon className="h-6 w-6" />,
-  //   href: '/admin/notifications',
-  // },
-  // {
-  //   id: 'settings',
-  //   title: 'Configurações',
-  //   icon: <Cog6ToothIcon className="h-6 w-6" />,
-  //   href: '/admin/settings',
-  // },
+  {
+    id: 'storage',
+    title: 'Estoque',
+    icon: <CubeIcon className="h-6 w-6" />,
+    iconSolid: <CubeIconSolid className="h-6 w-6" />,
+    href: '/admin/storage',
+  },
+  {
+    id: 'users',
+    title: 'Usuários',
+    icon: <UsersIcon className="h-6 w-6" />,
+    iconSolid: <UsersIconSolid className="h-6 w-6" />,
+    href: '/admin/user',
+  },
   // {
   //   id: 'about',
   //   title: 'Sobre',

@@ -3,7 +3,6 @@
 import { Order } from '@/types/api/Response/OrderResponse'
 import { formatPrice } from '@/utils/mask'
 import { ColumnDef } from '@tanstack/react-table'
-import { format } from 'date-fns'
 
 export const columns: ColumnDef<Order>[] = [
   {
@@ -15,16 +14,16 @@ export const columns: ColumnDef<Order>[] = [
   },
   {
     header: 'Data',
-    accessorKey: 'data',
-    cell: ({ row }) => {
-      return <div>{format(row.original.createdAt!, 'dd/MM')}</div>
+    accessorKey: 'createdAt',
+    cell: () => {
+      return <div>row.original.createdAt</div>
     },
   },
   {
     header: 'Cliente',
     accessorKey: 'cliente',
     cell: ({ row }) => {
-      return <div>row.original.user.name</div>
+      return <div>{row.original.user.name}</div>
     },
   },
   {

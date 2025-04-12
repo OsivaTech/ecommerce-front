@@ -211,7 +211,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get all users */
+        /**
+         * Get all users
+         * @description Get all users in the system
+         */
         get: {
             parameters: {
                 query?: never;
@@ -226,7 +229,9 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"][];
+                    };
                 };
             };
         };
@@ -245,7 +250,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get current user */
+        /**
+         * Get current user
+         * @description Get the current user based on the JWT token
+         */
         get: {
             parameters: {
                 query?: never;
@@ -260,11 +268,74 @@ export interface paths {
                     headers: {
                         [name: string]: unknown;
                     };
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
                     content?: never;
                 };
             };
         };
         put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{id}/status/{status}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Change user status
+         * @description Change the status of a user
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                    status: components["schemas"]["UserStatus"];
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         post?: never;
         delete?: never;
         options?: never;
@@ -369,6 +440,13 @@ export interface paths {
                         "application/json": components["schemas"]["ProductResponse"];
                     };
                 };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
             };
         };
         /**
@@ -457,7 +535,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ProductResponse"][];
+                        "application/json": components["schemas"]["ProductResponseWithTotalOrders"][];
                     };
                 };
             };
@@ -1449,7 +1527,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["FileResponse"];
+                        "application/json": components["schemas"]["FileResponse2"];
                     };
                 };
             };
@@ -1508,7 +1586,8 @@ export interface paths {
             requestBody: {
                 content: {
                     "multipart/form-data": {
-                        file: components["schemas"]["IFormFile"];
+                        /** Format: binary */
+                        file: string;
                     };
                 };
             };
@@ -1519,7 +1598,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["FileResponse"];
+                        "application/json": components["schemas"]["FileResponse2"];
                     };
                 };
             };
@@ -1584,22 +1663,25 @@ export interface components {
             items?: components["schemas"]["OrderItemRequest"][];
         };
         CreateProductRequest: {
-            name?: string;
-            description?: string;
+            name: string;
+            description: string;
             /** Format: double */
-            price?: number;
-            imageUrl?: string;
+            price: number;
             /** Format: int32 */
-            categoryId?: number;
+            initialStock: number;
+            /** Format: int32 */
+            imageId: number;
+            /** Format: int32 */
+            categoryId: number;
         };
         CreateRegistrationRequest: {
-            name?: string;
-            email?: string;
-            phone?: string;
-            password?: string;
-            personalDocument?: components["schemas"]["PersonalDocument"];
-            professionalDocument?: components["schemas"]["ProfessionalDocument"];
-            address?: components["schemas"]["CreateAddressRequest"];
+            name: string;
+            email: string;
+            phone: string;
+            password: string;
+            personalDocument: components["schemas"]["PersonalDocument"];
+            professionalDocument: components["schemas"]["ProfessionalDocument"];
+            address: components["schemas"]["CreateAddressRequest"];
         };
         CreateStockMovementRequest: {
             /** Format: int32 */
@@ -1616,13 +1698,21 @@ export interface components {
         FileResponse: {
             /** Format: int32 */
             id: number;
+            name: string;
+            url: string;
+            /** Format: int64 */
+            size: number;
+            contentType: string;
+        } | null;
+        FileResponse2: {
+            /** Format: int32 */
+            id: number;
+            name: string;
             url: string;
             /** Format: int64 */
             size: number;
             contentType: string;
         };
-        /** Format: binary */
-        IFormFile: string;
         OrderItemRequest: {
             /** Format: int32 */
             productId?: number;
@@ -1647,10 +1737,6 @@ export interface components {
             totalAmount: number;
             items: components["schemas"]["OrderItemResponse"][];
             user: components["schemas"]["UserResponse"];
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt?: string | null;
         };
         /** @enum {unknown} */
         OrderStatus: "Pending" | "Processing" | "Completed" | "Canceled";
@@ -1670,16 +1756,29 @@ export interface components {
         };
         ProductResponse: {
             /** Format: int32 */
-            id?: number;
-            name?: string;
-            description?: string;
+            id: number;
+            name: string;
+            description: string;
             /** Format: double */
-            price?: number;
-            imageUrl?: string;
+            price?: number | null;
             /** Format: int32 */
-            categoryId?: number;
+            stock: number;
+            category: components["schemas"]["CategoryResponse"];
+            file: components["schemas"]["FileResponse2"];
+        };
+        ProductResponseWithTotalOrders: {
             /** Format: int32 */
-            totalOrders?: number | null;
+            totalOrders: number;
+            /** Format: int32 */
+            id: number;
+            name: string;
+            description: string;
+            /** Format: double */
+            price?: number | null;
+            /** Format: int32 */
+            stock: number;
+            category: components["schemas"]["CategoryResponse"];
+            file: components["schemas"]["FileResponse2"];
         };
         ProductStockResponse: {
             /** Format: int32 */
@@ -1690,21 +1789,29 @@ export interface components {
         ProfessionalDocument: {
             number?: string;
             type?: components["schemas"]["ProfissionalDocumentType"];
-            image?: string;
+            /** Format: int32 */
+            fileId?: number;
+        };
+        ProfessionalDocumentResponse: {
+            file?: components["schemas"]["FileResponse"];
+            number?: string;
+            type?: components["schemas"]["ProfissionalDocumentType"];
+            /** Format: int32 */
+            fileId?: number;
         };
         /** @enum {unknown} */
         ProfissionalDocumentType: "None" | "CRM" | "CRO";
         RegistrationResponse: {
             /** Format: int32 */
-            id?: number;
-            name?: string;
-            email?: string;
-            phone?: string;
-            personalDocument?: components["schemas"]["PersonalDocument"];
-            professionalDocument?: components["schemas"]["ProfessionalDocument"];
+            id: number;
+            name: string;
+            email: string;
+            phone: string;
+            personalDocument: components["schemas"]["PersonalDocument"];
+            professionalDocument: components["schemas"]["ProfessionalDocumentResponse"];
             /** Format: date-time */
-            date?: string;
-            status?: components["schemas"]["RegistrationStatus"];
+            date: string;
+            status: components["schemas"]["RegistrationStatus"];
         };
         /** @enum {unknown} */
         RegistrationStatus: "None" | "Pending" | "Approved" | "Rejected";
@@ -1748,7 +1855,7 @@ export interface components {
             source?: string;
         };
         /** @enum {unknown} */
-        StockMovementType: "Entry" | "Exit" | "Adjustment";
+        StockMovementType: "None" | "InitialStock" | "Entry" | "Exit" | "Adjustment";
         UpdateAddressRequest: {
             street?: string;
             number?: string | null;
@@ -1765,13 +1872,14 @@ export interface components {
             items?: components["schemas"]["OrderItemRequest"][];
         };
         UpdateProductRequest: {
-            name?: string;
-            description?: string;
+            name: string;
+            description: string;
             /** Format: double */
-            price?: number;
-            imageUrl?: string;
+            price: number;
             /** Format: int32 */
-            categoryId?: number;
+            fileId: number;
+            /** Format: int32 */
+            categoryId: number;
         };
         UpdateStockMovementRequest: {
             /** Format: int32 */
@@ -1785,11 +1893,11 @@ export interface components {
             name: string;
             email: string;
             personalDocument: components["schemas"]["PersonalDocument"];
-            professionalDocument: components["schemas"]["ProfessionalDocument"];
+            professionalDocument: components["schemas"]["ProfessionalDocumentResponse"];
             /** Format: date-time */
             createdAt: string;
-            /** Format: date-time */
-            updatedAt?: string | null;
+            status: components["schemas"]["UserStatus"];
+            role: components["schemas"]["UserRole"];
             address?: components["schemas"]["AddressResponse"];
         };
         UserResponse2: {
@@ -1798,13 +1906,17 @@ export interface components {
             name: string;
             email: string;
             personalDocument: components["schemas"]["PersonalDocument"];
-            professionalDocument: components["schemas"]["ProfessionalDocument"];
+            professionalDocument: components["schemas"]["ProfessionalDocumentResponse"];
             /** Format: date-time */
             createdAt: string;
-            /** Format: date-time */
-            updatedAt?: string | null;
+            status: components["schemas"]["UserStatus"];
+            role: components["schemas"]["UserRole"];
             address?: components["schemas"]["AddressResponse"];
         } | null;
+        /** @enum {unknown} */
+        UserRole: "User" | "Administrator";
+        /** @enum {unknown} */
+        UserStatus: "None" | "Active" | "Inactive" | "Blocked" | "Deleted";
         VerifyCodeRequest: {
             email?: string;
             code?: string;

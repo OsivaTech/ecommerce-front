@@ -1,8 +1,8 @@
 'use client'
-import { Sales } from '@/http/types/Sales'
 import { ColumnDef } from '@tanstack/react-table'
 
-export const columns: ColumnDef<Sales>[] = [
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const columns: ColumnDef<any>[] = [
   {
     header: 'orderId',
     accessorKey: 'Pedido',

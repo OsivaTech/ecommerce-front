@@ -4,3 +4,4 @@ export const RegistrationApprovedEndpoint = (id: string) =>
 export const RegistrationRejectedEndpoint = (id: string) =>
   `/registration/${id}/reject`
 export const OrderEndpoint = '/orders'
+export const UserEndpoint = '/users'

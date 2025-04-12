@@ -7,11 +7,14 @@ import { RegistrationPending } from '@/types/api/Response/RegistrationResponse'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-hot-toast'
 import { RegistrationHttp } from '@/http/Registration'
+import { RejectConfirmationModal } from '@/components/RejectConfirmationModal'
 export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [wasRejected, setWasRejected] = useState(false)
   const router = useRouter()
+  const [rejectReason, setRejectReason] = useState('')
   const [isPending, startTransition] = useTransition()
+
   const mappedStatus: Record<string, string> = {
     Pending: 'pending',
     Approved: 'approved',
@@ -45,6 +48,19 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
 
   const handleReject = async () => {
     setIsOpen(false)
+    startTransition(async () => {
+      const response = await RegistrationHttp.rejectRegistration(
+        row.original.id!.toString(),
+        rejectReason,
+      )
+      console.log('response 123', response)
+      if (response?.code) {
+        toast.error(response.message)
+      } else {
+        toast.success('Registro rejeitado com sucesso')
+        router.refresh()
+      }
+    })
   }
 
   return (
@@ -68,17 +84,24 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
           label={labelStatus[row.original.status!]}
         />
       )}
-      {isOpen && (
+      {isOpen && !wasRejected && (
         <ConfirmationModal
-          title={wasRejected ? 'Confirmar rejeição' : 'Confirmar aprovação'}
-          description={`${
-            wasRejected
-              ? 'Tem certeza que deseja rejeitar este usuário?'
-              : 'Tem certeza que deseja aprovar este usuário?'
-          } Essa ação não pode ser revertida!`}
-          onConfirm={wasRejected ? handleReject : handleApprove}
+          title={'Confirmar aprovação'}
+          description={`Tem certeza que deseja aprovar este usuário? Essa ação não pode ser revertida!`}
+          onConfirm={handleApprove}
           onCancel={() => setIsOpen(false)}
           isPending={isPending}
+        />
+      )}
+      {isOpen && wasRejected && (
+        <RejectConfirmationModal
+          title="Confirmar rejeição"
+          description="Tem certeza que deseja rejeitar este usuário?"
+          onConfirm={handleReject}
+          onCancel={() => setIsOpen(false)}
+          isPending={isPending}
+          rejectReason={rejectReason}
+          setRejectReason={setRejectReason}
         />
       )}
     </>
