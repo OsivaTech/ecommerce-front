@@ -6,12 +6,6 @@ export class UserHttp {
   static async getAllUsers() {
     const response = await baseHttp.get<UserResponse>(UserEndpoint)
 
-    if ('code' in response && 'message' in response) {
-      return {
-        code: response.code,
-        message: response.message,
-      }
-    }
     return response
   }
 
@@ -19,7 +13,7 @@ export class UserHttp {
     const response = await baseHttp.patch<void>(UserStatusEndpoint(id), {
       body: JSON.stringify({ status }),
     })
-
+    
     return response
   }
 }

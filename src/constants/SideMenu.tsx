@@ -36,11 +36,11 @@ export const menuItems = [
     href: '/admin/order',
   },
   {
-    id: 'storage',
+    id: 'stock',
     title: 'Estoque',
     icon: <CubeIcon className="h-6 w-6" />,
     iconSolid: <CubeIconSolid className="h-6 w-6" />,
-    href: '/admin/storage',
+    href: '/admin/stock',
   },
   {
     id: 'users',

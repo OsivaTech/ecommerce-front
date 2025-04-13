@@ -5,13 +5,13 @@ import { ApiOrder } from '@/http/Order'
 export const OrderTable = async () => {
   const orders = await ApiOrder.getOrders()
 
-  if ('code' in orders && 'message' in orders) {
-    return <div>{orders.message}</div>
+  if (orders.hasError) {    
+    return <div>Error</div>
   }
 
   return (
     <div className="mt-[20px]">
-      <DataTable columns={columns} data={orders} />
+      <DataTable columns={columns} data={orders.data} />
     </div>
   )
 }

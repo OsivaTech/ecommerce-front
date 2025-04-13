@@ -5,13 +5,13 @@ import { RegistrationHttp } from '@/http/Registration'
 export const UserManagementTable = async () => {
   const pendingRegistrations = await RegistrationHttp.getPendingRegistrations()
 
-  if ('message' in pendingRegistrations) {
-    return null
+  if (pendingRegistrations.hasError) {
+    return <div>Error</div>
   }
 
   return (
     <div className="mt-[20px]">
-      <DataTable columns={columns} data={pendingRegistrations} />
+      <DataTable columns={columns} data={pendingRegistrations.data} />
     </div>
   )
 }

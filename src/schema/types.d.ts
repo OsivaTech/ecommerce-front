@@ -480,6 +480,20 @@ export interface paths {
                         "application/json": components["schemas"]["ProductResponse"];
                     };
                 };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
             };
         };
         post?: never;
@@ -1716,8 +1730,8 @@ export interface components {
         };
         CategoryResponse: {
             /** Format: int32 */
-            id?: number;
-            name?: string;
+            id: number;
+            name: string;
         };
         CreateAddressRequest: {
             street?: string;
@@ -1840,6 +1854,7 @@ export interface components {
             price?: number | null;
             /** Format: int32 */
             stock: number;
+            status: components["schemas"]["ProductStatus"];
             category: components["schemas"]["CategoryResponse"];
             file: components["schemas"]["FileResponse2"];
         };
@@ -1854,9 +1869,12 @@ export interface components {
             price?: number | null;
             /** Format: int32 */
             stock: number;
+            status: components["schemas"]["ProductStatus"];
             category: components["schemas"]["CategoryResponse"];
             file: components["schemas"]["FileResponse2"];
         };
+        /** @enum {unknown} */
+        ProductStatus: "None" | "Enabled" | "OutOfStock" | "Disabled";
         ProductStockResponse: {
             /** Format: int32 */
             productId?: number;
@@ -1957,6 +1975,7 @@ export interface components {
             fileId: number;
             /** Format: int32 */
             categoryId: number;
+            status: components["schemas"]["ProductStatus"];
         };
         UpdateStockMovementRequest: {
             /** Format: int32 */

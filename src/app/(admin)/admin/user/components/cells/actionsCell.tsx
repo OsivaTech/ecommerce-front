@@ -8,7 +8,7 @@ import toast from 'react-hot-toast'
 
 export const ActionsCell = ({ row }: { row: Row<User> }) => {
   const [isOpen, setIsOpen] = useState(false)
-  toast.success('Teste')
+  
   return (
     <div>
       <Eye

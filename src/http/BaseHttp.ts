@@ -1,5 +1,5 @@
 import { env } from '@/env'
-import { ResponseError } from '@/types/Error'
+import { ResponseData, ResponseError } from '@/types/Error'
 
 export class BaseHttp {
   private baseUrl: string
@@ -14,110 +14,132 @@ export class BaseHttp {
     this.useAuth = useAuth
   }
 
-  async get<T>(url: string, options?: RequestInit): Promise<T | ResponseError> {
+  async get<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {
     try {
       const response = await fetch(`${this.baseUrl}${url}`, {
         method: 'GET',
         ...options,
-        headers: {
+        headers: options?.headers ? {
           ...options?.headers,
+        } : {
           'Content-Type': 'application/json',
         },
       })
       if (response.ok) {
-        return (await response.json()) as T
+        return { data: (await response.json()) as T, hasError: false }
       } else {
-        return this.handleHttpError(response)
+        return {
+          error: [await this.handleHttpError(response)],
+          hasError: true,
+        }
       }
     } catch (error) {
-      return this.handleHttpError(error)
+      return {
+        error: [await this.handleHttpError(error)],
+        hasError: true,
+      }
     }
   }
 
-  async post<T>(
-    url: string,
-    options?: RequestInit,
-  ): Promise<T | ResponseError> {
+  async post<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       method: 'POST',
-      headers: {
+      headers: options?.headers ? {
         ...options?.headers,
+      } : {
+        'Content-Type': 'application/json',
+      },
+    })
+    console.log('response', {
+      ...options,
+      method: 'POST',
+      headers: options?.headers ? {
+        ...options?.headers,
+      } : {
         'Content-Type': 'application/json',
       },
     })
     if (response.ok) {
-      return (await response.json()) as T
+      return { data: (await response.json()) as T, hasError: false }
     } else {
-      return this.handleHttpError(response)
+      return {
+        error: [await this.handleHttpError(response)],
+        hasError: true,
+      }
     }
   }
 
-  async put<T>(url: string, options?: RequestInit): Promise<T | ResponseError> {
+  async put<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       method: 'PUT',
-      headers: {
+      headers: options?.headers ? {
         ...options?.headers,
+      } : {
         'Content-Type': 'application/json',
       },
     })
 
     if (response.ok) {
       try {
-        return (await response.json()) as T
+        return { data: (await response.json()) as T, hasError: false }
       } catch (error) {
-        return {} as T
+        return { data: {} as T, hasError: false }
       }
     } else {
-      return this.handleHttpError(response)
+      return {
+        error: [await this.handleHttpError(response)],
+        hasError: true,
+      }
     }
   }
 
-  async patch<T>(
-    url: string,
-    options?: RequestInit,
-  ): Promise<T | ResponseError> {
+  async patch<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       method: 'PATCH',
-      headers: {
+      headers: options?.headers ? {
         ...options?.headers,
+      } : {
         'Content-Type': 'application/json',
       },
     })
 
     if (response.ok) {
       try {
-        return (await response.json()) as T
+        return { data: (await response.json()) as T, hasError: false }
       } catch (error) {
-        return {} as T
+        return { data: {} as T, hasError: false }
       }
     } else {
-      return this.handleHttpError(response)
+      return {
+        error: [await this.handleHttpError(response)],
+        hasError: true,
+      }
     }
   }
 
   async delete<T>(
     url: string,
     options?: RequestInit,
-  ): Promise<T | ResponseError> {
-    try {
-      const response = await fetch(`${this.baseUrl}${url}`, {
-        ...options,
-        method: 'DELETE',
-        headers: {
-          ...options?.headers,
-          'Content-Type': 'application/json',
-        },
-      })
-      if (response.ok) {
-        return (await response.json()) as T
-      } else {
-        return this.handleHttpError(response)
+  ): Promise<ResponseData<T>> {
+    const response = await fetch(`${this.baseUrl}${url}`, {
+      ...options,
+      method: 'DELETE',
+      headers: options?.headers ? {
+        ...options?.headers,
+      } : {
+        'Content-Type': 'application/json',
+      },
+    })
+    if (response.ok) {
+      return { data: (await response.json()) as T, hasError: false }
+    } else {
+      return {
+        error: [await this.handleHttpError(response)],
+        hasError: true,
       }
-    } catch (error) {
-      return this.handleHttpError(error)
     }
   }
 

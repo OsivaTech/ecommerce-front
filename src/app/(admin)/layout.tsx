@@ -2,7 +2,6 @@ import '../globals.css'
 import { AdminSideMenu } from '@/components/AdminSideMenu'
 import Header from '@/client/home/header/Header'
 import { ToastProvider } from '@/providers/Toast/ToastProvider'
-
 export default function RootAdminLayout({
   children,
 }: Readonly<{

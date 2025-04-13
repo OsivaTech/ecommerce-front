@@ -12,21 +12,18 @@ export class RegistrationHttp {
     const response = await baseHttp.get<RegistrationPendingResponse>(
       RegistrationPendingEndpoint,
     )
-
     return response
   }
 
-  static async approveRegistration(id: string): Promise<void | ResponseError> {
+  static async approveRegistration(id: string) {
     const response = await baseHttp.put<void>(RegistrationApprovedEndpoint(id))
-    if (response?.message) {
-      return response
-    }
+    return response
   }
 
   static async rejectRegistration(
     id: string,
     rejectReason: string,
-  ): Promise<void | ResponseError> {
+  ) {
     const response = await baseHttp.put<void>(
       RegistrationRejectedEndpoint(id),
       {

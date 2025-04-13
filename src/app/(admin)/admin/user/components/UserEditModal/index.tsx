@@ -66,8 +66,8 @@ export const UserEditModal = ({
         user.id.toString(),
         data.status,
       )
-      if (response && 'code' in response && 'message' in response) {
-        toast.error(response.message)
+      if (response.hasError) {
+        toast.error(response.error[0]?.message || 'Erro ao atualizar usuário')
       } else {
         toast.success('Usuário atualizado com sucesso')
         setIsOpen(false)
