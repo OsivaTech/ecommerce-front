@@ -1156,6 +1156,49 @@ export interface paths {
         };
         trace?: never;
     };
+    "/orders/{id}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Complete order
+         * @description Complete order with payment gateway data
+         */
+        patch: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CompleteOrderRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        trace?: never;
+    };
     "/auth/signin": {
         parameters: {
             query?: never;
@@ -1165,7 +1208,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Login */
+        /**
+         * Login
+         * @description Login with email and password.
+         */
         post: {
             parameters: {
                 query?: never;
@@ -1188,6 +1234,40 @@ export interface paths {
                         "application/json": components["schemas"]["AuthResponse"];
                     };
                 };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
             };
         };
         delete?: never;
@@ -1205,7 +1285,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Reset password */
+        /**
+         * Reset password
+         * @description Reset password with email.
+         */
         post: {
             parameters: {
                 query?: never;
@@ -1219,12 +1302,23 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description OK */
-                200: {
+                /** @description Bad Request */
+                400: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
                 };
             };
         };
@@ -1243,7 +1337,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Refresh token */
+        /**
+         * Refresh token
+         * @description Refresh user token.
+         */
         post: {
             parameters: {
                 query?: never;
@@ -1257,8 +1354,17 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description OK */
-                200: {
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -1281,7 +1387,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Send a mail code for validation propouses. */
+        /**
+         * Send a mail code.
+         * @description Send a mail code for validation propouses.
+         */
         post: {
             parameters: {
                 query: {
@@ -1293,12 +1402,14 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description OK */
-                200: {
+                /** @description Bad Request */
+                400: {
                     headers: {
                         [name: string]: unknown;
                     };
-                    content?: never;
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
                 };
             };
         };
@@ -1801,7 +1912,8 @@ export interface paths {
             requestBody: {
                 content: {
                     "multipart/form-data": {
-                        file: components["schemas"]["IFormFile"];
+                        /** Format: binary */
+                        file: string;
                     };
                 };
             };
@@ -1850,13 +1962,20 @@ export interface components {
             postalCode: string;
         };
         AuthResponse: {
-            accessToken?: string | null;
-            user?: components["schemas"]["UserResponse2"];
+            accessToken: string;
+            user: components["schemas"]["UserResponse"];
         };
         CategoryResponse: {
             /** Format: int32 */
             id: number;
             name: string;
+        };
+        CompleteOrderRequest: {
+            receiptUrl: string;
+            transactionId: string;
+            captureMethod: string;
+            orderNsu: string;
+            slug: string;
         };
         CreateAddressRequest: {
             street?: string;
@@ -1873,7 +1992,6 @@ export interface components {
         CreateOrderRequest: {
             /** Format: int32 */
             userId?: number;
-            paymentMethod?: components["schemas"]["PaymentMethod"];
             items?: components["schemas"]["OrderItemRequest"][];
         };
         CreateProductRequest: {
@@ -1887,7 +2005,7 @@ export interface components {
             imageId: number;
             /** Format: int32 */
             categoryId: number;
-            dimensions: components["schemas"]["ProductDimensions"];
+            dimensions?: components["schemas"]["ProductDimensions2"];
         };
         CreateRegistrationRequest: {
             name: string;
@@ -1928,8 +2046,6 @@ export interface components {
             size: number;
             contentType: string;
         };
-        /** Format: binary */
-        IFormFile: string;
         OrderItemRequest: {
             /** Format: int32 */
             productId?: number;
@@ -1983,6 +2099,16 @@ export interface components {
             /** Format: double */
             weight: number;
         };
+        ProductDimensions2: {
+            /** Format: double */
+            width: number;
+            /** Format: double */
+            height: number;
+            /** Format: double */
+            length: number;
+            /** Format: double */
+            weight: number;
+        } | null;
         ProductResponse: {
             /** Format: int32 */
             id: number;
@@ -2054,9 +2180,9 @@ export interface components {
             rejectReason?: string;
         };
         ResetPasswordRequest: {
-            email?: string;
-            password?: string;
-            code?: string;
+            email: string;
+            password: string;
+            code: string;
         };
         SalesGridResponse: {
             /** Format: int32 */
@@ -2108,8 +2234,8 @@ export interface components {
             sla?: number;
         };
         SignInRequest: {
-            email?: string;
-            password?: string;
+            email: string;
+            password: string;
         };
         StockMovementResponse: {
             /** Format: int32 */
@@ -2174,26 +2300,13 @@ export interface components {
             role: components["schemas"]["UserRole"];
             address?: components["schemas"]["AddressResponse"];
         };
-        UserResponse2: {
-            /** Format: int32 */
-            id: number;
-            name: string;
-            email: string;
-            personalDocument: components["schemas"]["PersonalDocument"];
-            professionalDocument: components["schemas"]["ProfessionalDocumentResponse"];
-            /** Format: date-time */
-            createdAt: string;
-            status: components["schemas"]["UserStatus"];
-            role: components["schemas"]["UserRole"];
-            address?: components["schemas"]["AddressResponse"];
-        } | null;
         /** @enum {unknown} */
         UserRole: "User" | "Administrator";
         /** @enum {unknown} */
         UserStatus: "None" | "Active" | "Inactive" | "Blocked" | "Deleted";
         VerifyCodeRequest: {
-            email?: string;
-            code?: string;
+            email: string;
+            code: string;
         };
     };
     responses: never;

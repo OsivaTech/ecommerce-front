@@ -56,16 +56,16 @@ export default function Header() {
           <div className="w-[160px]">
             <SearchInput />
           </div>
-          <Link href="/create-account">
-            {userIsAuthenticated ? (
-              <Link href="/my-account">
-                <IconButton
-                  icon={
-                    <UserIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
-                  }
-                />
-              </Link>
-            ) : (
+          {userIsAuthenticated ? (
+            <Link href="/my-account">
+              <IconButton
+                icon={
+                  <UserIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
+                }
+              />
+            </Link>
+          ) : (
+            <Link href="/create-account">
               <Button
                 variant="outline"
                 className="w-[145px]"
@@ -73,8 +73,8 @@ export default function Header() {
               >
                 Entrar / Cadastrar
               </Button>
-            )}
-          </Link>
+            </Link>
+          )}
           <IconButton
             icon={
               <HeartIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
