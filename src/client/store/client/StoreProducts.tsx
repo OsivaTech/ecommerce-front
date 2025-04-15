@@ -1,23 +1,25 @@
 'use client'
 
 import { useState } from 'react'
-import { PropsProductsAll } from '@/api/products/types'
 import SearchInput from '@/components/InputSearch/InputSearch'
 import ImageCard from '@/components/ImageCard/ImageCard'
-import { PropsCategoriesAll } from '@/api/categories/types'
 import Button from '@/components/Button/Button'
+import { ProductResponse } from '@/types/api/Response/ProductResponse'
+import {
+  Category,
+  CategoryResponse,
+} from '@/types/api/Response/CategoryResponse'
 
 interface StoreProductsProps {
-  products: PropsProductsAll[]
-  categories: PropsCategoriesAll[]
+  products: ProductResponse
+  categories: CategoryResponse
 }
 
 export default function StoreProducts({
   products,
   categories,
 }: StoreProductsProps) {
-  const [categoriaSelected, setCategoriaSelected] =
-    useState<PropsCategoriesAll>()
+  const [categoriaSelected, setCategoriaSelected] = useState<Category>()
   const [searchTerm, setSearchTerm] = useState('')
 
   const allCategory = { id: 0, name: 'Todos' }
@@ -26,13 +28,14 @@ export default function StoreProducts({
   const productsFilter = products.filter((product) => {
     const matchesCategory =
       categoriaSelected && categoriaSelected.id !== 0
-        ? product.categoryId === categoriaSelected.id
+        ? product.category.id === categoriaSelected.id
         : true
     const matchesSearchTerm = product.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase())
     return matchesCategory && matchesSearchTerm
   })
+
   return (
     <div className="container mx-auto px-4 py-8 justify-items-start">
       <div className="flex flex-wrap gap-3 justify-center mb-6">
@@ -66,9 +69,9 @@ export default function StoreProducts({
               className="flex flex-col items-center text-center"
             >
               <ImageCard
-                imageSrc={product.imageUrl}
+                imageSrc={product.file.url}
                 title={product.name}
-                price={product.price}
+                price={product.price ?? 0}
               />
             </div>
           ))}

@@ -1,11 +1,12 @@
 import {
   RegistrationApprovedEndpoint,
+  RegistrationEndpoint,
   RegistrationPendingEndpoint,
   RegistrationRejectedEndpoint,
 } from '@/constants/endpoints'
 import { RegistrationPendingResponse } from '@/types/api/Response/RegistrationResponse'
-import { ResponseError } from '@/types/Error'
 import baseHttp from '@/http/BaseHttp'
+import { PerformRegistrationRequest } from '@/types/api/Request/RegistrationRequest'
 
 export class RegistrationHttp {
   static async getPendingRegistrations() {
@@ -20,16 +21,20 @@ export class RegistrationHttp {
     return response
   }
 
-  static async rejectRegistration(
-    id: string,
-    rejectReason: string,
-  ) {
+  static async rejectRegistration(id: string, rejectReason: string) {
     const response = await baseHttp.put<void>(
       RegistrationRejectedEndpoint(id),
       {
         body: JSON.stringify({ rejectReason }),
       },
     )
+    return response
+  }
+
+  static async performRegistration(data: PerformRegistrationRequest) {
+    const response = await baseHttp.post<void>(RegistrationEndpoint, {
+      body: JSON.stringify(data),
+    })
     return response
   }
 }

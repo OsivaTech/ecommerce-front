@@ -3,12 +3,12 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
 import { useRouter } from 'next/navigation'
-import { authSigninOperation } from '@/api/auth/operations'
-import { PropsResponseAuthSignIn } from '@/api/auth/types'
 import { showToasthHandleError } from '@/utils/toast'
 import { AUTH_TOKEN_KEY, USER_DATA } from '@/constants/LocalStorage'
-
-type User = PropsResponseAuthSignIn['user']
+import { AuthHttp } from '@/http/Auth'
+import toast from 'react-hot-toast'
+import { createSession, deleteSession } from '@/lib/session'
+import { User } from '@/types/api/Response/UserResponse'
 
 type AuthContextType = {
   user: User | null
@@ -23,19 +23,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
 
-  const saveSession = (user: User, token: string) => {
-    localStorage.setItem(AUTH_TOKEN_KEY, token)
-    localStorage.setItem(USER_DATA, JSON.stringify(user))
-    setUser(user)
-  }
-
   const signIn = async (email: string, password: string) => {
     try {
-      const { user, accessToken } = await authSigninOperation.AuthSignin({
-        email,
-        password,
-      })
-      saveSession(user, accessToken)
+      const userResponse = await AuthHttp.signIn(email, password)
+
+      if (userResponse.hasError) {
+        toast.error('Credenciais inválidas')
+        return
+      }
+
+      createSession(userResponse.data.accessToken!)
+
       router.push('/admin')
     } catch (error) {
       showToasthHandleError('Credenciais inválidas')
@@ -43,7 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   const signOut = () => {
-    localStorage.removeItem(AUTH_TOKEN_KEY)
+    deleteSession()
     setUser(null)
     router.push('/')
   }

@@ -1,9 +1,10 @@
+import { cn } from '@/lib/utils'
 import { applyMask } from '@/utils/maskUtils'
 import { UseFormRegisterReturn } from 'react-hook-form'
 import { ClipLoader } from 'react-spinners'
 
 interface CustomInputProps {
-  label: string
+  label?: string
   type?: string
   placeholder?: string
   value?: string
@@ -12,6 +13,7 @@ interface CustomInputProps {
   register?: UseFormRegisterReturn
   mask?: string
   isLoading?: boolean
+  className?: string
 }
 
 export default function Input({
@@ -24,6 +26,7 @@ export default function Input({
   register,
   mask,
   isLoading = false,
+  className,
   ...rest
 }: CustomInputProps) {
   const handleMaskedInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +40,7 @@ export default function Input({
 
   return (
     <div className="flex flex-col">
-      <label className="text-[16px] font-medium mb-2">{label}</label>
+      {label && <label className="text-[16px] font-medium mb-2">{label}</label>}
       <div className="relative flex flex-col">
         <input
           {...register}
@@ -46,7 +49,10 @@ export default function Input({
           placeholder={placeholder}
           value={value}
           onChange={mask ? handleMaskedInput : onChange}
-          className="bg-gray-100 rounded-[12px] text-[16px] p-4 outline-none border border-[#D1DBE8]"
+          className={cn(
+            'bg-gray-100 rounded-[12px] text-[16px] max-h-[50px] p-4 outline-none border border-[#D1DBE8]',
+            className,
+          )}
         />
         {isLoading && (
           <ClipLoader

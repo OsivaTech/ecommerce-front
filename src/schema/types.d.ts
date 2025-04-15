@@ -1588,6 +1588,132 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/reports/sales/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get sales summary
+         * @description Get sales summary
+         */
+        get: {
+            parameters: {
+                query: {
+                    From: string;
+                    To: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SalesSummaryResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/sales/timechart": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get sales time chart
+         * @description Get sales time chart
+         */
+        get: {
+            parameters: {
+                query: {
+                    From: string;
+                    To: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SalesTimeChartResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/sales/grid": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get sales grid
+         * @description Get sales grid
+         */
+        get: {
+            parameters: {
+                query: {
+                    From: string;
+                    To: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SalesGridResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/files/{id}": {
         parameters: {
             query?: never;
@@ -1675,8 +1801,7 @@ export interface paths {
             requestBody: {
                 content: {
                     "multipart/form-data": {
-                        /** Format: binary */
-                        file: string;
+                        file: components["schemas"]["IFormFile"];
                     };
                 };
             };
@@ -1762,6 +1887,7 @@ export interface components {
             imageId: number;
             /** Format: int32 */
             categoryId: number;
+            dimensions: components["schemas"]["ProductDimensions"];
         };
         CreateRegistrationRequest: {
             name: string;
@@ -1802,6 +1928,8 @@ export interface components {
             size: number;
             contentType: string;
         };
+        /** Format: binary */
+        IFormFile: string;
         OrderItemRequest: {
             /** Format: int32 */
             productId?: number;
@@ -1845,6 +1973,16 @@ export interface components {
             /** Format: int32 */
             quantity?: number;
         };
+        ProductDimensions: {
+            /** Format: double */
+            width: number;
+            /** Format: double */
+            height: number;
+            /** Format: double */
+            length: number;
+            /** Format: double */
+            weight: number;
+        };
         ProductResponse: {
             /** Format: int32 */
             id: number;
@@ -1857,6 +1995,7 @@ export interface components {
             status: components["schemas"]["ProductStatus"];
             category: components["schemas"]["CategoryResponse"];
             file: components["schemas"]["FileResponse2"];
+            dimensions: components["schemas"]["ProductDimensions"];
         };
         ProductResponseWithTotalOrders: {
             /** Format: int32 */
@@ -1872,6 +2011,7 @@ export interface components {
             status: components["schemas"]["ProductStatus"];
             category: components["schemas"]["CategoryResponse"];
             file: components["schemas"]["FileResponse2"];
+            dimensions: components["schemas"]["ProductDimensions"];
         };
         /** @enum {unknown} */
         ProductStatus: "None" | "Enabled" | "OutOfStock" | "Disabled";
@@ -1917,6 +2057,40 @@ export interface components {
             email?: string;
             password?: string;
             code?: string;
+        };
+        SalesGridResponse: {
+            /** Format: int32 */
+            orderNumber: number;
+            /** Format: date-time */
+            date: string;
+            customer: string;
+            /** Format: int32 */
+            itemCount: number;
+            paymentMethod: components["schemas"]["PaymentMethod"];
+            /** Format: double */
+            totalValue: number;
+        };
+        SalesSummaryResponse: {
+            /** Format: double */
+            totalSales: number;
+            /** Format: int32 */
+            totalOrders: number;
+            /** Format: int32 */
+            totalProductsSold: number;
+            /** Format: double */
+            averageValuePerCustomer: number;
+            /** Format: double */
+            averageTicket: number;
+            /** Format: int32 */
+            canceledOrders: number;
+        };
+        SalesTimeChartResponse: {
+            /** Format: date-time */
+            date: string;
+            /** Format: double */
+            totalSales: number;
+            /** Format: int32 */
+            totalOrder: number;
         };
         ShipmentSimulationRequest: {
             postalCode?: string;
@@ -1976,6 +2150,7 @@ export interface components {
             /** Format: int32 */
             categoryId: number;
             status: components["schemas"]["ProductStatus"];
+            dimensions: components["schemas"]["ProductDimensions"];
         };
         UpdateStockMovementRequest: {
             /** Format: int32 */

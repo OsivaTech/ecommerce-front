@@ -11,7 +11,7 @@ export const CategorySelect = ({ onChange, value }: { onChange: (value: string) 
   
   useEffect(() => {
     async function fetchCategories() {
-      const categories = await CategoryHttp.getAllCategory()
+      const categories = await CategoryHttp.getAllCategories()
       if (categories.hasError) {
         toast.error(categories.error[0]?.message || 'Erro ao buscar categorias')
       } else {

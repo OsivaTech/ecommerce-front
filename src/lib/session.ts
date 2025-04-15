@@ -1,3 +1,5 @@
+'use server'
+import { AUTH_TOKEN_KEY } from '@/constants/LocalStorage'
 import { env } from '@/env'
 import { JWTPayload, SignJWT, jwtVerify } from 'jose'
 import { cookies } from 'next/headers'
@@ -33,7 +35,7 @@ export async function createSession(token: string) {
   const session = await encrypt({ token, expiresAt })
 
   const cookieStore = await cookies()
-  cookieStore.set('session', session, {
+  cookieStore.set(AUTH_TOKEN_KEY, session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
@@ -44,7 +46,7 @@ export async function createSession(token: string) {
 
 export async function deleteSession() {
   const cookieStore = await cookies()
-  cookieStore.delete('session')
+  cookieStore.delete(AUTH_TOKEN_KEY)
 }
 
 export async function logout() {
@@ -53,6 +55,6 @@ export async function logout() {
 
 export async function isAuthenticated() {
   const cookieStore = await cookies()
-  const session = cookieStore.get('session')
+  const session = cookieStore.get(AUTH_TOKEN_KEY)
   return !!session
 }

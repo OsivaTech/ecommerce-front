@@ -1,21 +1,34 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   HeartIcon,
   Bars3Icon,
   XMarkIcon,
   ShoppingBagIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import Logo from '@/assets/svg/logo'
 
 import SearchInput from '../../../components/InputSearch/InputSearch'
-import Button from '@/components/Button/Button'
 import IconButton from '@/components/ButtonIcon/IconButton'
+import { isAuthenticated } from '@/lib/session'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [userIsAuthenticated, setUserIsAuthenticated] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const checkUserIsAuthenticated = async () => {
+      const userIsAuthenticated = await isAuthenticated()
+      setUserIsAuthenticated(userIsAuthenticated)
+    }
+    checkUserIsAuthenticated()
+  }, [])
 
   return (
     <header className="bg-gray-100 shadow-md">
@@ -44,12 +57,36 @@ export default function Header() {
             <SearchInput />
           </div>
           <Link href="/create-account">
-            <Button text="Entrar / Cadastrar" className="w-[145px]" />
+            {userIsAuthenticated ? (
+              <Link href="/my-account">
+                <IconButton
+                  icon={
+                    <UserIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
+                  }
+                />
+              </Link>
+            ) : (
+              <Button
+                variant="outline"
+                className="w-[145px]"
+                onClick={() => router.push('/login')}
+              >
+                Entrar / Cadastrar
+              </Button>
+            )}
           </Link>
-          <IconButton icon={<HeartIcon className="h-6 w-6 text-[#0D141C]" />} />
+          <IconButton
+            icon={
+              <HeartIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
+            }
+            onClick={() => router.push('/wishlist')}
+          />
           <Link href="/cart">
             <IconButton
-              icon={<ShoppingBagIcon className="h-6 w-6 text-[#0D141C]" />}
+              icon={
+                <ShoppingBagIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
+              }
+              onClick={() => router.push('/cart')}
             />
           </Link>
           {/* Menu Mobile */}

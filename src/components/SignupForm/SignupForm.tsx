@@ -1,286 +1,398 @@
 'use client'
 
-import * as yup from 'yup'
 import Button from '../Button/Button'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { yupResolver } from '@hookform/resolvers/yup'
+import { useEffect, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
-import Input from '../Input/Input'
-import { postalAddressOperation } from '@/api/postalAddress/operations'
 import { showToasthHandleError } from '@/utils/toast'
-import { createUserRequestBody } from '@/api/users/userRequestBody'
-import { userOperation } from '@/api/users/operations'
-
-export interface FormDataCreateUser {
-  name: string
-  sobrenome: string
-  phone: string
-  email: string
-  senha: string
-  repetirSenha: string
-  numeroLicenca: string
-  anexo: FileList
-  cep: string
-  street: string
-  number?: string | undefined
-  complement?: string | undefined
-  neighborhood?: string | undefined
-  city: string
-  state: string
-}
-
-const schema = yup.object().shape({
-  name: yup.string().required('O nome é obrigatório'),
-  sobrenome: yup.string().required('O sobrenome é obrigatório'),
-  phone: yup.string().required('O telefone é obrigatório'),
-  email: yup
-    .string()
-    .email('E-mail inválido')
-    .required('O e-mail é obrigatório'),
-  senha: yup
-    .string()
-    .min(6, 'A senha deve ter no mínimo 6 caracteres')
-    .required('A senha é obrigatória'),
-  repetirSenha: yup
-    .string()
-    .oneOf([yup.ref('senha')], 'As senhas não coincidem')
-    .required('É necessário repetir a senha'),
-  numeroLicenca: yup.string().required('O número da licença é obrigatório'),
-  anexo: yup
-    .mixed<FileList>()
-    .test(
-      'fileList',
-      'O anexo é obrigatório',
-      (value) => value instanceof FileList && value.length > 0,
-    )
-    .required('O anexo é obrigatório'),
-  cep: yup
-    .string()
-    .min(9, 'O CEP deve conter exatamente 8 números')
-    .required('O cep é obrigatório'),
-  number: yup.string(),
-  complement: yup.string(),
-  neighborhood: yup.string(),
-  street: yup.string().required('O nome da rua é obrigatório'),
-  city: yup.string().required('O nome da rua é obrigatório'),
-  state: yup.string().required('O nome da rua é obrigatório'),
-})
+import {
+  RegistrationFormData,
+  registrationSchema,
+} from '@/components/SignupForm/schema'
+import { zodResolver } from '@hookform/resolvers/zod'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import Input from '@/components/Input/Input'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useDebounce } from '@/hook/useDebounce'
+import { getAddressByPostalCode } from '@/http/Address'
+import toast from 'react-hot-toast'
+import { RegistrationHttp } from '@/http/Registration'
+import { UploadButton } from '@/components/UploadField/UploadButton'
+import { useRouter } from 'next/navigation'
 
 export default function SignupForm() {
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    clearErrors,
-    setError,
-    formState: { errors },
-    watch,
-  } = useForm<FormDataCreateUser>({
-    resolver: yupResolver(schema),
+  const form = useForm<RegistrationFormData>({
+    resolver: zodResolver(registrationSchema),
   })
-
-  const [fileName, setFileName] = useState<string | null>(null)
-  const fileInputRef = useRef<HTMLInputElement | null>(null)
-  const [loadingCEP, setLoadingCEP] = useState(false)
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files && files.length > 0) {
-      setValue('anexo', files) // Atualiza o valor do campo "anexo" no react-hook-form
-      clearErrors('anexo')
-      setFileName(files[0].name) // Atualiza o nome do arquivo exibido
-    }
-  }
-
-  const getPostalCEP = useCallback(
-    async (rawCep: number) => {
-      try {
-        setLoadingCEP(true)
-        const result = await postalAddressOperation.getPostal({
-          postalcode: rawCep,
-        })
-        clearErrors('cep')
-        setValue('street', result.street)
-        setValue('complement', result.complement)
-        setValue('neighborhood', result.neighborhood)
-        setValue('city', result.city)
-        setValue('state', result.state)
-      } catch (error) {
-        setError('cep', { message: 'Cep inválido' })
-        showToasthHandleError(error)
-        setValue('street', '')
-        setValue('complement', '')
-        setValue('neighborhood', '')
-        setValue('city', '')
-        setValue('state', '')
-      } finally {
-        setLoadingCEP(false)
-      }
-    },
-    [clearErrors, setError, setValue],
-  )
-
-  const cepValue = watch('cep')
+  const debouncedPostalCode = useDebounce(form.watch('address.postalCode'))
+  const [isLoading, startTransition] = useTransition()
+  const [isSubmitPending, startSubmitTransition] = useTransition()
+  const router = useRouter()
 
   useEffect(() => {
-    const rawCep = cepValue?.replace(/\D/g, '')
-
-    if (rawCep && rawCep.length === 8) {
-      getPostalCEP(parseInt(rawCep))
+    const fetchAddress = async () => {
+      startTransition(async () => {
+        const response = await getAddressByPostalCode(debouncedPostalCode)
+        if (response.hasError) {
+          toast.error('Endereço não encontrado')
+        } else {
+          form.setValue('address.street', response.data?.street ?? '')
+          form.setValue(
+            'address.neighborhood',
+            response.data?.neighborhood ?? '',
+          )
+          form.setValue('address.city', response.data?.city ?? '')
+          form.setValue('address.state', response.data?.state ?? '')
+        }
+      })
     }
-  }, [cepValue, getPostalCEP])
-
-  const onSubmit = async (data: FormDataCreateUser) => {
-    try {
-      console.log('data', data.anexo)
-      await userOperation.postCreateUser(createUserRequestBody(data))
-    } catch (error) {
-      showToasthHandleError(error)
+    if (debouncedPostalCode) {
+      fetchAddress()
     }
+  }, [debouncedPostalCode])
+
+  const onSubmit = async (data: RegistrationFormData) => {
+    startSubmitTransition(async () => {
+      try {
+        const response = await RegistrationHttp.performRegistration({
+          ...data,
+          phone: data.phone.replace(/\D/g, ''),
+          address: {
+            ...data.address,
+            postalCode: data.address.postalCode.replace(/\D/g, ''),
+          },
+        })
+        if (response.hasError) {
+          toast.error(response.error[0]?.message ?? 'Erro ao criar usuário')
+        } else {
+          toast.success('Usuário criado com sucesso')
+          router.push('/')
+        }
+      } catch (error) {
+        showToasthHandleError(error)
+      }
+    })
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 w-full">
-      <div>
-        <Input
-          {...register('name')}
-          placeholder="Nome"
-          label="Nome"
-          messageError={errors.name?.message}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 w-full">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Nome completo</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Nome completo" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
 
-      <div>
-        <Input
-          {...register('sobrenome')}
-          placeholder="Sobrenome"
-          label="Sobrenome"
-          messageError={errors.sobrenome?.message}
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>E-mail</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="E-mail" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
 
-      <div>
-        <Input
-          {...register('phone')}
-          placeholder="Telefone"
-          label="Telefone"
-          messageError={errors.phone?.message}
+        <FormField
+          control={form.control}
+          name="phone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Telefone</FormLabel>
+              <FormControl>
+                <Input mask="phone" {...field} placeholder="Telefone" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
         />
-      </div>
-      <div>
-        <Input
-          {...register('email')}
-          placeholder="E-mail"
-          label="Endereço de e-mail"
-          type="email"
-          messageError={errors.email?.message}
-        />
-      </div>
 
-      <div>
-        <Input
-          {...register('senha')}
-          placeholder="Criar senha"
-          label="Criar senha"
-          type="password"
-          messageError={errors.senha?.message}
-        />
-      </div>
-
-      <div>
-        <Input
-          {...register('repetirSenha')}
-          placeholder="Repetir Senha"
-          label="Repetir Senha"
-          type="password"
-          messageError={errors.repetirSenha?.message}
-        />
-      </div>
-
-      <div>
-        <Input
-          {...register('numeroLicenca')}
-          placeholder="Número da licença"
-          label="Número da licença (CRM, CRO, etc)"
-          messageError={errors.numeroLicenca?.message}
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium mb-4">Anexo</label>
-        <label
-          className="h-10 min-w-[80px] max-w-[480px] px-4 rounded-[12px] flex items-center justify-center 
-    font-medium transition text-[12px] bg-[#E8EDF2] text-[#0D141C] hover:bg-cyan-600 hover:text-white"
-        >
-          Selecionar Arquivo
-          <input
-            type="file"
-            {...register('anexo')}
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleFileChange}
+        <div className="flex flex-col lg:flex-row gap-4">
+          <FormField
+            control={form.control}
+            name="personalDocument.type"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Tipo de documento</FormLabel>
+                <FormControl className="w-full h-full">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="min-h-[50px] w-full">
+                      <SelectValue placeholder="Selecione o tipo de documento" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="CPF">CPF</SelectItem>
+                      <SelectItem value="CNPJ">CNPJ</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </label>
-        {fileName && (
-          <p className="text-gray-700 mt-2 text-sm">📄 {fileName}</p>
+          <FormField
+            control={form.control}
+            name="personalDocument.number"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Número do documento </FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Número do documento" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="flex  gap-4 flex-col lg:flex-row ">
+          <FormField
+            control={form.control}
+            name="professionalDocument.type"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Tipo de documento</FormLabel>
+                <FormControl className="w-full h-full">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <SelectTrigger className="min-h-[50px] w-full">
+                      <SelectValue placeholder="Selecione o tipo de documento" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="CRM">CRM</SelectItem>
+                      <SelectItem value="CRO">CRO</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="professionalDocument.number"
+            render={({ field }) => (
+              <FormItem className="flex-1">
+                <FormLabel>Número da licença (CRM, CRO, etc)</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="Número da licença" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          control={form.control}
+          name="professionalDocument.fileId"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="flex flex-col gap-2">
+                  <p>Anexar licença profissional</p>
+                  <UploadButton
+                    className="bg-gray-200 w-1/2"
+                    onChange={field.onChange}
+                    value={field.value}
+                    label="Anexar"
+                  />
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="address.postalCode"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>CEP</FormLabel>
+              <FormControl>
+                <Input
+                  mask="cep"
+                  {...field}
+                  placeholder="CEP"
+                  isLoading={isLoading}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        {form.watch('address.postalCode') && (
+          <>
+            <div className="flex items-center gap-4">
+              <FormField
+                control={form.control}
+                name="address.street"
+                render={({ field }) => (
+                  <FormItem className="w-4/5">
+                    <FormLabel>Nome da rua</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder="Nome da rua"
+                        value={form.watch('address.street')}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="address.number"
+                render={({ field }) => (
+                  <FormItem className="w-1/5">
+                    <FormLabel>Número</FormLabel>
+                    <FormControl>
+                      <Input
+                        value={field.value ?? ''}
+                        onChange={field.onChange}
+                        placeholder="Número"
+                        className="w-full"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <FormField
+                control={form.control}
+                name="address.complement"
+                render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Complemento</FormLabel>
+                    <FormControl>
+                      <Input
+                        value={field.value ?? ''}
+                        onChange={field.onChange}
+                        placeholder="Complemento"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="address.neighborhood"
+                render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Bairro</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Bairro" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex items-center gap-4">
+              <FormField
+                control={form.control}
+                name="address.city"
+                render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Cidade</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Cidade" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="address.state"
+                render={({ field }) => (
+                  <FormItem className="w-1/2">
+                    <FormLabel>Estado</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Estado" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </>
         )}
-        {errors.anexo && (
-          <p className="text-red-500 text-sm">{errors.anexo.message}</p>
-        )}
-      </div>
-      <Input
-        mask="cep"
-        {...register('cep')}
-        placeholder="CEP"
-        label="Digita o CEP"
-        messageError={errors.cep?.message}
-        isLoading={loadingCEP}
-      />
-      {watch('state') && !loadingCEP && (
-        <>
-          <Input
-            {...register('street')}
-            placeholder="Nome da rua"
-            label="Nome da rua"
-            value={watch('street')}
-            messageError={errors.street?.message}
-          />
-          <Input {...register('number')} placeholder="Número" label="Número" />
-          <Input
-            {...register('complement')}
-            placeholder="Complemento"
-            label="Complemento"
-            value={watch('complement')}
-          />
-          <Input
-            {...register('neighborhood')}
-            placeholder="Bairro"
-            label="Bairro"
-            value={watch('neighborhood')}
-          />
-          <Input
-            {...register('city')}
-            placeholder="Cidade"
-            label="Cidade"
-            value={watch('city')}
-          />
-          <Input
-            {...register('state')}
-            placeholder="Estado"
-            label="Estado"
-            value={watch('state')}
-          />
-        </>
-      )}
-      <p className='text-sm"'>
-        Ao criar sua conta, você concorda com nossos termos de uso e política de
-        privacidade.
-      </p>
 
-      <Button
-        text="Criar Conta"
-        className="w-full bg-cyan-600 text-white p-3 rounded-3xl font-bold hover:bg-blue-700"
-      />
-    </form>
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Criar senha</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Criar senha" type="password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="repeatPassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Repetir Senha</FormLabel>
+              <FormControl>
+                <Input {...field} placeholder="Repetir Senha" type="password" />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <p className='text-sm"'>
+          Ao criar sua conta, você concorda com nossos termos de uso e política
+          de privacidade.
+        </p>
+
+        <Button
+          text="Criar Conta"
+          className="w-full bg-amber-700 text-white p-3 rounded-3xl font-bold hover:bg-amber-800"
+          isLoading={isSubmitPending}
+        />
+      </form>
+    </Form>
   )
 }

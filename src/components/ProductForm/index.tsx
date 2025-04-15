@@ -1,5 +1,8 @@
 import { CategorySelect } from '@/components/CategorySelect'
-import { ProductFormData, productSchema } from '@/components/ProductForm/productSchema'
+import {
+  ProductFormData,
+  productSchema,
+} from '@/components/ProductForm/productSchema'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -21,7 +24,6 @@ export const ProductForm = ({
   onSubmit: (data: ProductFormData) => void
   defaultValues?: ProductFormData
 }) => {
- 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
     defaultValues: {
@@ -34,7 +36,7 @@ export const ProductForm = ({
       file: defaultValues?.file,
     },
   })
-  console.log(form.watch('file.id'))
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -104,14 +106,11 @@ export const ProductForm = ({
                 </FormItem>
               )}
             /> */}
-            <FormField
-              control={form.control}
-              name="file.id"
-              render={({ field }) => (
-                <UploadField  />
-              )}
-            />
-         
+          <FormField
+            control={form.control}
+            name="file.id"
+            render={({ field }) => <UploadField />}
+          />
         </div>
         <Separator />
         <div className="flex gap-2">

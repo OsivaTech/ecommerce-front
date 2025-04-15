@@ -19,23 +19,25 @@ export class BaseHttp {
       const response = await fetch(`${this.baseUrl}${url}`, {
         method: 'GET',
         ...options,
-        headers: options?.headers ? {
-          ...options?.headers,
-        } : {
-          'Content-Type': 'application/json',
-        },
+        headers: options?.headers
+          ? {
+              ...options?.headers,
+            }
+          : {
+              'Content-Type': 'application/json',
+            },
       })
       if (response.ok) {
         return { data: (await response.json()) as T, hasError: false }
       } else {
         return {
-          error: [await this.handleHttpError(response)],
+          error: await this.handleHttpError(response),
           hasError: true,
         }
       }
     } catch (error) {
       return {
-        error: [await this.handleHttpError(error)],
+        error: await this.handleHttpError(error),
         hasError: true,
       }
     }
@@ -45,26 +47,19 @@ export class BaseHttp {
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       method: 'POST',
-      headers: options?.headers ? {
-        ...options?.headers,
-      } : {
-        'Content-Type': 'application/json',
-      },
-    })
-    console.log('response', {
-      ...options,
-      method: 'POST',
-      headers: options?.headers ? {
-        ...options?.headers,
-      } : {
-        'Content-Type': 'application/json',
-      },
+      headers: options?.headers
+        ? {
+            ...options?.headers,
+          }
+        : {
+            'Content-Type': 'application/json',
+          },
     })
     if (response.ok) {
       return { data: (await response.json()) as T, hasError: false }
     } else {
       return {
-        error: [await this.handleHttpError(response)],
+        error: await this.handleHttpError(response),
         hasError: true,
       }
     }
@@ -74,11 +69,13 @@ export class BaseHttp {
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       method: 'PUT',
-      headers: options?.headers ? {
-        ...options?.headers,
-      } : {
-        'Content-Type': 'application/json',
-      },
+      headers: options?.headers
+        ? {
+            ...options?.headers,
+          }
+        : {
+            'Content-Type': 'application/json',
+          },
     })
 
     if (response.ok) {
@@ -89,7 +86,7 @@ export class BaseHttp {
       }
     } else {
       return {
-        error: [await this.handleHttpError(response)],
+        error: await this.handleHttpError(response),
         hasError: true,
       }
     }
@@ -99,11 +96,13 @@ export class BaseHttp {
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       method: 'PATCH',
-      headers: options?.headers ? {
-        ...options?.headers,
-      } : {
-        'Content-Type': 'application/json',
-      },
+      headers: options?.headers
+        ? {
+            ...options?.headers,
+          }
+        : {
+            'Content-Type': 'application/json',
+          },
     })
 
     if (response.ok) {
@@ -114,7 +113,7 @@ export class BaseHttp {
       }
     } else {
       return {
-        error: [await this.handleHttpError(response)],
+        error: await this.handleHttpError(response),
         hasError: true,
       }
     }
@@ -127,80 +126,99 @@ export class BaseHttp {
     const response = await fetch(`${this.baseUrl}${url}`, {
       ...options,
       method: 'DELETE',
-      headers: options?.headers ? {
-        ...options?.headers,
-      } : {
-        'Content-Type': 'application/json',
-      },
+      headers: options?.headers
+        ? {
+            ...options?.headers,
+          }
+        : {
+            'Content-Type': 'application/json',
+          },
     })
     if (response.ok) {
       return { data: (await response.json()) as T, hasError: false }
     } else {
       return {
-        error: [await this.handleHttpError(response)],
+        error: await this.handleHttpError(response),
         hasError: true,
       }
     }
   }
 
-  async handleHttpError(error: unknown): Promise<ResponseError> {
+  async handleHttpError(error: unknown): Promise<ResponseError[]> {
     if (error && typeof error === 'object' && 'status' in error) {
       const responseError = error as unknown as Response
 
       // Se o backend retornar uma mensagem de erro específica, exibe essa mensagem
       try {
+        console.log('error', error)
         const errorResponse = await responseError.json()
+        console.log('errorResponse', errorResponse)
+
         if (errorResponse.code === 500) {
-          return {
-            code: '500',
-            message: 'Erro interno do servidor. Tente novamente mais tarde.',
-          }
+          return [
+            {
+              code: '500',
+              message: 'Erro interno do servidor. Tente novamente mais tarde.',
+            },
+          ]
         }
-        return {
-          code: errorResponse.code,
-          message: errorResponse.message,
-        }
+        return errorResponse
       } catch (error) {
         switch (responseError.status) {
           case 400:
-            return {
-              code: '400',
-              message: 'Requisição inválida. Verifique os dados enviados.',
-            }
+            return [
+              {
+                code: '400',
+                message: 'Requisição inválida. Verifique os dados enviados.',
+              },
+            ]
           case 401:
-            return {
-              code: '401',
-              message: 'Não autorizado. Faça login novamente.',
-            }
+            return [
+              {
+                code: '401',
+                message: 'Não autorizado. Faça login novamente.',
+              },
+            ]
           case 403:
-            return {
-              code: '403',
-              message: 'Acesso proibido. Você não tem permissão.',
-            }
+            return [
+              {
+                code: '403',
+                message: 'Acesso proibido. Você não tem permissão.',
+              },
+            ]
           case 404:
-            return {
-              code: '404',
-              message: 'Recurso não encontrado.',
-            }
+            return [
+              {
+                code: '404',
+                message: 'Recurso não encontrado.',
+              },
+            ]
           case 500:
-            return {
-              code: '500',
-              message: 'Erro interno do servidor. Tente novamente mais tarde.',
-            }
+            return [
+              {
+                code: '500',
+                message:
+                  'Erro interno do servidor. Tente novamente mais tarde.',
+              },
+            ]
           default:
-            return {
-              code: '500',
-              message: 'Ocorreu um erro inesperado.',
-            }
+            return [
+              {
+                code: '500',
+                message: 'Ocorreu um erro inesperado.',
+              },
+            ]
         }
       }
     }
 
     // Caso o erro não seja do Axios (exemplo: erro de rede)
-    return {
-      code: '500',
-      message: 'Erro de conexão. Verifique sua internet.',
-    }
+    return [
+      {
+        code: '500',
+        message: 'Erro de conexão. Verifique sua internet.',
+      },
+    ]
   }
 }
 
