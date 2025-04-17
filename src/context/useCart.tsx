@@ -1,9 +1,15 @@
 'use client'
 
-import React, { createContext, useContext, useState, ReactNode } from 'react'
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from 'react'
 import { Product } from '@/types/api/Response/ProductResponse'
 
-type CartItem = {
+export type CartItem = {
   product: Product
   quantity: number
 }
@@ -22,6 +28,17 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([])
+
+  useEffect(() => {
+    const cartItems = localStorage.getItem('cartItems')
+    if (cartItems) {
+      setItems(JSON.parse(cartItems))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(items))
+  }, [items])
 
   const addToCart = (product: Product, quantity: number) => {
     setItems((prevItems) => {
