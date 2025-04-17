@@ -4,9 +4,9 @@ import { Eye, Download } from 'lucide-react'
 
 export const DocumentCell = ({ row }: { row: Row<RegistrationPending> }) => {
   const handleDownload = () => {
-    if (row.original.professionalDocument?.image) {
+    if (row.original.professionalDocument?.file?.url) {
       const link = document.createElement('a')
-      link.href = row.original.professionalDocument.image
+      link.href = row.original.professionalDocument.file.url
       link.download = `document-${row.original.name || 'download'}.pdf`
       document.body.appendChild(link)
       link.click()
@@ -15,8 +15,8 @@ export const DocumentCell = ({ row }: { row: Row<RegistrationPending> }) => {
   }
 
   const handleOpenInNewTab = () => {
-    if (row.original.professionalDocument?.image) {
-      window.open(row.original.professionalDocument?.image, '_blank')
+    if (row.original.professionalDocument?.file?.url) {
+      window.open(row.original.professionalDocument?.file?.url, '_blank')
     }
   }
 

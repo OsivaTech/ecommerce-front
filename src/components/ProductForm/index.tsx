@@ -109,7 +109,9 @@ export const ProductForm = ({
           <FormField
             control={form.control}
             name="file.id"
-            render={({ field }) => <UploadField />}
+            render={({ field }) => (
+              <UploadField onChange={field.onChange} value={null} />
+            )}
           />
         </div>
         <Separator />

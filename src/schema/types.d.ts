@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/registration": {
+    "/address": {
         parameters: {
             query?: never;
             header?: never;
@@ -12,8 +12,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get all registrations
-         * @description Get all registrations in the system.
+         * Get all addresses
+         * @description Get all addresses from the database.
          */
         get: {
             parameters: {
@@ -30,75 +30,31 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["RegistrationResponse"][];
+                        "application/json": components["schemas"]["AddressResponse"][];
                     };
                 };
             };
         };
         put?: never;
-        /**
-         * Perform registration
-         * @description Submit a registration in the system. This registration will be pending until it is approved or rejected by an administrator.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["CreateRegistrationRequest"];
-                };
-            };
-            responses: {
-                /** @description Accepted */
-                202: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Conflict */
-                409: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-                /** @description Unprocessable Entity */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-            };
-        };
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/registration/{id}/approve": {
+    "/address/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
         /**
-         * Approve pending registration
-         * @description Approve a pending registration in the system. This will create a new user in the system.
+         * Get address by Id
+         * @description Get address by Id from the database.
          */
-        put: {
+        get: {
             parameters: {
                 query?: never;
                 header?: never;
@@ -109,51 +65,20 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description No Content */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Conflict */
-                409: {
+                /** @description OK */
+                200: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-                /** @description Unprocessable Entity */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
+                        "application/json": components["schemas"]["AddressResponse"];
                     };
                 };
             };
         };
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/registration/{id}/reject": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
         /**
-         * Reject pending registration
-         * @description Reject a pending registration in the system.
+         * Update address
+         * @description Update address in the database.
          */
         put: {
             parameters: {
@@ -166,308 +91,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["RejectRegistrationRequest"];
-                };
-            };
-            responses: {
-                /** @description No Content */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Conflict */
-                409: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-                /** @description Unprocessable Entity */
-                422: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-            };
-        };
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get all users
-         * @description Get all users in the system
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserResponse"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get current user
-         * @description Get the current user based on the JWT token
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["UserResponse"];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /**
-         * Change user status
-         * @description Change the status of a user
-         */
-        patch: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["UpdateUserStatusRequest"];
-                };
-            };
-            responses: {
-                /** @description No Content */
-                204: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        trace?: never;
-    };
-    "/products": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get all products
-         * @description Get all products available in the store.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ProductResponse"][];
-                    };
-                };
-            };
-        };
-        put?: never;
-        /**
-         * Create product
-         * @description Create a new product.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["CreateProductRequest"];
-                };
-            };
-            responses: {
-                /** @description Created */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ProductResponse"];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/products/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get product by Id
-         * @description Get a product by its Id.
-         */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ProductResponse"];
-                    };
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        /**
-         * Update product
-         * @description Update a product by its Id.
-         */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["UpdateProductRequest"];
+                    "application/json": components["schemas"]["UpdateAddressRequest"];
                 };
             };
             responses: {
@@ -477,29 +101,15 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ProductResponse"];
+                        "application/json": components["schemas"]["AddressResponse"];
                     };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
                 };
             };
         };
         post?: never;
         /**
-         * Delete product
-         * @description Delete a product by its Id.
+         * Delete address
+         * @description Delete address in the database.
          */
         delete: {
             parameters: {
@@ -526,7 +136,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/products/featured": {
+    "/address/postalcode/{postalcode}": {
         parameters: {
             query?: never;
             header?: never;
@@ -534,12 +144,73 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get featured products
-         * @description Get the featured products ordered by total orders.
+         * Get postal code address
+         * @description Get address information by postal code from address provider.
          */
         get: {
             parameters: {
                 query?: never;
+                header?: never;
+                path: {
+                    postalcode: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AddressResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Bad Gateway */
+                502: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/advertisement": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get advertisements.
+         * @description Retrieves a list of advertisements, optionally filtered by their enabled status.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    enabled?: boolean;
+                };
                 header?: never;
                 path?: never;
                 cookie?: never;
@@ -552,13 +223,358 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["ProductResponseWithTotalOrders"][];
+                        "application/json": components["schemas"]["AdvertisementResponse"][];
                     };
                 };
             };
         };
         put?: never;
+        /**
+         * Register a new advertisement.
+         * @description Allows the creation of a new advertisement by providing necessary details.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AdvertisementRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdvertisementResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/advertisement/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Update an advertisement.
+         * @description Updates an existing advertisement by its ID.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["AdvertisementRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AdvertisementResponse"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         post?: never;
+        /**
+         * Disable an advertisement.
+         * @description Disables an existing advertisement by its ID.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/signin": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Login
+         * @description Login with email and password.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SignInRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["AuthResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Reset password
+         * @description Reset password with email.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["ResetPasswordRequest"];
+                };
+            };
+            responses: {
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/verify-reset-code": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Refresh token
+         * @description Refresh user token.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["VerifyCodeRequest"];
+                };
+            };
+            responses: {
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/send-mail-code": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send a mail code.
+         * @description Send a mail code for validation propouses.
+         */
+        post: {
+            parameters: {
+                query: {
+                    request: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
@@ -594,7 +610,10 @@ export interface paths {
             };
         };
         put?: never;
-        /** Create category */
+        /**
+         * Create category
+         * @description Create a new category.
+         */
         post: {
             parameters: {
                 query?: never;
@@ -632,7 +651,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get category by Id */
+        /**
+         * Get category by Id
+         * @description Get category by Id from the database.
+         */
         get: {
             parameters: {
                 query?: never;
@@ -653,9 +675,21 @@ export interface paths {
                         "application/json": components["schemas"]["CategoryResponse"];
                     };
                 };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
             };
         };
-        /** Update category */
+        /**
+         * Update category
+         * @description Update category in the database.
+         */
         put: {
             parameters: {
                 query?: never;
@@ -680,10 +714,22 @@ export interface paths {
                         "application/json": components["schemas"]["CategoryResponse"];
                     };
                 };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
             };
         };
         post?: never;
-        /** Delete category */
+        /**
+         * Delete category
+         * @description Delete category in the database.
+         */
         delete: {
             parameters: {
                 query?: never;
@@ -711,19 +757,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/stock": {
+    "/files/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get all stock movements */
+        /**
+         * Get file by Id
+         * @description Get file by Id
+         */
         get: {
             parameters: {
                 query?: never;
                 header?: never;
-                path?: never;
+                path: {
+                    id: number;
+                };
                 cookie?: never;
             };
             requestBody?: never;
@@ -734,37 +785,11 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["StockMovementResponse"][];
+                        "application/json": components["schemas"]["FileResponse"];
                     };
                 };
-            };
-        };
-        put?: never;
-        /** Create stock movement */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["CreateStockMovementRequest"];
-                };
-            };
-            responses: {
-                /** @description Created */
-                201: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["StockMovementResponse"];
-                    };
-                };
-                /** @description Unprocessable Entity */
-                422: {
+                /** @description Not Found */
+                404: {
                     headers: {
                         [name: string]: unknown;
                     };
@@ -774,71 +799,12 @@ export interface paths {
                 };
             };
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/stock/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get stock movement by Id */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["StockMovementResponse"];
-                    };
-                };
-            };
-        };
-        /** Update stock movement */
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["UpdateStockMovementRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["StockMovementResponse"];
-                    };
-                };
-            };
-        };
+        put?: never;
         post?: never;
-        /** Delete stock movement */
+        /**
+         * Delete file
+         * @description Delete file
+         */
         delete: {
             parameters: {
                 query?: never;
@@ -864,76 +830,45 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/stock/product/{id}": {
+    "/files": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** Get stock movement by ProductId */
-        get: {
+        get?: never;
+        put?: never;
+        /**
+         * Upload file
+         * @description Upload file
+         */
+        post: {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    id: number;
-                };
+                path?: never;
                 cookie?: never;
             };
-            requestBody?: never;
+            requestBody: {
+                content: {
+                    "multipart/form-data": {
+                        file: components["schemas"]["IFormFile"];
+                    };
+                };
+            };
             responses: {
-                /** @description OK */
-                200: {
+                /** @description Created */
+                201: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["StockMovementResponse"][];
+                        "application/json": components["schemas"]["FileResponse"];
                     };
                 };
             };
         };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/stock/product/{id}/quantity": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get stock quantity by ProductId */
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    id: number;
-                };
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ProductStockResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1199,227 +1134,7 @@ export interface paths {
         };
         trace?: never;
     };
-    "/auth/signin": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Login
-         * @description Login with email and password.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["SignInRequest"];
-                };
-            };
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["AuthResponse"];
-                    };
-                };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-                /** @description Forbidden */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-                /** @description Not Found */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/reset-password": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Reset password
-         * @description Reset password with email.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["ResetPasswordRequest"];
-                };
-            };
-            responses: {
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-                /** @description Forbidden */
-                403: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/verify-reset-code": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Refresh token
-         * @description Refresh user token.
-         */
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": components["schemas"]["VerifyCodeRequest"];
-                };
-            };
-            responses: {
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-                /** @description Unauthorized */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/send-mail-code": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Send a mail code.
-         * @description Send a mail code for validation propouses.
-         */
-        post: {
-            parameters: {
-                query: {
-                    request: string;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Error"][];
-                    };
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/address": {
+    "/products": {
         parameters: {
             query?: never;
             header?: never;
@@ -1427,8 +1142,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get all addresses
-         * @description Get all addresses from the database.
+         * Get all products
+         * @description Get all products available in the store.
          */
         get: {
             parameters: {
@@ -1445,20 +1160,54 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["AddressResponse2"][];
+                        "application/json": components["schemas"]["ProductResponse"][];
                     };
                 };
             };
         };
         put?: never;
-        post?: never;
+        /**
+         * Create product
+         * @description Create a new product.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CreateProductRequest"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProductResponse"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/address/{id}": {
+    "/products/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1466,8 +1215,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get address by Id
-         * @description Get address by Id from the database.
+         * Get product by Id
+         * @description Get a product by its Id.
          */
         get: {
             parameters: {
@@ -1486,14 +1235,21 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["AddressResponse2"];
+                        "application/json": components["schemas"]["ProductResponse"];
                     };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
                 };
             };
         };
         /**
-         * Update address
-         * @description Update address in the database.
+         * Update product
+         * @description Update a product by its Id.
          */
         put: {
             parameters: {
@@ -1506,7 +1262,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["UpdateAddressRequest"];
+                    "application/json": components["schemas"]["UpdateProductRequest"];
                 };
             };
             responses: {
@@ -1516,15 +1272,36 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["AddressResponse2"];
+                        "application/json": components["schemas"]["ProductResponse"];
                     };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
                 };
             };
         };
         post?: never;
         /**
-         * Delete address
-         * @description Delete address in the database.
+         * Delete product
+         * @description Delete a product by its Id.
          */
         delete: {
             parameters: {
@@ -1544,6 +1321,13 @@ export interface paths {
                     };
                     content?: never;
                 };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
             };
         };
         options?: never;
@@ -1551,7 +1335,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/address/postalcode/{postalcode}": {
+    "/products/featured": {
         parameters: {
             query?: never;
             header?: never;
@@ -1559,16 +1343,14 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Get postal code address
-         * @description Get address information by postal code from address provider.
+         * Get featured products
+         * @description Get the featured products ordered by total orders.
          */
         get: {
             parameters: {
                 query?: never;
                 header?: never;
-                path: {
-                    postalcode: string;
-                };
+                path?: never;
                 cookie?: never;
             };
             requestBody?: never;
@@ -1579,26 +1361,424 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["AddressResponse2"];
+                        "application/json": components["schemas"]["ProductResponseWithTotalOrders"][];
                     };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/providers/melhorenvio/setup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Setup MelhorEnvio provider
+         * @description Setup provider with the given code. This route should be used as callback for the MelhorEnvio configuration page.
+         */
+        get: {
+            parameters: {
+                query: {
+                    code: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
                 };
                 /** @description Bad Request */
                 400: {
                     headers: {
                         [name: string]: unknown;
                     };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/registration": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all registrations
+         * @description Get all registrations in the system.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
                     content: {
-                        "application/json": components["schemas"]["Error"][];
+                        "application/json": components["schemas"]["RegistrationResponse"][];
                     };
                 };
-                /** @description Bad Gateway */
-                502: {
+            };
+        };
+        put?: never;
+        /**
+         * Perform registration
+         * @description Submit a registration in the system. This registration will be pending until it is approved or rejected by an administrator.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CreateRegistrationRequest"];
+                };
+            };
+            responses: {
+                /** @description Accepted */
+                202: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Conflict */
+                409: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
                         "application/json": components["schemas"]["Error"][];
                     };
+                };
+                /** @description Unprocessable Entity */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/registration/{id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Approve pending registration
+         * @description Approve a pending registration in the system. This will create a new user in the system.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Conflict */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Unprocessable Entity */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/registration/{id}/reject": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Reject pending registration
+         * @description Reject a pending registration in the system.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["RejectRegistrationRequest"];
+                };
+            };
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Conflict */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Unprocessable Entity */
+                422: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/sales/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get sales summary
+         * @description Get sales summary
+         */
+        get: {
+            parameters: {
+                query: {
+                    From: string;
+                    To: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SalesSummaryResponse"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/sales/timechart": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get sales time chart
+         * @description Get sales time chart
+         */
+        get: {
+            parameters: {
+                query: {
+                    From: string;
+                    To: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SalesTimeChartResponse"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reports/sales/grid": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get sales grid
+         * @description Get sales grid
+         */
+        get: {
+            parameters: {
+                query: {
+                    From: string;
+                    To: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SalesGridResponse"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
                 };
             };
         };
@@ -1653,189 +1833,90 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/providers/melhorenvio/setup": {
+    "/stock": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /**
-         * Setup MelhorEnvio provider
-         * @description Setup provider with the given code. This route should be used as callback for the MelhorEnvio configuration page.
-         */
+        /** Get all stock movements */
         get: {
             parameters: {
-                query: {
-                    code: string;
-                };
+                query?: never;
                 header?: never;
                 path?: never;
                 cookie?: never;
             };
             requestBody?: never;
             responses: {
-                /** @description No Content */
-                204: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["StockMovementResponse"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /** Create stock movement */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["CreateStockMovementRequest"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["StockMovementResponse"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content?: never;
                 };
-                /** @description Bad Request */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/reports/sales/summary": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get sales summary
-         * @description Get sales summary
-         */
-        get: {
-            parameters: {
-                query: {
-                    From: string;
-                    To: string;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
+                /** @description Unprocessable Entity */
+                422: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["SalesSummaryResponse"];
+                        "application/json": components["schemas"]["Error"][];
                     };
                 };
             };
         };
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
         patch?: never;
         trace?: never;
     };
-    "/reports/sales/timechart": {
+    "/stock/{id}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /**
-         * Get sales time chart
-         * @description Get sales time chart
-         */
-        get: {
-            parameters: {
-                query: {
-                    From: string;
-                    To: string;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SalesTimeChartResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/reports/sales/grid": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get sales grid
-         * @description Get sales grid
-         */
-        get: {
-            parameters: {
-                query: {
-                    From: string;
-                    To: string;
-                };
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description OK */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["SalesGridResponse"];
-                    };
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/files/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Get file by Id
-         * @description Get file by Id
-         */
+        /** Get stock movement by Id */
         get: {
             parameters: {
                 query?: never;
@@ -1853,17 +1934,65 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["FileResponse2"];
+                        "application/json": components["schemas"]["StockMovementResponse"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
                     };
                 };
             };
         };
-        put?: never;
+        /** Update stock movement */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateStockMovementRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["StockMovementResponse"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
         post?: never;
-        /**
-         * Delete file
-         * @description Delete file
-         */
+        /** Delete stock movement */
         delete: {
             parameters: {
                 query?: never;
@@ -1882,6 +2011,13 @@ export interface paths {
                     };
                     content?: never;
                 };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
             };
         };
         options?: never;
@@ -1889,7 +2025,193 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/files": {
+    "/stock/product/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get stock movement by ProductId */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["StockMovementResponse"][];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/stock/product/{id}/quantity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get stock quantity by ProductId */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ProductStockResponse"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get all users
+         * @description Get all users in the system
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"][];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get current user
+         * @description Get the current user based on the JWT token
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UserResponse"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1898,41 +2220,70 @@ export interface paths {
         };
         get?: never;
         put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
         /**
-         * Upload file
-         * @description Upload file
+         * Change user status
+         * @description Change the status of a user
          */
-        post: {
+        patch: {
             parameters: {
                 query?: never;
                 header?: never;
-                path?: never;
+                path: {
+                    id: number;
+                };
                 cookie?: never;
             };
             requestBody: {
                 content: {
-                    "multipart/form-data": {
-                        /** Format: binary */
-                        file: string;
-                    };
+                    "application/json": components["schemas"]["UpdateUserStatusRequest"];
                 };
             };
             responses: {
-                /** @description Created */
-                201: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Not Found */
+                404: {
                     headers: {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["FileResponse2"];
+                        "application/json": components["schemas"]["Error"][];
+                    };
+                };
+                /** @description Conflict */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Error"][];
                     };
                 };
             };
         };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
         trace?: never;
     };
 }
@@ -1949,7 +2300,7 @@ export interface components {
             city: string;
             state: string;
             postalCode: string;
-        } | null;
+        };
         AddressResponse2: {
             /** Format: int32 */
             id?: number | null;
@@ -1960,7 +2311,56 @@ export interface components {
             city: string;
             state: string;
             postalCode: string;
+        } | null;
+        AdvertisementMediaResponse: {
+            /** Format: int32 */
+            id: number;
+            title?: string | null;
+            description?: string | null;
+            type: components["schemas"]["MediaType"];
+            size: components["schemas"]["MediaSize"];
+            /** Format: int32 */
+            imageId: number;
+            urlGoTo: string;
+            cta?: string | null;
+            image: components["schemas"]["FileResponse"];
         };
+        AdvertisementMediaType: {
+            /** Format: int32 */
+            id?: number | null;
+            title?: string | null;
+            description?: string | null;
+            type: components["schemas"]["MediaType"];
+            size: components["schemas"]["MediaSize"];
+            /** Format: int32 */
+            imageId: number;
+            urlGoTo: string;
+            cta?: string | null;
+        };
+        AdvertisementRequest: {
+            name: string;
+            type: components["schemas"]["AdvertisementType"];
+            medias: components["schemas"]["AdvertisementMediaType"][];
+            /** Format: date-time */
+            startDate: string;
+            /** Format: date-time */
+            endDate: string;
+            enabled: boolean;
+        };
+        AdvertisementResponse: {
+            /** Format: int32 */
+            id: number;
+            name: string;
+            type: components["schemas"]["AdvertisementType"];
+            medias?: components["schemas"]["AdvertisementMediaResponse"][] | null;
+            /** Format: date-time */
+            startDate: string;
+            /** Format: date-time */
+            endDate?: string | null;
+            enabled: boolean;
+        };
+        /** @enum {unknown} */
+        AdvertisementType: "None" | "MediaOnly" | "MediaAndText";
         AuthResponse: {
             accessToken: string;
             user: components["schemas"]["UserResponse"];
@@ -1987,7 +2387,7 @@ export interface components {
             postalCode?: string;
         };
         CreateCategoryRequest: {
-            name?: string;
+            name: string;
         };
         CreateOrderRequest: {
             /** Format: int32 */
@@ -2036,7 +2436,7 @@ export interface components {
             /** Format: int64 */
             size: number;
             contentType: string;
-        } | null;
+        };
         FileResponse2: {
             /** Format: int32 */
             id: number;
@@ -2045,7 +2445,13 @@ export interface components {
             /** Format: int64 */
             size: number;
             contentType: string;
-        };
+        } | null;
+        /** Format: binary */
+        IFormFile: string;
+        /** @enum {unknown} */
+        MediaSize: "None" | "Square" | "Wide" | "UltraWide";
+        /** @enum {unknown} */
+        MediaType: "None" | "Image" | "Video";
         OrderItemRequest: {
             /** Format: int32 */
             productId?: number;
@@ -2120,7 +2526,7 @@ export interface components {
             stock: number;
             status: components["schemas"]["ProductStatus"];
             category: components["schemas"]["CategoryResponse"];
-            file: components["schemas"]["FileResponse2"];
+            file: components["schemas"]["FileResponse"];
             dimensions: components["schemas"]["ProductDimensions"];
         };
         ProductResponseWithTotalOrders: {
@@ -2136,7 +2542,7 @@ export interface components {
             stock: number;
             status: components["schemas"]["ProductStatus"];
             category: components["schemas"]["CategoryResponse"];
-            file: components["schemas"]["FileResponse2"];
+            file: components["schemas"]["FileResponse"];
             dimensions: components["schemas"]["ProductDimensions"];
         };
         /** @enum {unknown} */
@@ -2154,7 +2560,7 @@ export interface components {
             fileId?: number;
         };
         ProfessionalDocumentResponse: {
-            file?: components["schemas"]["FileResponse"];
+            file?: components["schemas"]["FileResponse2"];
             number?: string;
             type?: components["schemas"]["ProfissionalDocumentType"];
             /** Format: int32 */
@@ -2261,7 +2667,7 @@ export interface components {
             postalCode?: string;
         };
         UpdateCategoryRequest: {
-            name?: string;
+            name: string;
         };
         UpdateOrderStatusRequest: {
             status: components["schemas"]["OrderStatus"];
@@ -2298,7 +2704,7 @@ export interface components {
             createdAt: string;
             status: components["schemas"]["UserStatus"];
             role: components["schemas"]["UserRole"];
-            address?: components["schemas"]["AddressResponse"];
+            address?: components["schemas"]["AddressResponse2"];
         };
         /** @enum {unknown} */
         UserRole: "User" | "Administrator";

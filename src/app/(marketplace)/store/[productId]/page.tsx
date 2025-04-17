@@ -8,7 +8,7 @@ import Image from 'next/image'
 export default async function ProductPage({
   params,
 }: {
-  params: { productId: string }
+  params: Promise<{ productId: string }>
 }) {
   const { productId } = await params
   const product = await ProductHttp.getProductById(productId)

@@ -14,7 +14,7 @@ export const UploadButton = ({
   className,
 }: {
   onChange: (fileId: number | null) => void
-  value: FileResponse
+  value: FileResponse | null
   label: string
   className?: string
 }) => {

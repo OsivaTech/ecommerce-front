@@ -36,8 +36,8 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
       const response = await RegistrationHttp.approveRegistration(
         row.original.id!.toString(),
       )
-      if (response?.code) {
-        toast.error(response.message)
+      if (response?.hasError) {
+        toast.error(response.error[0]?.message || 'Erro ao aprovar registro')
       } else {
         toast.success('Registro aprovado com sucesso')
         router.refresh()
@@ -52,8 +52,8 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
         row.original.id!.toString(),
         rejectReason,
       )
-      if (response?.code) {
-        toast.error(response.message)
+      if (response?.hasError) {
+        toast.error(response.error[0]?.message || 'Erro ao rejeitar registro')
       } else {
         toast.success('Registro rejeitado com sucesso')
         router.refresh()

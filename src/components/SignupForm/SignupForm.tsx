@@ -222,7 +222,7 @@ export default function SignupForm() {
                   <UploadButton
                     className="bg-gray-200 w-1/2"
                     onChange={field.onChange}
-                    value={field.value}
+                    value={null}
                     label="Anexar"
                   />
                 </div>

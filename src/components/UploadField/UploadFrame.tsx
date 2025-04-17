@@ -11,7 +11,7 @@ export const UploadField = ({
   value,
 }: {
   onChange: (fileId: number | null) => void
-  value: FileResponse
+  value: FileResponse | null
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isPending, startTransition] = useTransition()
