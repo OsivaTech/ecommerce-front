@@ -61,7 +61,7 @@ export default function SignupForm() {
     if (debouncedPostalCode) {
       fetchAddress()
     }
-  }, [debouncedPostalCode])
+  }, [debouncedPostalCode, form])
 
   const onSubmit = async (data: RegistrationFormData) => {
     startSubmitTransition(async () => {

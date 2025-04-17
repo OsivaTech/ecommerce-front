@@ -13,7 +13,7 @@ export class UserHttp {
     const response = await baseHttp.patch<void>(UserStatusEndpoint(id), {
       body: JSON.stringify({ status }),
     })
-    
+
     return response
   }
 }

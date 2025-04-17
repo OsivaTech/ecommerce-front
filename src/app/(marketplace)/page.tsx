@@ -1,5 +1,4 @@
 import { FeaturedProduct } from '@/client/home/client/FeaturedProduct/FeaturedProduct'
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 
 import Image from 'next/image'
 import { ProductHttp } from '@/http/Product'

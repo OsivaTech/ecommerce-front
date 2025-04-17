@@ -1,14 +1,26 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { CategoryHttp } from "@/http/Category"
-import { CategoryResponse } from "@/types/api/Response/CategoryResponse"
-import { Loader2 } from "lucide-react"
-import { useEffect, useState, useTransition } from "react"
-import toast from "react-hot-toast"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { CategoryHttp } from '@/http/Category'
+import { CategoryResponse } from '@/types/api/Response/CategoryResponse'
+import { Loader2 } from 'lucide-react'
+import { useEffect, useState, useTransition } from 'react'
+import toast from 'react-hot-toast'
 
-export const CategorySelect = ({ onChange, value }: { onChange: (value: string) => void, value: string }) => {
+export const CategorySelect = ({
+  onChange,
+  value,
+}: {
+  onChange: (value: string) => void
+  value: string
+}) => {
   const [categories, setCategories] = useState<CategoryResponse>([])
   const [isPending, startTransition] = useTransition()
-  
+
   useEffect(() => {
     async function fetchCategories() {
       const categories = await CategoryHttp.getAllCategories()
@@ -22,25 +34,18 @@ export const CategorySelect = ({ onChange, value }: { onChange: (value: string) 
   }, [])
 
   return (
-    <Select
-    onValueChange={onChange}
-    value={value}
-    
-      >
-    <SelectTrigger disabled={isPending} className="w-full">
-      <SelectValue placeholder="Selecione uma categoria" /> 
-      {isPending && <Loader2 className="animate-spin" /> }
-    </SelectTrigger>
-    <SelectContent>
-      {categories.map((category) => (
-        <SelectItem
-          key={category.id}
-          value={category?.id?.toString() || ''}
-        >
-          {category.name}
-        </SelectItem>
-      ))}
-    </SelectContent>
-  </Select>
+    <Select onValueChange={onChange} value={value}>
+      <SelectTrigger disabled={isPending} className="w-full">
+        <SelectValue placeholder="Selecione uma categoria" />
+        {isPending && <Loader2 className="animate-spin" />}
+      </SelectTrigger>
+      <SelectContent>
+        {categories.map((category) => (
+          <SelectItem key={category.id} value={category?.id?.toString() || ''}>
+            {category.name}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   )
 }

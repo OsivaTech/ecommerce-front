@@ -11,7 +11,6 @@ export const StockModal = ({
   setOpen: (open: boolean) => void
   product: ProductFormData
 }) => {
-
   const onSubmit = (data: ProductFormData) => {
     console.log(data)
   }

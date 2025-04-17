@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { components } from '@/schema/types'
 
 const categorySchema = z.object({
   id: z.number(),

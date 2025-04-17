@@ -5,7 +5,7 @@ import { ApiOrder } from '@/http/Order'
 export const OrderTable = async () => {
   const orders = await ApiOrder.getOrders()
 
-  if (orders.hasError) {    
+  if (orders.hasError) {
     return <div>Error</div>
   }
 
