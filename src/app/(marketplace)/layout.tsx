@@ -5,6 +5,8 @@ import '../globals.css'
 import { ToastProvider } from '@/providers/Toast/ToastProvider'
 import Header from '@/client/home/header/Header'
 import { AuthProvider } from '@/providers/Auth/AuthContext'
+import { CartProvider } from '@/context/useCart'
+import { isAuthenticated } from '@/lib/session'
 
 const workSansInstance = workSans({
   subsets: ['latin'],
@@ -17,7 +19,7 @@ export const metadata: Metadata = {
   description: 'E-commerce de produtos para cabelo e pele',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -25,18 +27,24 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={workSansInstance.variable}>
       <body cz-shortcut-listen="true">
-        <ToastProvider />
-        <AuthProvider>
-          <div className="flex flex-col min-h-screen bg-gray-100 w-full">
-            <Header />
-            <main className="flex-grow">{children}</main>
-            <footer
-              style={{ background: '#eee', padding: '10px', marginTop: '20px' }}
-            >
-              <p>© 2025 Meu Site</p>
-            </footer>
-          </div>
-        </AuthProvider>
+        <CartProvider>
+          <ToastProvider />
+          <AuthProvider userIsAlreadyAuthenticated={await isAuthenticated()}>
+            <div className="flex flex-col min-h-screen bg-gray-100 w-full">
+              <Header />
+              <main className="flex-grow">{children}</main>
+              <footer
+                style={{
+                  background: '#eee',
+                  padding: '10px',
+                  marginTop: '20px',
+                }}
+              >
+                <p>© 2025 Meu Site</p>
+              </footer>
+            </div>
+          </AuthProvider>
+        </CartProvider>
       </body>
     </html>
   )

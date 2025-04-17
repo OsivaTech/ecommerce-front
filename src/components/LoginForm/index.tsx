@@ -12,13 +12,13 @@ import Input from '@/components/Input/Input'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Separator } from '@/components/ui/separator'
-import { signIn } from '@/http/Auth'
-import toast from 'react-hot-toast'
 import { LoginFormValues, loginSchema } from './loginSchema'
-import { createSession } from '@/lib/session'
-import { useRouter } from 'next/navigation'
+import { useTransition } from 'react'
+import { useAuth } from '@/providers/Auth/AuthContext'
+
 export const LoginForm = () => {
-  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const { signIn } = useAuth()
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -28,17 +28,9 @@ export const LoginForm = () => {
   })
 
   const onSubmit = async (data: { email: string; password: string }) => {
-    const response = await signIn(data.email, data.password)
-    if (response.hasError) {
-      response.error.map((error) => {
-        toast.error(error.message)
-        return error
-      })
-    } else {
-      toast.success('Login realizado com sucesso')
-      createSession(response.data.accessToken!)
-      router.push('/')
-    }
+    startTransition(async () => {
+      await signIn(data.email, data.password)
+    })
   }
 
   return (
@@ -74,7 +66,9 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Entrar</Button>
+          <Button type="submit" disabled={isPending} isLoading={isPending}>
+            {isPending ? 'Entrando...' : 'Entrar'}
+          </Button>
         </form>
       </Form>
       <Separator className="my-4" />

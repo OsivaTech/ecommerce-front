@@ -27,4 +27,9 @@ export class ProductHttp {
     const response = await fetch(`/api/products/${id}`)
     return response.json()
   }
+
+  static async getProductById(id: string): Promise<ResponseData<Product>> {
+    const response = await baseHttp.get<Product>(`${ProductEndpoint}/${id}`)
+    return response
+  }
 }

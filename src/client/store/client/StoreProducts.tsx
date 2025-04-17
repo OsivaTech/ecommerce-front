@@ -2,13 +2,13 @@
 
 import { useState } from 'react'
 import SearchInput from '@/components/InputSearch/InputSearch'
-import ImageCard from '@/components/ImageCard/ImageCard'
 import Button from '@/components/Button/Button'
 import { ProductResponse } from '@/types/api/Response/ProductResponse'
 import {
   Category,
   CategoryResponse,
 } from '@/types/api/Response/CategoryResponse'
+import { ProductCard } from '@/components/ProductCard'
 
 interface StoreProductsProps {
   products: ProductResponse
@@ -62,18 +62,9 @@ export default function StoreProducts({
       </div>
 
       {productsFilter.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 w-full place-items-center">
           {productsFilter.map((product) => (
-            <div
-              key={product.id}
-              className="flex flex-col items-center text-center"
-            >
-              <ImageCard
-                imageSrc={product.file.url}
-                title={product.name}
-                price={product.price ?? 0}
-              />
-            </div>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (
