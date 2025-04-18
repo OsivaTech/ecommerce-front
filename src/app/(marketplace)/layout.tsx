@@ -7,6 +7,7 @@ import Header from '@/client/home/header/Header'
 import { AuthProvider } from '@/providers/Auth/AuthContext'
 import { CartProvider } from '@/context/useCart'
 import { isAuthenticated } from '@/lib/session'
+import Footer from '@/components/Footer'
 
 const workSansInstance = workSans({
   subsets: ['latin'],
@@ -40,7 +41,7 @@ export default async function RootLayout({
                   marginTop: '20px',
                 }}
               >
-                <p>© 2025 Meu Site</p>
+                <Footer />
               </footer>
             </div>
           </AuthProvider>
