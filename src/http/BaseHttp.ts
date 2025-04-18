@@ -14,9 +14,16 @@ export class BaseHttp {
     this.useAuth = useAuth
   }
 
-  async get<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {
+  async get<T>(
+    url: string,
+    params?: Record<string, string | number>,
+    options?: RequestInit,
+  ): Promise<ResponseData<T>> {
     try {
-      const response = await fetch(`${this.baseUrl}${url}`, {
+      const queryString = params ? this.buildQueryString(params) : ''
+      const fullUrl = `${this.baseUrl}${url}${queryString}`
+
+      const response = await fetch(fullUrl, {
         method: 'GET',
         ...options,
         headers: options?.headers
@@ -41,6 +48,16 @@ export class BaseHttp {
         hasError: true,
       }
     }
+  }
+
+  private buildQueryString(params: Record<string, string | number>): string {
+    const query = Object.entries(params)
+      .map(
+        ([key, value]) =>
+          `${encodeURIComponent(key)}=${encodeURIComponent(value)}`,
+      )
+      .join('&')
+    return query ? `?${query}` : ''
   }
 
   async post<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {

@@ -5,7 +5,7 @@ import { Product } from '@/types/api/Response/ProductResponse'
 import { useState } from 'react'
 
 export default function AddToCart({ product }: { product: Product }) {
-  const [quantity, setQuantity] = useState(0)
+  const [quantity, setQuantity] = useState(1)
   const { addToCart } = useCart()
 
   const handleAddToCart = (product: Product, quantity: number) => {

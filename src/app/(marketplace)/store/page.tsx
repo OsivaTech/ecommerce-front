@@ -1,4 +1,5 @@
 import StoreProducts from '@/client/store/client/StoreProducts'
+import { Advertisement } from '@/components/Advertisement'
 import { CategoryHttp } from '@/http/Category'
 import { ProductHttp } from '@/http/Product'
 
@@ -13,5 +14,10 @@ export default async function Store() {
   if (categories.hasError) {
     return <div>Error</div>
   }
-  return <StoreProducts products={products.data} categories={categories.data} />
+  return (
+    <>
+      <Advertisement />
+      <StoreProducts products={products.data} categories={categories.data} />
+    </>
+  )
 }

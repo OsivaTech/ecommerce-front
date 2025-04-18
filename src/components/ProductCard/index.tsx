@@ -7,7 +7,6 @@ import { formatPrice } from '@/utils/mask'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/Auth/AuthContext'
-import { cn } from '@/lib/utils'
 import AddToCart from '../AddToCart'
 
 export const ProductCard = ({ product }: { product: Product }) => {
@@ -15,7 +14,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
   const { isAuthenticated } = useAuth()
 
   return (
-    <Card className="py-4 w-[300px] h-[419px] hover:scale-105 transition-all duration-300">
+    <Card className="py-4 w-[300px] h-[419px] hover:scale-102 transition-all duration-300">
       <div
         className="flex flex-col h-full gap-2 px-[30px] cursor-pointer"
         onClick={() => {
@@ -34,25 +33,27 @@ export const ProductCard = ({ product }: { product: Product }) => {
         <div className="flex flex-col justify-between h-full">
           <div className="flex flex-col gap-2">
             <h3 className="text-base font-bold">{product.name}</h3>
+            <p className="text-sm text-gray-500">{product.category.name}</p>
           </div>
           <div className="flex flex-col gap-2 justify-center">
-            {isAuthenticated ? (
-              <p className="text-sm text-gray-500">
+            {isAuthenticated && (
+              <p className="text-lg font-medium">
                 {formatPrice(product.price ?? 0)}
               </p>
-            ) : (
-              <p className="text-lg text-gray-500">
-                Faça login para ver o preço
-              </p>
             )}
-            <p className="text-sm text-gray-500">{product.category.name}</p>
           </div>
         </div>
       </div>
 
-      <div className={cn('invisible space-y-4', isAuthenticated && 'visible')}>
+      <div className={'space-y-4'}>
         <Separator />
-        <AddToCart product={product} />
+        {isAuthenticated ? (
+          <AddToCart product={product} />
+        ) : (
+          <div className="flex items-center justify-center">
+            <p className="text-lg text-red-500">Faça login para ver o preço</p>
+          </div>
+        )}
       </div>
     </Card>
   )

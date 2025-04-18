@@ -26,7 +26,7 @@ export default function Button({
       disabled={disabled}
       className={`h-10 min-w-[80px] w-full px-4 rounded-[12px] flex items-center justify-center 
         font-medium transition text-[12px] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer
-        ${isActive ? 'bg-amber-700 text-white' : 'bg-[#E8EDF2] text-[#0D141C] hover:bg-amber-800 hover:text-white'} 
+        ${isActive ? 'bg-[#637587] text-white' : 'bg-[#E8EDF2] text-[#0D141C] hover:bg-[#637587] hover:text-white'} 
         ${className}`}
     >
       {text}

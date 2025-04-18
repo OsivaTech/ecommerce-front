@@ -1,7 +1,6 @@
 import { FeaturedProduct } from '@/client/home/client/FeaturedProduct/FeaturedProduct'
-
-import Image from 'next/image'
 import { ProductHttp } from '@/http/Product'
+import { Advertisement } from '@/components/Advertisement'
 
 export default async function Home() {
   const products = await ProductHttp.getFeaturedProducts()
@@ -11,16 +10,8 @@ export default async function Home() {
   }
 
   return (
-    <div>
-      <div className="relative w-full max-w-5xl mx-auto aspect-[928/480] mt-8">
-        <Image
-          src="/fundocontent.jpg"
-          alt="Banner"
-          layout="fill"
-          objectFit="cover"
-          className="rounded-lg"
-        />
-      </div>
+    <div className="relative w-full">
+      <Advertisement />
       <FeaturedProduct products={products.data} />
     </div>
   )
