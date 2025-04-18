@@ -70,7 +70,7 @@ export default function Footer() {
   ]
 
   return (
-    <footer className="bg-transparent">
+    <footer className="bg-background">
       <div className="px-6 py-10 md:px-14 md:py-12">
         <div className="flex flex-col md:flex-row md:justify-between gap-10">
           {/* Logo */}

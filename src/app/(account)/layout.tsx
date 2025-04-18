@@ -17,7 +17,7 @@ const workSansInstance = workSans({
 
 export const metadata: Metadata = {
   title: 'Ls Injectable',
-  description: 'E-commerce de produtos para cabelo e pele',
+  description: 'Gerencie sua conta.',
 }
 
 export default async function RootLayout({
@@ -31,7 +31,7 @@ export default async function RootLayout({
         <CartProvider>
           <ToastProvider />
           <AuthProvider userIsAlreadyAuthenticated={await isAuthenticated()}>
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col min-h-screen w-full bg-background">
               <Header />
               <main className="flex-grow">{children}</main>
               <Footer />

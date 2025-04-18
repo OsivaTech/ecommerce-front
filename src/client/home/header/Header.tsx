@@ -1,129 +1,71 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  HeartIcon,
-  Bars3Icon,
-  XMarkIcon,
-  ShoppingBagIcon,
-  UserIcon,
-} from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import Logo from '@/assets/svg/logo'
-
-import IconButton from '@/components/ButtonIcon/IconButton'
-import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { useCart } from '@/context/useCart'
-import { useAuth } from '@/providers/Auth/AuthContext'
+import { HeaderActions } from '@/components/HeaderActions'
+import { APP_LINKS } from '../../../../constants'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const router = useRouter()
-  const { getTotalItems } = useCart()
-  const totalItems = getTotalItems()
-  const { isAuthenticated } = useAuth()
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-transparent border-b-2 border-secondary">
       <div className="container mx-auto flex items-center justify-between p-4">
         {/* Esquerda - Logo e Links */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="text-2xl font-bold text-blue-600">
+          <Link href="/" className="text-2xl font-bold">
             <Logo />
           </Link>
 
           <nav className="hidden lg:flex gap-4">
-            <Link href="/store" className="hover:text-blue-600">
+            <Link href={APP_LINKS.STORE()} className="hover:text-primary">
               Loja
             </Link>
-            <Link href="/about" className="hover:text-blue-600">
+            <Link href={APP_LINKS.ABOUT()} className="hover:text-primary">
               Sobre
             </Link>
-            <Link href="/contact" className="hover:text-blue-600">
+            <Link href={APP_LINKS.CONTACT()} className="hover:text-primary">
               Contate-nos
             </Link>
           </nav>
         </div>
 
-        <div className="hidden lg:flex items-center gap-4">
-          {isAuthenticated ? (
-            <Link href="/my-account">
-              <IconButton
-                icon={
-                  <UserIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
-                }
-              />
-            </Link>
-          ) : (
-            <Link href="/login">
-              <Button variant="outline" className="w-[145px]">
-                Entrar / Cadastrar
-              </Button>
-            </Link>
-          )}
-          {/* <IconButton
-            icon={
-              <HeartIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
-            }
-            onClick={() => router.push('/wishlist')}
-          /> */}
-          <Link href="/cart">
-            <div className="relative">
-              <IconButton
-                icon={
-                  <ShoppingBagIcon className="h-6 w-6 text-[#0D141C] cursor-pointer" />
-                }
-                onClick={() => router.push('/cart')}
-              />
-              {totalItems > 0 && (
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full">
-                  {totalItems}
-                </span>
-              )}
-            </div>
-          </Link>
-          {/* Menu Mobile */}
+        <div className="hidden md:flex items-center gap-4">
+          <HeaderActions />
         </div>
-        <button className="lg:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+        <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? (
-            <XMarkIcon className="w-6 h-6" />
+            <XMarkIcon className="w-5 h-5" />
           ) : (
-            <Bars3Icon className="w-6 h-6" />
+            <Bars3Icon className="w-5 h-5" />
           )}
         </button>
       </div>
 
-      {menuOpen && (
-        <nav className="lg:hidden flex flex-col items-center gap-4 p-4 bg-white shadow-md">
-          <Link href="/store" className="hover:text-blue-600">
+      <div
+        className={`flex flex-col items-center gap-4 lg:hidden bg-transparent transition-all duration-300 ease-in-out ${
+          menuOpen
+            ? 'max-h-screen opacity-100'
+            : 'max-h-0 opacity-0 overflow-hidden'
+        }`}
+      >
+        <div className="flex items-center justify-center gap-4 w-full p-4">
+          <Link onClick={() => setMenuOpen(false)} href={APP_LINKS.STORE()}>
             Loja
           </Link>
-          <Link href="/about" className="hover:text-blue-600">
+          <Link onClick={() => setMenuOpen(false)} href={APP_LINKS.ABOUT()}>
             Sobre
           </Link>
-          <Link href="/contact" className="hover:text-blue-600">
+          <Link onClick={() => setMenuOpen(false)} href={APP_LINKS.CONTACT()}>
             Contate-nos
           </Link>
-          <Button
-            variant="outline"
-            className="w-[145px]"
-            onClick={() => router.push('/login')}
-          >
-            Entrar / Cadastrar
-          </Button>
-          <div className="flex gap-4">
-            <IconButton
-              icon={<HeartIcon className="h-6 w-6 text-[#0D141C]" />}
-            />
-            <Link href="/cart">
-              <IconButton
-                icon={<ShoppingBagIcon className="h-6 w-6 text-[#0D141C]" />}
-              />
-            </Link>
-          </div>
-        </nav>
-      )}
+        </div>
+        <div className="flex items-center gap-4 pb-2">
+          <HeaderActions />
+        </div>
+      </div>
     </header>
   )
 }

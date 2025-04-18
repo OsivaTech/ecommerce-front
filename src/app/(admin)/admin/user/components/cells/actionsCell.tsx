@@ -10,10 +10,7 @@ export const ActionsCell = ({ row }: { row: Row<User> }) => {
 
   return (
     <div>
-      <Eye
-        className="cursor-pointer text-primary"
-        onClick={() => setIsOpen(true)}
-      />
+      <Eye className="cursor-pointer" onClick={() => setIsOpen(true)} />
       {isOpen && (
         <UserEditModal
           user={row.original}

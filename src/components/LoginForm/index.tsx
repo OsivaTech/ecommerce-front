@@ -15,8 +15,11 @@ import { Separator } from '@/components/ui/separator'
 import { LoginFormValues, loginSchema } from './loginSchema'
 import { useTransition } from 'react'
 import { useAuth } from '@/providers/Auth/AuthContext'
+import { useRouter } from 'next/navigation'
+import { APP_LINKS } from '../../../constants'
 
 export const LoginForm = () => {
+  const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const { signIn } = useAuth()
   const form = useForm<LoginFormValues>({
@@ -34,10 +37,10 @@ export const LoginForm = () => {
   }
 
   return (
-    <div className="w-full container mx-auto max-w-[500px]">
+    <div className="container px-4 mx-auto max-w-[500px]">
       <Form {...form}>
         <form
-          className="flex flex-col gap-4 "
+          className="flex flex-col gap-4"
           onSubmit={form.handleSubmit(onSubmit)}
         >
           <FormField
@@ -72,8 +75,12 @@ export const LoginForm = () => {
         </form>
       </Form>
       <Separator className="my-4" />
-      <Button variant="link" className="w-full">
-        Ainda não tem uma conta? Crie uma conta
+      <Button
+        onClick={() => router.push(APP_LINKS.REGISTER())}
+        variant="link"
+        className="w-full"
+      >
+        Ainda não tem cadastro? Crie uma conta
       </Button>
     </div>
   )

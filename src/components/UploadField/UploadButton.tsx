@@ -50,7 +50,7 @@ export const UploadButton = ({
         <Button
           className={cn(className)}
           type="button"
-          variant="outline"
+          variant="secondary"
           onClick={() => inputRef.current?.click()}
         >
           {label}

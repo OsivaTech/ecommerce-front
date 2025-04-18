@@ -45,7 +45,7 @@ export default function ProductPage({
     <div className="container mx-auto px-4 py-8 justify-items-start space-y-4">
       <div className="flex flex-row items-center">
         <p
-          className="flex flex-row items-center gap-1 text-sm text-gray-500 cursor-pointer"
+          className="flex flex-row items-center gap-1 text-sm text-muted cursor-pointer"
           onClick={() => {
             router.push(`/`)
           }}
@@ -55,7 +55,7 @@ export default function ProductPage({
         </p>
         <ChevronRight />
         <p
-          className="text-sm text-gray-500 cursor-pointer"
+          className="text-sm text-muted cursor-pointer"
           onClick={() => {
             router.push(`/store#${product.data.category.name}`)
           }}
@@ -80,18 +80,18 @@ export default function ProductPage({
           <h1 className="text-2xl font-bold">{product.data.name}</h1>
           {isUserAuthenticated ? (
             <>
-              <p className="text-lg text-gray-500">
+              <p className="text-lg text-muted">
                 {formatPrice(product.data.price ?? 0)}
               </p>
               <AddToCart product={product.data} />
             </>
           ) : (
-            <p className="text-sm text-gray-500">Faça login para ver o preço</p>
+            <p className="text-sm text-muted">Faça login para ver o preço</p>
           )}
         </div>
       </div>
       <p className="text-2xl font-bold">Descrição</p>
-      <p className="text-base text-gray-500">{product.data.description}</p>
+      <p className="text-base text-muted">{product.data.description}</p>
     </div>
   )
 }

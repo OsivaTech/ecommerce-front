@@ -1,6 +1,6 @@
 'use client'
 
-import Button from '../Button/Button'
+import { Button } from '@/components/ui/button'
 import { useEffect, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { showToasthHandleError } from '@/utils/toast'
@@ -203,7 +203,10 @@ export default function SignupForm() {
               <FormItem className="flex-1">
                 <FormLabel>Número da licença (CRM, CRO, etc)</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Número da licença" />
+                  <Input
+                    {...field}
+                    placeholder="Número da licença (CRM, CRO, etc)"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -218,9 +221,11 @@ export default function SignupForm() {
             <FormItem>
               <FormControl>
                 <div className="flex flex-col gap-2">
-                  <p>Anexar licença profissional</p>
+                  <p className="text-sm text-title font-medium">
+                    Anexar licença profissional
+                  </p>
                   <UploadButton
-                    className="bg-gray-200 w-1/2"
+                    className="w-1/2"
                     onChange={field.onChange}
                     value={null}
                     label="Anexar"
@@ -258,7 +263,7 @@ export default function SignupForm() {
                 control={form.control}
                 name="address.street"
                 render={({ field }) => (
-                  <FormItem className="w-4/5">
+                  <FormItem className="w-3/5">
                     <FormLabel>Nome da rua</FormLabel>
                     <FormControl>
                       <Input
@@ -276,7 +281,7 @@ export default function SignupForm() {
                 control={form.control}
                 name="address.number"
                 render={({ field }) => (
-                  <FormItem className="w-1/5">
+                  <FormItem className="w-2/5">
                     <FormLabel>Número</FormLabel>
                     <FormControl>
                       <Input
@@ -296,7 +301,7 @@ export default function SignupForm() {
                 control={form.control}
                 name="address.complement"
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-2/5">
                     <FormLabel>Complemento</FormLabel>
                     <FormControl>
                       <Input
@@ -313,7 +318,7 @@ export default function SignupForm() {
                 control={form.control}
                 name="address.neighborhood"
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-3/5">
                     <FormLabel>Bairro</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Bairro" />
@@ -328,7 +333,7 @@ export default function SignupForm() {
                 control={form.control}
                 name="address.city"
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-3/5">
                     <FormLabel>Cidade</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Cidade" />
@@ -341,7 +346,7 @@ export default function SignupForm() {
                 control={form.control}
                 name="address.state"
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-2/5">
                     <FormLabel>Estado</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder="Estado" />
@@ -387,11 +392,9 @@ export default function SignupForm() {
           de privacidade.
         </p>
 
-        <Button
-          text="Criar Conta"
-          className="w-full bg-amber-700 text-white p-3 rounded-3xl font-bold hover:bg-amber-800"
-          isLoading={isSubmitPending}
-        />
+        <Button isLoading={isSubmitPending} className="w-full">
+          Criar Conta
+        </Button>
       </form>
     </Form>
   )

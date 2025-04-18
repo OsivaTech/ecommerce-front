@@ -23,7 +23,7 @@ export function DatePicker() {
         <Button
           variant={'outline'}
           className={cn(
-            'w-[280px] justify-between font-semibold h-[56px] cursor-pointer text-primary',
+            'w-[280px] justify-between font-semibold h-[56px] cursor-pointer text-title',
           )}
         >
           {date?.from ? (

@@ -8,7 +8,7 @@ export const AdminSideMenu = () => {
   const selectedItem = pathname.split('/').pop()
 
   return (
-    <aside className="w-full lg:w-1/4 h-full text-primary">
+    <aside className="w-full lg:w-1/4 h-full text-title">
       <nav className="space-y-2">
         {menuItems.map((item) => {
           const isActive = selectedItem === item.href.split('/').pop()
@@ -17,7 +17,7 @@ export const AdminSideMenu = () => {
               key={item.id}
               href={item.href}
               className={cn(
-                'flex items-center gap-3 w-full h-[40px] p-3 rounded-[12px] text-sm transition text-primary hover:bg-secondary group',
+                'flex items-center gap-3 w-full h-[40px] p-3 rounded-[12px] text-sm transition text-title hover:bg-secondary group',
                 isActive && 'bg-secondary',
               )}
               aria-selected={isActive}

@@ -11,14 +11,14 @@ export default function CreateAccount() {
         Crie sua conta
       </h2>
       <div className="container mx-auto justify-items-start">
-        <div className="p-8 rounded-lg  w-full max-w-2xl mx-auto">
+        <div className="p-4 rounded-lg w-full max-w-2xl mx-auto">
           <SignupForm />
 
           <div className="mt-6 flex flex-col gap-2 text-center">
             <p className="text-gray-600">Já tem uma conta?</p>
             <Link
               href="/login"
-              className="w-full bg-gray-200 text-gray-700 p-3 rounded-lg font-bold hover:bg-gray-300"
+              className="w-full underline text-primary hover:text-primary-hover"
             >
               Entrar
             </Link>

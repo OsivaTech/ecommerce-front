@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react'
 import SearchInput from '@/components/InputSearch/InputSearch'
-import Button from '@/components/Button/Button'
+import { Button } from '@/components/ui/button'
 import { ProductResponse } from '@/types/api/Response/ProductResponse'
 import { CategoryResponse } from '@/types/api/Response/CategoryResponse'
 import { ProductCard } from '@/components/ProductCard'
@@ -75,17 +75,19 @@ export default function StoreProducts({
         {filteredCategories.map((cat) => (
           <div key={cat.id}>
             <Button
-              text={cat.name}
+              variant="secondary"
               onClick={() => handleScrollToCategory(cat.name)}
-              className="active:bg-[#637587]"
-            />
+              className="text-muted"
+            >
+              {cat.name}
+            </Button>
           </div>
         ))}
       </div>
 
       <div className="relative w-full mb-8">
         <SearchInput
-          className="h-[60px]"
+          className="h-[50px]"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
@@ -113,7 +115,7 @@ export default function StoreProducts({
       {showScrollToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-4 right-4 bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600"
+          className="fixed bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary-hover"
         >
           {<ChevronUp className="w-6 h-6" />}
         </button>

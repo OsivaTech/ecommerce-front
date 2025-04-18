@@ -14,7 +14,7 @@ export const StatusBadge = ({
   return (
     <Badge
       className={cn(
-        'cursor-pointer text-primary',
+        'cursor-pointer text-title',
         status === 'pending' && 'bg-[#FFE60A]',
         status === 'approved' && 'bg-[#39D233]',
         status === 'rejected' && 'bg-[#FF0000]',

@@ -50,13 +50,13 @@ export default function Input({
           value={value}
           onChange={mask ? handleMaskedInput : onChange}
           className={cn(
-            'bg-gray-100 rounded-[12px] text-[16px] max-h-[50px] p-4 outline-none border border-[#D1DBE8]',
+            'bg-background rounded-xl text-[16px] max-h-[50px] p-4 outline-none border placeholder:text-muted-foreground border-[#D1DBE8]',
             className,
           )}
         />
         {isLoading && (
           <ClipLoader
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 animate-spin"
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground animate-spin"
             size={20}
           />
         )}
