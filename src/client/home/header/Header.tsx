@@ -3,12 +3,16 @@
 import { useState } from 'react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import Logo from '@/assets/svg/logo'
 import { HeaderActions } from '@/components/HeaderActions'
 import { APP_LINKS } from '../../../../constants'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  const isActive = (path: string) => pathname === path
 
   return (
     <header className="bg-transparent border-b-2 border-secondary">
@@ -20,13 +24,34 @@ export default function Header() {
           </Link>
 
           <nav className="hidden lg:flex gap-4">
-            <Link href={APP_LINKS.STORE()} className="hover:text-primary">
+            <Link
+              href={APP_LINKS.STORE()}
+              className={`hover:text-primary ${
+                isActive(APP_LINKS.STORE())
+                  ? 'text-primary border-b-2 border-primary'
+                  : ''
+              }`}
+            >
               Loja
             </Link>
-            <Link href={APP_LINKS.ABOUT()} className="hover:text-primary">
+            <Link
+              href={APP_LINKS.ABOUT()}
+              className={`hover:text-primary ${
+                isActive(APP_LINKS.ABOUT())
+                  ? 'text-primary border-b-2 border-primary'
+                  : ''
+              }`}
+            >
               Sobre
             </Link>
-            <Link href={APP_LINKS.CONTACT()} className="hover:text-primary">
+            <Link
+              href={APP_LINKS.CONTACT()}
+              className={`hover:text-primary ${
+                isActive(APP_LINKS.CONTACT())
+                  ? 'text-primary border-b-2 border-primary'
+                  : ''
+              }`}
+            >
               Contate-nos
             </Link>
           </nav>
@@ -52,13 +77,37 @@ export default function Header() {
         }`}
       >
         <div className="flex items-center justify-center gap-4 w-full p-4">
-          <Link onClick={() => setMenuOpen(false)} href={APP_LINKS.STORE()}>
+          <Link
+            onClick={() => setMenuOpen(false)}
+            href={APP_LINKS.STORE()}
+            className={`hover:text-primary ${
+              isActive(APP_LINKS.STORE())
+                ? 'text-primary border-b-2 border-primary'
+                : ''
+            }`}
+          >
             Loja
           </Link>
-          <Link onClick={() => setMenuOpen(false)} href={APP_LINKS.ABOUT()}>
+          <Link
+            onClick={() => setMenuOpen(false)}
+            href={APP_LINKS.ABOUT()}
+            className={`hover:text-primary ${
+              isActive(APP_LINKS.ABOUT())
+                ? 'text-primary border-b-2 border-primary'
+                : ''
+            }`}
+          >
             Sobre
           </Link>
-          <Link onClick={() => setMenuOpen(false)} href={APP_LINKS.CONTACT()}>
+          <Link
+            onClick={() => setMenuOpen(false)}
+            href={APP_LINKS.CONTACT()}
+            className={`hover:text-primary ${
+              isActive(APP_LINKS.CONTACT())
+                ? 'text-primary border-b-2 border-primary'
+                : ''
+            }`}
+          >
             Contate-nos
           </Link>
         </div>

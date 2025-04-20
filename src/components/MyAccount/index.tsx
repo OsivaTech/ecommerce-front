@@ -79,10 +79,10 @@ export const MyAccountPage = () => {
         {accountOptions.map((option, index) => (
           <div
             key={index}
-            className="flex items-center gap-4 cursor-pointer hover:bg-gray-100 p-4 rounded-lg transition-colors"
+            className="flex items-center gap-4 cursor-pointer hover:bg-gray-100 rounded-lg transition-colors"
             onClick={() => handleOptionClick(option.title)}
           >
-            <div className="flex items-center justify-center w-20 h-20 bg-primary rounded-lg text-white">
+            <div className="flex items-center justify-center w-16 h-16 min-w-[64px] min-h-[64px] bg-primary rounded-lg text-white">
               {option.icon}
             </div>
             <div>
