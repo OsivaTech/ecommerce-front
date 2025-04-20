@@ -63,7 +63,7 @@ export default function Footer() {
         { label: 'FAQ', href: `/${APP_LINKS.FAQ()}` },
         {
           label: 'WhatsApp',
-          href: 'https://api.whatsapp.com/send?phone=5511941234567',
+          href: 'https://wa.me/5531972498696',
         },
       ],
     },
@@ -78,11 +78,9 @@ export default function Footer() {
             <h1 className="text-3xl font-bold text-app-secondary mb-4">
               Ls Injectable
             </h1>
+            <h2 className="text-sm text-gray-500 mb-4">Medicine injectable</h2>
             <h2 className="text-sm text-gray-500 mb-4">
-              Medicine injectable for beauty
-            </h2>
-            <h2 className="text-sm text-gray-500 mb-4">
-              CNPJ: 00.000.000/0000-00
+              CNPJ: 59.960.636/0001-28
             </h2>
             <div className="flex gap-6">
               <SocialLinks />
