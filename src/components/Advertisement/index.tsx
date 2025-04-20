@@ -5,8 +5,11 @@ import { AdvertisementHttp } from '@/http/Advertisement'
 import { AdvertisementResponse } from '@/types/api/Response/AdvertisementResponse'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
+import { Button } from '../ui/button'
+import { useRouter } from 'next/navigation'
 
 export const Advertisement = () => {
+  const router = useRouter()
   const [advertisements, setAdvertisements] = useState<AdvertisementResponse>(
     [],
   )
@@ -69,7 +72,14 @@ export const Advertisement = () => {
     <div className="container mx-auto px-2 w-full max-w-5xl mt-2">
       <div className="relative aspect-[21/9] rounded-lg shadow-lg overflow-hidden">
         {/* Imagem de fundo */}
-        <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 cursor-pointer"
+          onClick={() => {
+            if (currentAd?.type === 'MediaOnly' && currentMedia.urlGoTo) {
+              router.push(currentMedia.urlGoTo)
+            }
+          }}
+        >
           <Image
             src={currentMedia.image.url}
             alt={currentMedia.title || ''}
@@ -86,12 +96,13 @@ export const Advertisement = () => {
                 {currentMedia.title}
               </h1>
               <p className="text-sm md:text-lg">{currentMedia.description}</p>
-              <button
-                className="bg-amber-700 text-white px-4 py-2 w-fit rounded-lg hover:bg-amber-800 transition"
-                onClick={() => window.open(currentMedia.urlGoTo || '')}
+              <Button
+                variant="primary"
+                className="w-fit"
+                onClick={() => router.push(currentMedia.urlGoTo || '')}
               >
                 {currentMedia.cta || 'Saiba mais'}
-              </button>
+              </Button>
             </div>
           </div>
         )}
