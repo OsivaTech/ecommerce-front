@@ -31,6 +31,7 @@ import toast from 'react-hot-toast'
 import { RegistrationHttp } from '@/http/Registration'
 import { UploadButton } from '@/components/UploadField/UploadButton'
 import { useRouter } from 'next/navigation'
+import { APP_LINKS } from '../../../constants'
 
 export default function SignupForm() {
   const form = useForm<RegistrationFormData>({
@@ -78,7 +79,7 @@ export default function SignupForm() {
           toast.error(response.error[0]?.message ?? 'Erro ao criar usuário')
         } else {
           toast.success('Usuário criado com sucesso')
-          router.push('/')
+          router.push(APP_LINKS.REGISTER_SUCCESS())
         }
       } catch (error) {
         showToasthHandleError(error)

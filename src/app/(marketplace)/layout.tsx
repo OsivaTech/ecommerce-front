@@ -31,7 +31,7 @@ export default async function RootLayout({
         <CartProvider>
           <ToastProvider />
           <AuthProvider userIsAlreadyAuthenticated={await isAuthenticated()}>
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col w-full h-screen">
               <Header />
               <main className="flex-grow">{children}</main>
               <Footer />

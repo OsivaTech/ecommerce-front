@@ -28,7 +28,7 @@ export class BaseHttp {
   ): Promise<RequestInit> {
     const headers = await this.getAuthHeaders()
 
-    if (includeContentType) {
+    if (includeContentType && !(options?.body instanceof FormData)) {
       headers['Content-Type'] = 'application/json'
     }
 

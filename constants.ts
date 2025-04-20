@@ -1,5 +1,5 @@
 export const APP_LINKS = {
-  HOMEPAGE: () => ``,
+  HOMEPAGE: () => `/`,
   STORE: () => `/store`,
   ABOUT: () => `/about`,
   CONTACT: () => `/contact`,
@@ -9,6 +9,7 @@ export const APP_LINKS = {
   LOGIN: () => `/login`,
   REGISTER: () => `/create-account`,
   CART: () => `/cart`,
+  REGISTER_SUCCESS: () => `/create-account/success`,
 }
 
 export const APP_LINKS_ADMIN = {
