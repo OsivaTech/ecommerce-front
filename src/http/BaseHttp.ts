@@ -1,4 +1,5 @@
 import { env } from '@/env'
+import { getApiToken } from '@/lib/session'
 import { ResponseData, ResponseError } from '@/types/Error'
 
 export class BaseHttp {
@@ -8,6 +9,36 @@ export class BaseHttp {
   constructor(baseUrl: string, useAuth: boolean) {
     this.baseUrl = baseUrl
     this.useAuth = useAuth
+  }
+
+  private async getAuthHeaders(): Promise<Record<string, string>> {
+    const headers: Record<string, string> = {}
+
+    if (this.useAuth) {
+      const token = await getApiToken()
+      headers.Authorization = `Bearer ${token}`
+    }
+
+    return headers
+  }
+
+  private async getRequestOptions(
+    options?: RequestInit,
+    includeContentType: boolean = false,
+  ): Promise<RequestInit> {
+    const headers = await this.getAuthHeaders()
+
+    if (includeContentType) {
+      headers['Content-Type'] = 'application/json'
+    }
+
+    return {
+      ...options,
+      headers: {
+        ...headers,
+        ...(options?.headers || {}),
+      },
+    }
   }
 
   async setUseAuth(useAuth: boolean) {
@@ -25,14 +56,7 @@ export class BaseHttp {
 
       const response = await fetch(fullUrl, {
         method: 'GET',
-        ...options,
-        headers: options?.headers
-          ? {
-              ...options?.headers,
-            }
-          : {
-              'Content-Type': 'application/json',
-            },
+        ...(await this.getRequestOptions(options)),
       })
       if (response.ok) {
         return { data: (await response.json()) as T, hasError: false }
@@ -62,15 +86,8 @@ export class BaseHttp {
 
   async post<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {
     const response = await fetch(`${this.baseUrl}${url}`, {
-      ...options,
       method: 'POST',
-      headers: options?.headers
-        ? {
-            ...options?.headers,
-          }
-        : {
-            'Content-Type': 'application/json',
-          },
+      ...(await this.getRequestOptions(options, true)),
     })
     if (response.ok) {
       return { data: (await response.json()) as T, hasError: false }
@@ -84,15 +101,8 @@ export class BaseHttp {
 
   async put<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {
     const response = await fetch(`${this.baseUrl}${url}`, {
-      ...options,
       method: 'PUT',
-      headers: options?.headers
-        ? {
-            ...options?.headers,
-          }
-        : {
-            'Content-Type': 'application/json',
-          },
+      ...(await this.getRequestOptions(options, true)),
     })
 
     if (response.ok) {
@@ -111,15 +121,8 @@ export class BaseHttp {
 
   async patch<T>(url: string, options?: RequestInit): Promise<ResponseData<T>> {
     const response = await fetch(`${this.baseUrl}${url}`, {
-      ...options,
       method: 'PATCH',
-      headers: options?.headers
-        ? {
-            ...options?.headers,
-          }
-        : {
-            'Content-Type': 'application/json',
-          },
+      ...(await this.getRequestOptions(options, true)),
     })
 
     if (response.ok) {
@@ -141,15 +144,8 @@ export class BaseHttp {
     options?: RequestInit,
   ): Promise<ResponseData<T>> {
     const response = await fetch(`${this.baseUrl}${url}`, {
-      ...options,
       method: 'DELETE',
-      headers: options?.headers
-        ? {
-            ...options?.headers,
-          }
-        : {
-            'Content-Type': 'application/json',
-          },
+      ...(await this.getRequestOptions(options)),
     })
     if (response.ok) {
       return { data: (await response.json()) as T, hasError: false }
@@ -167,9 +163,7 @@ export class BaseHttp {
 
       // Se o backend retornar uma mensagem de erro específica, exibe essa mensagem
       try {
-        console.log('error', error)
         const errorResponse = await responseError.json()
-        console.log('errorResponse', errorResponse)
 
         if (errorResponse.code === 500) {
           return [
@@ -240,8 +234,8 @@ export class BaseHttp {
 }
 
 const baseHttp = new BaseHttp(
-  env.NEXT_PUBLIC_API_BASE_URL || 'https://ecommerce-stg.osiva.tech:8443',
-  false,
+  env.NEXT_PUBLIC_API_BASE_URL || 'https://api.lsinjectable.com.br',
+  true,
 )
 
 export default baseHttp

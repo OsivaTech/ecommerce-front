@@ -2,51 +2,59 @@
 import { formatPrice } from '@/utils/mask'
 import Image from 'next/image'
 import { CartItem, useCart } from '@/context/useCart'
-import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
 
 export const ShoppingCartItem = ({ cartItem }: { cartItem: CartItem }) => {
-  const { updateQuantity } = useCart()
+  const { updateQuantity, removeFromCart } = useCart()
 
   return (
     <div
       key={cartItem.product.id}
-      className="flex items-center justify-between bg-white p-4 rounded-lg shadow h-[115px]"
+      className="flex flex-row items-center bg-background p-4 rounded-lg border gap-4"
     >
-      <div className="flex items-center gap-4">
-        <Image
-          src={cartItem.product.file.url}
-          alt={cartItem.product.name}
-          width={80}
-          height={80}
-          className="rounded-md object-cover h-[80px] w-[80px]"
-        />
-        <div className="flex flex-col gap-2">
-          <h3 className="font-semibold text-lg">{cartItem.product.name}</h3>
-          <p className="text-blue-600 font-bold">
+      <Image
+        src={cartItem.product.file.url}
+        alt={cartItem.product.name}
+        width={80}
+        height={80}
+        className="rounded-md object-cover w-[80px] h-[80px] flex-shrink-0"
+      />
+      <div className="flex flex-col justify-between h-full w-full">
+        <p className="font-semibold">{cartItem.product.name}</p>
+        <div className="flex flex-row gap-2 justify-between items-center">
+          <div className="flex items-center gap-2">
+            {/* Contador de quantidade */}
+            <div className="flex items-center gap-2 border rounded-lg p-1">
+              <button
+                onClick={() =>
+                  updateQuantity(cartItem.product.id, cartItem.quantity - 1)
+                }
+                className="p-1 text-muted hover:text-black"
+              >
+                <MinusIcon className="w-3 h-3" />
+              </button>
+              <span>{cartItem.quantity}</span>
+              <button
+                onClick={() =>
+                  updateQuantity(cartItem.product.id, cartItem.quantity + 1)
+                }
+                className="p-1 text-muted hover:text-black"
+              >
+                <PlusIcon className="w-3 h-3" />
+              </button>
+            </div>
+            <button
+              onClick={() => removeFromCart(cartItem.product.id)}
+              className="p-2 text-muted hover:text-red-500 transition-colors"
+              title="Remover item"
+            >
+              <TrashIcon className="w-5 h-5" />
+            </button>
+          </div>
+          <p className="text-lg font-bold">
             {formatPrice(cartItem.product.price ?? 0)}
           </p>
         </div>
-      </div>
-
-      {/* Contador de quantidade */}
-      <div className="flex items-center gap-2 border rounded-lg px-3 py-2">
-        <button
-          onClick={() =>
-            updateQuantity(cartItem.product.id, cartItem.quantity - 1)
-          }
-          className="p-1 text-gray-600 hover:text-black"
-        >
-          <MinusIcon className="w-5 h-5" />
-        </button>
-        <span className="text-lg font-medium">{cartItem.quantity}</span>
-        <button
-          onClick={() =>
-            updateQuantity(cartItem.product.id, cartItem.quantity + 1)
-          }
-          className="p-1 text-gray-600 hover:text-black"
-        >
-          <PlusIcon className="w-5 h-5" />
-        </button>
       </div>
     </div>
   )

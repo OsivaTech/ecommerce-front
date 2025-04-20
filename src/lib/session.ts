@@ -58,3 +58,15 @@ export async function isAuthenticated() {
   const session = cookieStore.get(AUTH_TOKEN_KEY)
   return !!session
 }
+
+export async function getToken() {
+  const cookieStore = await cookies()
+  const session = cookieStore.get(AUTH_TOKEN_KEY)
+  return session?.value
+}
+
+export async function getApiToken() {
+  const token = await decrypt(await getToken())
+
+  return token?.token
+}

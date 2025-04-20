@@ -853,7 +853,8 @@ export interface paths {
       requestBody: {
         content: {
           'multipart/form-data': {
-            file: components['schemas']['IFormFile']
+            /** Format: binary */
+            file: string
           }
         }
       }
@@ -930,7 +931,7 @@ export interface paths {
             [name: string]: unknown
           }
           content: {
-            'application/json': components['schemas']['OrderResponse']
+            'application/json': components['schemas']['CreateOrderResponse']
           }
         }
         /** @description Bad Request */
@@ -2148,6 +2149,13 @@ export interface paths {
             'application/json': components['schemas']['UserResponse'][]
           }
         }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
         /** @description Forbidden */
         403: {
           headers: {
@@ -2200,6 +2208,15 @@ export interface paths {
             [name: string]: unknown
           }
           content?: never
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
         }
       }
     }
@@ -2390,9 +2407,21 @@ export interface components {
       name: string
     }
     CreateOrderRequest: {
+      items: components['schemas']['OrderItemRequest'][]
+      /** Format: double */
+      freightPrice: number
+    }
+    CreateOrderResponse: {
+      paymentPageUrl: string
       /** Format: int32 */
-      userId?: number
-      items?: components['schemas']['OrderItemRequest'][]
+      id: number
+      status: components['schemas']['OrderStatus']
+      /** Format: double */
+      totalAmount: number
+      items: components['schemas']['OrderItemResponse'][]
+      user: components['schemas']['UserResponse']
+      /** Format: date-time */
+      createdAt: string
     }
     CreateProductRequest: {
       name: string
@@ -2446,8 +2475,6 @@ export interface components {
       size: number
       contentType: string
     } | null
-    /** Format: binary */
-    IFormFile: string
     /** @enum {unknown} */
     MediaSize: 'None' | 'Square' | 'Wide' | 'UltraWide'
     /** @enum {unknown} */
@@ -2635,15 +2662,15 @@ export interface components {
       products?: components['schemas']['Product'][]
     }
     ShipmentSimulationResponse: {
-      name?: string
-      options?: components['schemas']['ShippingOptions'][]
+      name: string
+      options: components['schemas']['ShippingOptions'][]
     }
     ShippingOptions: {
-      type?: string
+      type: string
       /** Format: double */
-      price?: number
+      price: number
       /** Format: int32 */
-      sla?: number
+      sla: number
     }
     SignInRequest: {
       email: string

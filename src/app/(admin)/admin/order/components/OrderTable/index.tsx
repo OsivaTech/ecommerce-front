@@ -1,9 +1,9 @@
 import { columns } from '@/app/(admin)/admin/order/components/columns'
 import { DataTable } from '@/components/ui/data-table'
-import { ApiOrder } from '@/http/Order'
+import { OrderHttp } from '@/http/Order'
 
 export const OrderTable = async () => {
-  const orders = await ApiOrder.getOrders()
+  const orders = await OrderHttp.getOrders()
 
   if (orders.hasError) {
     return <div>Error</div>

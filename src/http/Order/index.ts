@@ -1,10 +1,25 @@
 import { OrderEndpoint } from '@/constants/endpoints'
-import { OrderResponse } from '@/types/api/Response/OrderResponse'
+import {
+  CreateOrderResponse,
+  OrderResponse,
+} from '@/types/api/Response/OrderResponse'
 import baseHttp from '../BaseHttp'
+import { CreateOrderRequest } from '@/types/api/Request/CreateOrderRequest'
 
-export class ApiOrder {
+export class OrderHttp {
+  private static http = baseHttp
+
   static async getOrders() {
-    const response = await baseHttp.get<OrderResponse>(OrderEndpoint)
+    await this.http.setUseAuth(true)
+    const response = await this.http.get<OrderResponse>(OrderEndpoint)
+    return response
+  }
+
+  static async createOrder(data: CreateOrderRequest) {
+    await this.http.setUseAuth(true)
+    const response = await this.http.post<CreateOrderResponse>(OrderEndpoint, {
+      body: JSON.stringify(data),
+    })
     return response
   }
 }
