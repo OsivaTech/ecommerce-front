@@ -4,7 +4,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { StatusBadge } from '@/components/StatusBadge'
-import { Button } from '@/components/ui/button'
 import { Check, ChevronDown, X } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { useState } from 'react'
@@ -27,13 +26,10 @@ export const StatusPopover = ({
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className="bg-transparent border-none cursor-pointer"
-        >
+        <div className="flex items-center cursor-pointer">
           <StatusBadge status={status} label={label} />
-          <ChevronDown />
-        </Button>
+          <ChevronDown className="ml-1 size-4" />
+        </div>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-[150px]">
         <div

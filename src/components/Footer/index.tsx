@@ -60,7 +60,7 @@ export default function Footer() {
     {
       title: 'Ajuda',
       items: [
-        { label: 'FAQ', href: `/${APP_LINKS.FAQ()}` },
+        { label: 'FAQ', href: `${APP_LINKS.FAQ()}` },
         {
           label: 'WhatsApp',
           href: 'https://wa.me/5531972498696',
