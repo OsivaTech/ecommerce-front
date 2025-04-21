@@ -45,16 +45,16 @@ export default function Footer() {
     {
       title: 'Navegação',
       items: [
-        { label: 'Loja', href: `/${APP_LINKS.STORE()}` },
-        { label: 'Sobre', href: `/${APP_LINKS.ABOUT()}` },
-        { label: 'Contate-nos', href: `/${APP_LINKS.CONTACT()}` },
+        { label: 'Loja', href: `${APP_LINKS.STORE()}` },
+        { label: 'Sobre', href: `${APP_LINKS.ABOUT()}` },
+        { label: 'Contate-nos', href: `${APP_LINKS.CONTACT()}` },
       ],
     },
     {
       title: 'Produtos',
       items: categories.map((category) => ({
         label: category.name,
-        href: `/${APP_LINKS.STORE()}#${category.name}`,
+        href: `${APP_LINKS.STORE()}#${category.name}`,
       })), // Preenche dinamicamente com base nas categorias
     },
     {
