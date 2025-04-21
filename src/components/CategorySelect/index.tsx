@@ -36,7 +36,7 @@ export const CategorySelect = ({
   return (
     <Select onValueChange={onChange} value={value}>
       <SelectTrigger disabled={isPending} className="w-full">
-        <SelectValue placeholder="Selecione uma categoria" />
+        <SelectValue placeholder="Selecione" />
         {isPending && <Loader2 className="animate-spin" />}
       </SelectTrigger>
       <SelectContent>

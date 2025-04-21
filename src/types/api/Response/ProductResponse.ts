@@ -9,3 +9,7 @@ export type ProductFeaturedResponse =
 
 export type ProductFeatured =
   components['schemas']['ProductResponseWithTotalOrders']
+
+export type CreateProductResponse = components['schemas']['ProductResponse']
+
+export type UpdateProductResponse = components['schemas']['ProductResponse']

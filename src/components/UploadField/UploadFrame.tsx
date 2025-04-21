@@ -1,10 +1,11 @@
 import { uploadFile } from '@/http/File'
 import { useRef, useState, useTransition } from 'react'
-import { Loader2, Upload } from 'lucide-react'
+import { Camera, Loader2, Upload } from 'lucide-react'
 import { FileResponse } from '@/types/api/Response/FileResponse'
 import toast from 'react-hot-toast'
 import Image from 'next/image'
 import { Label } from '@/components/ui/label'
+import { Button } from '../ui/button'
 
 export const UploadField = ({
   onChange,
@@ -44,7 +45,7 @@ export const UploadField = ({
       <div className="flex flex-col gap-2">
         <Label>Imagem do Produto</Label>
         <div
-          className="border border-gray-300 overflow-hidden rounded-md  w-[100px] h-[100px] flex items-center justify-center cursor-pointer"
+          className="border border-gray-300 overflow-hidden rounded-md w-[200px] h-[200px] flex items-center justify-center cursor-pointer"
           onClick={() => inputRef.current?.click()}
         >
           {!uploadedFile?.url && !isPending && (
@@ -55,13 +56,33 @@ export const UploadField = ({
           )}
           {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
           {uploadedFile?.url && (
-            <Image
-              src={uploadedFile.url}
-              alt="Uploaded file"
-              width={100}
-              height={100}
-              className=" object-fit"
-            />
+            <div className="w-[200px] h-[200px] relative overflow-hidden group">
+              <Image
+                src={uploadedFile.url}
+                alt={uploadedFile.name}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <Camera className="w-4 h-4" />
+                  Alterar imagem
+                </Button>
+              </div>
+            </div>
+
+            // <Image
+            //   src={uploadedFile.url}
+            //   alt="Uploaded file"
+            //   width={100}
+            //   height={100}
+            //   className=" object-fit"
+            // />
           )}
         </div>
       </div>

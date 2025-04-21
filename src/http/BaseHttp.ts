@@ -145,10 +145,10 @@ export class BaseHttp {
   ): Promise<ResponseData<T>> {
     const response = await fetch(`${this.baseUrl}${url}`, {
       method: 'DELETE',
-      ...(await this.getRequestOptions(options)),
+      ...(await this.getRequestOptions(options, false)),
     })
     if (response.ok) {
-      return { data: (await response.json()) as T, hasError: false }
+      return { data: {} as T, hasError: false }
     } else {
       return {
         error: await this.handleHttpError(response),

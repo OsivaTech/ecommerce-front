@@ -17,7 +17,7 @@ const getStatusConfig = (
   > = {
     None: { status: 'none', label: 'Nenhum' },
     Enabled: { status: 'enabled', label: 'Disponível' },
-    OutOfStock: { status: 'outOfStock', label: 'Sem Estoque' },
+    OutOfStock: { status: 'outOfStock', label: 'Sem estoque' },
     Disabled: { status: 'disabled', label: 'Desativado' },
   }
 
