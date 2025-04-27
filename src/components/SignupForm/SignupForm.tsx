@@ -230,6 +230,7 @@ export default function SignupForm() {
                     onChange={field.onChange}
                     value={null}
                     label="Anexar"
+                    uploadFunction={RegistrationHttp.uploadDocument}
                   />
                 </div>
               </FormControl>

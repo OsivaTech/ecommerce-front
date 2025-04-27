@@ -5,6 +5,8 @@ export const RegistrationRejectedEndpoint = (id: string) =>
   `/registration/${id}/reject`
 export const RegistrationEndpoint = '/registration'
 export const OrderEndpoint = '/orders'
+export const OrderCompleteEndpoint = (id: number) =>
+  `${OrderEndpoint}/${id}/complete`
 export const UserEndpoint = '/users'
 export const UserMeEndpoint = '/users/me'
 export const UserStatusEndpoint = (id: string) => `/users/${id}`
@@ -14,3 +16,5 @@ export const CategoryEndpoint = '/categories'
 export const FileEndpoint = '/files'
 export const AdvertisementEndpoint = '/advertisement'
 export const ShippingSimulateEndpoint = '/shipping/simulate'
+export const UploadDocumentEndpoint = '/registration/documents/upload'
+export const UploadProductImageEndpoint = '/products/images/upload'

@@ -1,9 +1,14 @@
-import { ProductEndpoint, ProductFeaturedEndpoint } from '@/constants/endpoints'
+import {
+  ProductEndpoint,
+  ProductFeaturedEndpoint,
+  UploadProductImageEndpoint,
+} from '@/constants/endpoints'
 import baseHttp from '@/http/BaseHttp'
 import {
   CreateProductRequest,
   UpdateProductRequest,
 } from '@/types/api/Request/ProductRequest'
+import { FileResponse } from '@/types/api/Response/FileResponse'
 import {
   Product,
   ProductResponse,
@@ -66,6 +71,19 @@ export class ProductHttp {
 
   static async deleteProduct(id: string): Promise<ResponseData<void>> {
     const response = await baseHttp.delete<void>(`${ProductEndpoint}/${id}`)
+    return response
+  }
+
+  static async uploadImage(file: File) {
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await baseHttp.post<FileResponse>(
+      UploadProductImageEndpoint,
+      {
+        body: formData,
+        headers: {},
+      },
+    )
     return response
   }
 }

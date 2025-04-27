@@ -853,8 +853,7 @@ export interface paths {
       requestBody: {
         content: {
           'multipart/form-data': {
-            /** Format: binary */
-            file: string
+            file: components['schemas']['IFormFile']
           }
         }
       }
@@ -2475,6 +2474,8 @@ export interface components {
       size: number
       contentType: string
     } | null
+    /** Format: binary */
+    IFormFile: string
     /** @enum {unknown} */
     MediaSize: 'None' | 'Square' | 'Wide' | 'UltraWide'
     /** @enum {unknown} */

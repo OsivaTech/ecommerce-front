@@ -14,12 +14,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { UploadField } from '@/components/UploadField'
+import { UploadFrame } from '@/components/UploadField'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { CategoryResponse } from '@/types/api/Response/CategoryResponse'
 import { CategoryHttp } from '@/http/Category'
 import { useEffect, useState } from 'react'
+import { ProductHttp } from '@/http/Product'
 
 const statusOptions = [
   { label: 'Ativo', value: 'Enabled' },
@@ -76,9 +77,10 @@ export const ProductForm = ({
                 control={form.control}
                 name="file.id"
                 render={({ field }) => (
-                  <UploadField
+                  <UploadFrame
                     onChange={field.onChange}
                     value={defaultValues?.file || null}
+                    uploadFunction={ProductHttp.uploadImage}
                   />
                 )}
               />
@@ -87,9 +89,10 @@ export const ProductForm = ({
                 control={form.control}
                 name="file.id"
                 render={({ field }) => (
-                  <UploadField
+                  <UploadFrame
                     onChange={field.onChange}
                     value={defaultValues?.file || null}
+                    uploadFunction={ProductHttp.uploadImage}
                   />
                 )}
               />

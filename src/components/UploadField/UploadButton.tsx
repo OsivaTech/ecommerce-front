@@ -1,4 +1,3 @@
-import { uploadFile } from '@/http/File'
 import { useRef, useState, useTransition } from 'react'
 import { Loader2 } from 'lucide-react'
 import { FileResponse } from '@/types/api/Response/FileResponse'
@@ -6,17 +5,20 @@ import toast from 'react-hot-toast'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { ResponseData } from '@/types/Error'
 
 export const UploadButton = ({
   onChange,
   value,
   label,
   className,
+  uploadFunction,
 }: {
   onChange: (fileId: number | null) => void
   value: FileResponse | null
   label: string
   className?: string
+  uploadFunction: (file: File) => Promise<ResponseData<FileResponse>>
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isPending, startTransition] = useTransition()
@@ -28,7 +30,7 @@ export const UploadButton = ({
     startTransition(async () => {
       const file = event.target.files?.[0]
       if (!file) return
-      const response = await uploadFile(file)
+      const response = await uploadFunction(file)
       if (response.hasError) {
         toast.error(response.error[0]?.message || 'Erro ao carregar arquivo')
         return
