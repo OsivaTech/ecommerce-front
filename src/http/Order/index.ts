@@ -1,10 +1,13 @@
-import { OrderEndpoint } from '@/constants/endpoints'
+import { OrderCompleteEndpoint, OrderEndpoint } from '@/constants/endpoints'
 import {
   CreateOrderResponse,
   OrderResponse,
 } from '@/types/api/Response/OrderResponse'
 import baseHttp from '../BaseHttp'
-import { CreateOrderRequest } from '@/types/api/Request/CreateOrderRequest'
+import {
+  CompleteOrderRequest,
+  CreateOrderRequest,
+} from '@/types/api/Request/OrderRequest'
 
 export class OrderHttp {
   private static http = baseHttp
@@ -21,5 +24,13 @@ export class OrderHttp {
       body: JSON.stringify(data),
     })
     return response
+  }
+
+  static async completeOrder(id: number, data: CompleteOrderRequest) {
+    await this.http.setUseAuth(true)
+    await this.http.patch(OrderCompleteEndpoint(id), {
+      body: JSON.stringify(data),
+    })
+    return true
   }
 }

@@ -13,17 +13,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'cdn.shopify.com',
-        port: '',
-      },
-      {
-        protocol: 'https',
-        hostname: 'r2est-catalogo.s3.sa-east-1.amazonaws.com',
-        port: '',
-      },
-      {
-        protocol: 'https',
         hostname: 'files.lsinjectable.com.br',
+        port: '',
+      },
+      {
+        protocol: 'https',
+        hostname: 'osiva.tech',
         port: '',
       },
     ],
