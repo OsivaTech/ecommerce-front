@@ -1,4 +1,4 @@
-import StoreProducts from '@/client/store/client/StoreProducts'
+import StoreProducts from '@/components/StoreProducts/StoreProducts'
 import { ProductHttp } from '@/http/Product'
 import { CategoryHttp } from '@/http/Category'
 

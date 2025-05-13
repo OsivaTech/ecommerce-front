@@ -6,11 +6,11 @@ import {
   ProductFeaturedResponse,
 } from '@/types/api/Response/ProductResponse'
 
-export const FeaturedProduct = ({
+export default function FeaturedProduct({
   products,
 }: {
   products: ProductFeaturedResponse
-}) => {
+}) {
   return (
     <section className="container mx-auto mt-12 px-4">
       <h2 className="text-xl font-bold mb-3 text-left">Produtos em Destaque</h2>

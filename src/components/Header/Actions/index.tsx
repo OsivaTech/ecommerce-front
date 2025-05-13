@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/context/useCart'
 import { useAuth } from '@/providers/Auth/AuthContext'
-import { APP_LINKS } from '../../../constants'
+import { APP_LINKS } from '../../../../constants'
 
 export const HeaderActions = () => {
   const router = useRouter()

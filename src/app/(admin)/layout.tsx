@@ -1,6 +1,6 @@
 import '../globals.css'
 import { AdminSideMenu } from '@/components/AdminSideMenu'
-import Header from '@/client/home/header/Header'
+import Header from '@/components/Header'
 import { ToastProvider } from '@/providers/Toast/ToastProvider'
 import { redirect } from 'next/navigation'
 import { isAuthenticated } from '@/lib/session'

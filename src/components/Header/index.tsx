@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import Logo from '@/assets/svg/logo'
-import { HeaderActions } from '@/components/HeaderActions'
-import { APP_LINKS } from '../../../../constants'
+import Image from 'next/image'
+import { HeaderActions } from '@/components/Header/Actions'
+import { APP_LINKS } from '../../../constants'
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -20,7 +20,7 @@ export default function Header() {
         {/* Esquerda - Logo e Links */}
         <div className="flex items-center gap-6">
           <Link href="/" className="text-2xl font-bold">
-            <Logo />
+            <Image src="/images/logo.svg" alt="Logo" width={20} height={36} />
           </Link>
 
           <nav className="hidden lg:flex gap-4">
