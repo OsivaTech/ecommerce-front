@@ -4,6 +4,7 @@ import {
   ShoppingCartIcon,
   CubeIcon,
   UsersIcon,
+  Cog6ToothIcon,
 } from '@heroicons/react/24/outline'
 import {
   ChartBarIcon as ChartBarIconSolid,
@@ -11,6 +12,7 @@ import {
   ShoppingCartIcon as ShoppingCartIconSolid,
   CubeIcon as CubeIconSolid,
   UsersIcon as UsersIconSolid,
+  Cog6ToothIcon as Cog6ToothIconSolid,
 } from '@heroicons/react/24/solid'
 import { APP_LINKS_ADMIN } from '../../constants'
 
@@ -49,6 +51,13 @@ export const menuItems = [
     icon: <UsersIcon className="h-6 w-6" />,
     iconSolid: <UsersIconSolid className="h-6 w-6" />,
     href: APP_LINKS_ADMIN.USER(),
+  },
+  {
+    id: 'settings',
+    title: 'Configurações',
+    icon: <Cog6ToothIcon className="h-6 w-6" />,
+    iconSolid: <Cog6ToothIconSolid className="h-6 w-6" />,
+    href: APP_LINKS_ADMIN.SETTINGS(),
   },
   // {
   //   id: 'about',

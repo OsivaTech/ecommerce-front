@@ -18,3 +18,5 @@ export const AdvertisementEndpoint = '/advertisement'
 export const ShippingSimulateEndpoint = '/shipping/simulate'
 export const UploadDocumentEndpoint = '/registration/documents/upload'
 export const UploadProductImageEndpoint = '/products/images/upload'
+export const SettingsEndpoint = '/settings'
+export const SettingsByIdEndpoint = (id: string) => `${SettingsEndpoint}/${id}`

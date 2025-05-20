@@ -361,6 +361,60 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/advertisement/images/upload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Upload advertisement image
+     * @description Upload an advertisement image.
+     */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'multipart/form-data': {
+            file: components['schemas']['IFormFile']
+          }
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['FileResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/auth/signin': {
     parameters: {
       query?: never
@@ -766,7 +820,7 @@ export interface paths {
     }
     /**
      * Get file by Id
-     * @description Get file by Id
+     * @description Get file by its Id.
      */
     get: {
       parameters: {
@@ -803,7 +857,7 @@ export interface paths {
     post?: never
     /**
      * Delete file
-     * @description Delete file
+     * @description Delete file by its Id.
      */
     delete: {
       parameters: {
@@ -825,51 +879,6 @@ export interface paths {
         }
       }
     }
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  '/files': {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /**
-     * Upload file
-     * @description Upload file
-     */
-    post: {
-      parameters: {
-        query?: never
-        header?: never
-        path?: never
-        cookie?: never
-      }
-      requestBody: {
-        content: {
-          'multipart/form-data': {
-            file: components['schemas']['IFormFile']
-          }
-        }
-      }
-      responses: {
-        /** @description Created */
-        201: {
-          headers: {
-            [name: string]: unknown
-          }
-          content: {
-            'application/json': components['schemas']['FileResponse']
-          }
-        }
-      }
-    }
-    delete?: never
     options?: never
     head?: never
     patch?: never
@@ -1374,6 +1383,60 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/products/images/upload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Upload product image
+     * @description Upload a product image.
+     */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'multipart/form-data': {
+            file: components['schemas']['IFormFile']
+          }
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['FileResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/providers/melhorenvio/setup': {
     parameters: {
       query?: never
@@ -1381,20 +1444,24 @@ export interface paths {
       path?: never
       cookie?: never
     }
+    get?: never
+    put?: never
     /**
      * Setup MelhorEnvio provider
      * @description Setup provider with the given code. This route should be used as callback for the MelhorEnvio configuration page.
      */
-    get: {
+    post: {
       parameters: {
-        query: {
-          code: string
-        }
+        query?: never
         header?: never
         path?: never
         cookie?: never
       }
-      requestBody?: never
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['SetupMelhorEnvioRequest']
+        }
+      }
       responses: {
         /** @description No Content */
         204: {
@@ -1412,8 +1479,6 @@ export interface paths {
         }
       }
     }
-    put?: never
-    post?: never
     delete?: never
     options?: never
     head?: never
@@ -1643,6 +1708,60 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/registration/documents/upload': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Upload documents for a registration
+     * @description Upload documents for a registration in the system.
+     */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'multipart/form-data': {
+            file: components['schemas']['IFormFile']
+          }
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['FileResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/reports/sales/summary': {
     parameters: {
       query?: never
@@ -1783,6 +1902,133 @@ export interface paths {
       }
     }
     put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/settings': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * List all settings
+     * @description Returns a list of all site settings.
+     */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['SettingResponse'][]
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/settings/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get setting by id
+     * @description Returns a setting by its unique identifier.
+     */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['SettingResponse']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    /**
+     * Update setting
+     * @description Updates an existing setting by its id.
+     */
+    put: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['UpdateSettingRequest']
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['SettingResponse']
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
     post?: never
     delete?: never
     options?: never
@@ -2392,6 +2638,7 @@ export interface components {
       captureMethod: string
       orderNsu: string
       slug: string
+      paymentMethod?: components['schemas']['PaymentMethod']
     }
     CreateAddressRequest: {
       street?: string
@@ -2658,6 +2905,25 @@ export interface components {
       /** Format: int32 */
       totalOrder: number
     }
+    SettingResponse: {
+      /** Format: int32 */
+      id?: number
+      name: string
+      value: string
+      type: string
+    }
+    /** @enum {unknown} */
+    SettingValueType:
+      | 'String'
+      | 'Integer'
+      | 'Decimal'
+      | 'Boolean'
+      | 'Date'
+      | 'DateTime'
+      | 'Uri'
+    SetupMelhorEnvioRequest: {
+      code: string
+    }
     ShipmentSimulationRequest: {
       postalCode?: string
       products?: components['schemas']['Product'][]
@@ -2717,6 +2983,11 @@ export interface components {
       categoryId: number
       status: components['schemas']['ProductStatus']
       dimensions: components['schemas']['ProductDimensions']
+    }
+    UpdateSettingRequest: {
+      name: string
+      value: string
+      type: components['schemas']['SettingValueType']
     }
     UpdateStockMovementRequest: {
       /** Format: int32 */
