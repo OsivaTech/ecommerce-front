@@ -12,22 +12,31 @@ import AddToCart from '../AddToCart'
 export const ProductCard = ({ product }: { product: Product }) => {
   const router = useRouter()
   const { isAuthenticated } = useAuth()
+  const isOutOfStock = product.stock === 0
 
   return (
-    <Card className="py-4 w-[300px] h-[419px] hover:scale-102 transition-all duration-300">
+    <Card className="py-4 w-[300px] h-[419px] hover:scale-102 transition-all duration-300 relative overflow-hidden">
+      {isOutOfStock && (
+        <>
+          <div className="absolute inset-0 bg-black/40 z-10 rounded-lg" />
+          <div className="absolute top-3 right-3 bg-gray-800 text-white px-2 py-1 rounded-md text-sm font-medium z-20">
+            Sem estoque
+          </div>
+        </>
+      )}
       <div
         className="flex flex-col h-full gap-2 px-[30px] cursor-pointer"
         onClick={() => {
           router.push(`/store/${product.id}`)
         }}
       >
-        <div className="flex flex-col h-[189px] min-w-[244px]">
+        <div className="flex flex-col h-[189px] min-w-[244px] rounded-md items-center justify-center">
           <Image
             src={product.file.url}
             alt="Product Image"
             width={244}
             height={189}
-            className="object-cover h-[189px] w-[244px]"
+            className="object-contain h-full w-full p-2"
           />
         </div>
         <div className="flex flex-col justify-between h-full">
