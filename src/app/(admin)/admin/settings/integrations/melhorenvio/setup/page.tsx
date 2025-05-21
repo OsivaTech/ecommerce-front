@@ -21,7 +21,9 @@ export default function MelhorEnvioSuccessPage() {
         return
       }
       try {
-        const response = await ProvidersHttp.setupMelhorEnvio({ code })
+        const response = await ProvidersHttp.completeSetupMelhorEnvio({
+          code,
+        })
         if (response.hasError) {
           setStatus('error')
           setErrorMsg(response.error?.[0]?.message || 'Erro desconhecido.')

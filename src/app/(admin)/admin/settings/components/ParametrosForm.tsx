@@ -48,14 +48,21 @@ export function ParametrosForm() {
     const newConfigs = [...configs]
     const config = newConfigs[idx]
     if (config && typeof config.id === 'number') {
-      newConfigs[idx] = {
-        ...config,
-        [e.target.name]: e.target.value,
-        name: config.name || '',
-        type: config.type || '',
+      if (e.target.name === 'type') {
+        newConfigs[idx] = {
+          ...config,
+          type: e.target.value as SettingValueType,
+        }
+        setConfigs(newConfigs)
+        setChanged({ ...changed, [config.id]: e.target.value })
+      } else {
+        newConfigs[idx] = {
+          ...config,
+          [e.target.name]: e.target.value,
+        }
+        setConfigs(newConfigs)
+        setChanged({ ...changed, [config.id]: e.target.value })
       }
-      setConfigs(newConfigs)
-      setChanged({ ...changed, [config.id]: e.target.value })
     }
   }
 
@@ -68,11 +75,11 @@ export function ParametrosForm() {
       if (
         config &&
         typeof config.id === 'number' &&
-        config.name &&
+        config.displayName &&
         config.type
       ) {
         const response = await SettingsHttp.updateSetting(config.id, {
-          name: config.name,
+          displayName: config.displayName,
           value: config.value,
           type: config.type,
         })
@@ -100,14 +107,16 @@ export function ParametrosForm() {
         <div className="flex items-center gap-2" key={config.id ?? idx}>
           <div className="w-10 text-sm text-gray-700">{config.id}</div>
           <div className="w-56 truncate text-sm text-gray-700">
-            <Label htmlFor={config.name}>{config.name}</Label>
+            <Label htmlFor={config.name}>
+              {config.displayName || config.name}
+            </Label>
           </div>
           <div className="w-40">
             <select
               name="type"
               value={config.type}
               onChange={(e) => handleChange(e, idx)}
-              disabled={loading || saving}
+              disabled={loading || saving || config.isReadOnly}
               className="w-full border rounded px-2 py-1 text-sm"
             >
               {SETTING_TYPE_VALUES.map((opt) => (
@@ -123,7 +132,7 @@ export function ParametrosForm() {
               name="value"
               value={config.value}
               onChange={(e) => handleChange(e, idx)}
-              disabled={loading || saving}
+              disabled={loading || saving || config.isReadOnly}
             />
           </div>
         </div>

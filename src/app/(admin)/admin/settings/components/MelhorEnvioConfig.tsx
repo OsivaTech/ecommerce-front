@@ -1,48 +1,90 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline'
+import { CheckCircle } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { ProvidersHttp } from '@/http/Providers'
 
 export function MelhorEnvioConfig() {
   const [clientId, setClientId] = useState('')
-  const redirectUri =
-    'https://lsinjectable.com.br/admin/settings/integrations/melhorenvio/setup'
+  const [clientSecret, setClientSecret] = useState('')
+  const [redirectUri, setRedirectUri] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [statusLoading, setStatusLoading] = useState(true)
+  const [isConfigured, setIsConfigured] = useState<boolean | null>(null)
+  const [showForm, setShowForm] = useState(false)
 
-  const generateAuthUrl = () => {
-    if (!clientId) {
-      toast.error('Preencha o Client Id')
+  useEffect(() => {
+    async function fetchStatus() {
+      setStatusLoading(true)
+      try {
+        const response = await ProvidersHttp.getStatusMelhorEnvio()
+        if (!response.hasError && response.data) {
+          setIsConfigured(response.data.isConfigured ?? false)
+          setShowForm(!(response.data.isConfigured ?? false))
+        } else {
+          setIsConfigured(false)
+          setShowForm(true)
+        }
+      } catch {
+        setIsConfigured(false)
+        setShowForm(true)
+      } finally {
+        setStatusLoading(false)
+      }
+    }
+    fetchStatus()
+  }, [])
+
+  const handleConfig = async () => {
+    if (!clientId || !clientSecret || !redirectUri) {
+      toast.error('Preencha todos os campos')
       return
     }
+    setLoading(true)
+    try {
+      const response = await ProvidersHttp.setupMelhorEnvio({
+        clientId,
+        clientSecret,
+        redirectUri,
+      })
 
-    const scopes = [
-      'shipping-calculate',
-      'shipping-cancel',
-      'shipping-checkout',
-      'shipping-companies',
-      'shipping-generate',
-      'shipping-preview',
-      'shipping-print',
-      'shipping-share',
-      'shipping-tracking',
-      'ecommerce-shipping',
-      'cart-read',
-      'cart-write',
-    ].join(' ')
+      if (response.hasError) {
+        toast.error(
+          response.error?.[0]?.message || 'Erro ao gerar URL de autenticação.',
+        )
+      } else {
+        window.open(response.data.url, '_blank')
+      }
+    } catch (e) {
+      toast.error('Erro inesperado ao gerar URL de autenticação.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
-    const baseUrl = 'https://sandbox.melhorenvio.com.br/oauth/authorize'
-    const params = new URLSearchParams({
-      client_id: clientId,
-      redirect_uri: redirectUri,
-      response_type: 'code',
-      scope: scopes,
-    })
+  if (statusLoading) {
+    return (
+      <div className="text-center py-8">Carregando status da integração...</div>
+    )
+  }
 
-    const authUrl = `${baseUrl}?${params.toString()}`
-    window.open(authUrl, '_blank')
+  if (isConfigured && !showForm) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-4 p-6">
+        <CheckCircle className="w-16 h-16 text-green-600 mb-2" />
+        <span className="text-green-700 font-semibold text-lg">
+          Integração já configurada!
+        </span>
+        <Button variant="outline" onClick={() => setShowForm(true)}>
+          Reconfigurar
+        </Button>
+      </div>
+    )
   }
 
   return (
@@ -64,14 +106,33 @@ export function MelhorEnvioConfig() {
             placeholder="Digite o Client Id"
           />
         </div>
-
+        <div className="space-y-2">
+          <Label htmlFor="clientSecret">Client Secret</Label>
+          <Input
+            id="clientSecret"
+            value={clientSecret}
+            onChange={(e) => setClientSecret(e.target.value)}
+            placeholder="Digite o Client Secret"
+            type="password"
+          />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="redirectUri">Redirect URI</Label>
+          <Input
+            id="redirectUri"
+            value={redirectUri}
+            onChange={(e) => setRedirectUri(e.target.value)}
+            placeholder="Digite a Redirect URI"
+          />
+        </div>
         <Button
           variant="outline"
           className="gap-2 w-full"
-          onClick={generateAuthUrl}
+          onClick={handleConfig}
+          disabled={loading}
         >
           <ArrowTopRightOnSquareIcon className="h-4 w-4" />
-          Configurar Melhor Envio
+          {loading ? 'Gerando URL...' : 'Configurar Melhor Envio'}
         </Button>
       </div>
     </div>

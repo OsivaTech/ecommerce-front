@@ -1447,8 +1447,8 @@ export interface paths {
     get?: never
     put?: never
     /**
-     * Setup MelhorEnvio provider
-     * @description Setup provider with the given code. This route should be used as callback for the MelhorEnvio configuration page.
+     * Setup MelhorEnvio provider initial settings
+     * @description Setup provider with clientId, clientSecret and redirectUri.
      */
     post: {
       parameters: {
@@ -1460,6 +1460,56 @@ export interface paths {
       requestBody: {
         content: {
           'application/json': components['schemas']['SetupMelhorEnvioRequest']
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['SetupMelhorEnvioResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/providers/melhorenvio/setup/complete': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Complete MelhorEnvio setup
+     * @description Finish the setup process for MelhorEnvio provider.
+     */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['CompleteSetupMelhorEnvioRequest']
         }
       }
       responses: {
@@ -1479,6 +1529,45 @@ export interface paths {
         }
       }
     }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/providers/melhorenvio/status': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get MelhorEnvio setup status
+     * @description Returns if MelhorEnvio provider is already configured.
+     */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['StatusMelhorEnvioResponse']
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
     delete?: never
     options?: never
     head?: never
@@ -2640,6 +2729,9 @@ export interface components {
       slug: string
       paymentMethod?: components['schemas']['PaymentMethod']
     }
+    CompleteSetupMelhorEnvioRequest: {
+      code: string
+    }
     CreateAddressRequest: {
       street?: string
       number?: string | null
@@ -2909,8 +3001,10 @@ export interface components {
       /** Format: int32 */
       id?: number
       name: string
+      displayName: string
       value: string
       type: string
+      isReadOnly: boolean
     }
     /** @enum {unknown} */
     SettingValueType:
@@ -2922,7 +3016,12 @@ export interface components {
       | 'DateTime'
       | 'Uri'
     SetupMelhorEnvioRequest: {
-      code: string
+      clientId: string
+      clientSecret: string
+      redirectUri: string
+    }
+    SetupMelhorEnvioResponse: {
+      url: string
     }
     ShipmentSimulationRequest: {
       postalCode?: string
@@ -2942,6 +3041,9 @@ export interface components {
     SignInRequest: {
       email: string
       password: string
+    }
+    StatusMelhorEnvioResponse: {
+      isConfigured?: boolean
     }
     StockMovementResponse: {
       /** Format: int32 */
@@ -2985,7 +3087,7 @@ export interface components {
       dimensions: components['schemas']['ProductDimensions']
     }
     UpdateSettingRequest: {
-      name: string
+      displayName: string
       value: string
       type: components['schemas']['SettingValueType']
     }

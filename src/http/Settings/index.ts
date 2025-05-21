@@ -16,7 +16,7 @@ export class SettingsHttp {
 
   static async updateSetting(
     id: number,
-    data: { name: string; value: string; type: string },
+    data: { displayName: string; value: string; type: string },
   ) {
     return baseHttp.put<SettingResponse>(`/settings/${id}`, {
       body: JSON.stringify(data),
