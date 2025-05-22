@@ -136,3 +136,40 @@
     @apply bg-background text-foreground;
   }
 }
+
+@tailwind utilities;
+
+@layer components {
+  .rich-text-content {
+    @apply text-muted-foreground;
+  }
+
+  .rich-text-content h1 {
+    @apply text-4xl font-bold mb-4 mt-6 text-foreground;
+  }
+
+  .rich-text-content h2 {
+    @apply text-3xl font-semibold mb-3 mt-5 text-foreground;
+  }
+
+  .rich-text-content h3 {
+    @apply text-2xl font-semibold mb-3 mt-4 text-foreground;
+  }
+
+
+  .rich-text-content strong {
+    @apply font-semibold text-foreground;
+  }
+
+  .rich-text-content ul {
+    @apply list-disc pl-6 mb-4;
+  }
+
+  .rich-text-content ol {
+    @apply list-decimal pl-6 mb-4;
+  }
+
+  .rich-text-content li {
+    @apply mb-2;
+  }
+}

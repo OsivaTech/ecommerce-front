@@ -91,7 +91,10 @@ export default function ProductPage({
         </div>
       </div>
       <p className="text-2xl font-bold">Descrição</p>
-      <p className="text-base text-muted">{product.data.description}</p>
+      <div
+        className="rich-text-content"
+        dangerouslySetInnerHTML={{ __html: product.data.description }}
+      />
     </div>
   )
 }

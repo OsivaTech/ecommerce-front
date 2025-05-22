@@ -7,6 +7,7 @@ import { useState, useTransition } from 'react'
 import { toast } from 'react-hot-toast'
 import { ConfirmationModal } from '@/components/ConfirmationModal'
 import { useRouter } from 'next/navigation'
+import { ProductFormData } from '@/components/ProductForm/productSchema'
 
 export const ActionsCell = ({ row }: { row: Row<Product> }) => {
   const [open, setOpen] = useState(false)
@@ -27,6 +28,11 @@ export const ActionsCell = ({ row }: { row: Row<Product> }) => {
     })
   }
 
+  const productFormData: ProductFormData = {
+    ...row.original,
+    price: row.original.price ?? 0,
+  }
+
   return (
     <div className="flex gap-2">
       <PencilIcon
@@ -37,7 +43,7 @@ export const ActionsCell = ({ row }: { row: Row<Product> }) => {
         <StockModal
           open={open}
           setOpen={setOpen}
-          product={row.original}
+          product={productFormData}
           mode="update"
         />
       )}

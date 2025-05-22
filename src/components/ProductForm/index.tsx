@@ -23,6 +23,7 @@ import { CategoryHttp } from '@/http/Category'
 import { useEffect, useState } from 'react'
 import { ProductHttp } from '@/http/Product'
 import { toast } from 'react-hot-toast'
+import { RichTextEditor } from '@/components/RichTextEditor'
 
 const statusOptions = [
   { label: 'Ativo', value: 'Enabled' },
@@ -225,10 +226,10 @@ export const ProductForm = ({
             <FormItem>
               <FormLabel>Descrição</FormLabel>
               <FormControl>
-                <textarea
-                  {...field}
-                  className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                <RichTextEditor
                   value={field.value || ''}
+                  onChange={field.onChange}
+                  placeholder="Digite a descrição do produto..."
                 />
               </FormControl>
               <FormMessage />
