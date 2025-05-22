@@ -12,7 +12,7 @@ export const UploadFrame = ({
   uploadFunction,
   value,
 }: {
-  onChange: (fileId: number | null) => void
+  onChange: (file: FileResponse | null) => void
   value: FileResponse | null
   uploadFunction: (file: File) => Promise<ResponseData<FileResponse>>
 }) => {
@@ -32,7 +32,7 @@ export const UploadFrame = ({
         return
       }
       setUploadedFile(response.data)
-      onChange(response.data?.id || 0)
+      onChange(response.data)
     })
   }
 

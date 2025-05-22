@@ -3,6 +3,7 @@ import { ProductForm } from '@/components/ProductForm'
 import { ProductFormData } from '@/components/ProductForm/productSchema'
 import { ProductHttp } from '@/http/Product'
 import { toast } from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 export const StockModal = ({
   open,
@@ -15,6 +16,8 @@ export const StockModal = ({
   product: ProductFormData | null
   mode?: 'create' | 'update'
 }) => {
+  const router = useRouter()
+
   const onSubmit = async (data: ProductFormData) => {
     if (mode === 'create') {
       const response = await ProductHttp.createProduct({
@@ -36,6 +39,8 @@ export const StockModal = ({
         toast.error(response.error[0]?.message || 'Erro ao criar produto')
       } else {
         toast.success('Produto criado com sucesso')
+        setOpen(false)
+        router.refresh()
       }
     } else {
       if (!product?.id) {
@@ -62,6 +67,8 @@ export const StockModal = ({
         toast.error(response.error[0]?.message || 'Erro ao atualizar produto')
       } else {
         toast.success('Produto atualizado com sucesso')
+        setOpen(false)
+        router.refresh()
       }
     }
   }
@@ -76,8 +83,13 @@ export const StockModal = ({
       }
       open={open}
       setOpen={setOpen}
+      className="w-[800px]"
     >
-      <ProductForm onSubmit={onSubmit} defaultValues={product} />
+      <ProductForm
+        onSubmit={onSubmit}
+        defaultValues={product}
+        onCancel={() => setOpen(false)}
+      />
     </Modal>
   )
 }

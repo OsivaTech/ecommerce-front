@@ -14,6 +14,7 @@ export const Modal = ({
   open,
   setOpen,
   description,
+  className,
 }: {
   children: React.ReactNode
   title: string
@@ -21,11 +22,12 @@ export const Modal = ({
   open: boolean
   setOpen: (open: boolean) => void
   description: string
+  className?: string
 }) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent>
+      <DialogContent className={className}>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

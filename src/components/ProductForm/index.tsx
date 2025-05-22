@@ -11,6 +11,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
@@ -21,6 +22,7 @@ import { CategoryResponse } from '@/types/api/Response/CategoryResponse'
 import { CategoryHttp } from '@/http/Category'
 import { useEffect, useState } from 'react'
 import { ProductHttp } from '@/http/Product'
+import { toast } from 'react-hot-toast'
 
 const statusOptions = [
   { label: 'Ativo', value: 'Enabled' },
@@ -31,9 +33,11 @@ const statusOptions = [
 export const ProductForm = ({
   onSubmit,
   defaultValues,
+  onCancel,
 }: {
   onSubmit: (data: ProductFormData) => void
   defaultValues?: ProductFormData | null
+  onCancel?: () => void
 }) => {
   const [categories, setCategories] = useState<CategoryResponse>([])
 
@@ -51,13 +55,19 @@ export const ProductForm = ({
     resolver: zodResolver(productSchema),
     defaultValues: {
       id: defaultValues?.id,
-      name: defaultValues?.name,
-      description: defaultValues?.description,
-      price: defaultValues?.price,
-      stock: defaultValues?.stock,
-      category: defaultValues?.category,
-      file: defaultValues?.file,
-      status: defaultValues?.status,
+      name: defaultValues?.name || '',
+      description: defaultValues?.description || '',
+      price: defaultValues?.price || 0,
+      stock: defaultValues?.stock || 0,
+      category: defaultValues?.category || { id: 0, name: '' },
+      file: defaultValues?.file || {
+        id: 0,
+        name: '',
+        url: '',
+        size: 0,
+        contentType: '',
+      },
+      status: defaultValues?.status || 'Enabled',
       dimensions: defaultValues?.dimensions || {
         width: 0,
         height: 0,
@@ -67,38 +77,52 @@ export const ProductForm = ({
     },
   })
 
+  const handleSubmit = async (data: ProductFormData) => {
+    try {
+      console.log('Form data:', data)
+      if (!data.file.id) {
+        toast.error('A imagem do produto é obrigatória')
+        return
+      }
+      await onSubmit(data)
+    } catch (error) {
+      console.error('Erro ao enviar formulário:', error)
+    }
+  }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         <div className="flex gap-4">
-          <div className="relative">
-            {defaultValues?.file?.url ? (
-              <FormField
-                control={form.control}
-                name="file.id"
-                render={({ field }) => (
+          <FormField
+            control={form.control}
+            name="file"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
                   <UploadFrame
-                    onChange={field.onChange}
-                    value={defaultValues?.file || null}
+                    onChange={(file) => {
+                      field.onChange(file)
+                      form.setValue(
+                        'file',
+                        file || {
+                          id: 0,
+                          name: '',
+                          url: '',
+                          size: 0,
+                          contentType: '',
+                        },
+                      )
+                    }}
+                    value={field.value}
                     uploadFunction={ProductHttp.uploadImage}
                   />
-                )}
-              />
-            ) : (
-              <FormField
-                control={form.control}
-                name="file.id"
-                render={({ field }) => (
-                  <UploadFrame
-                    onChange={field.onChange}
-                    value={defaultValues?.file || null}
-                    uploadFunction={ProductHttp.uploadImage}
-                  />
-                )}
-              />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )}
-          </div>
-          <div className="flex flex-col gap-4">
+          />
+          <div className="flex flex-col gap-4 w-full">
             <FormField
               control={form.control}
               name="name"
@@ -108,10 +132,11 @@ export const ProductForm = ({
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-2">
               <FormField
                 control={form.control}
                 name="category.id"
@@ -131,6 +156,7 @@ export const ProductForm = ({
                         value={field.value?.toString() || ''}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -149,16 +175,17 @@ export const ProductForm = ({
                         value={field.value || ''}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <div className="flex gap-2 w-full">
+            <div className="flex gap-2">
               <FormField
                 control={form.control}
                 name="status"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="w-3/5">
                     <FormLabel>Status</FormLabel>
                     <FormControl>
                       <StatusSelect
@@ -167,6 +194,7 @@ export const ProductForm = ({
                         options={statusOptions}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -183,6 +211,7 @@ export const ProductForm = ({
                         onChange={(e) => field.onChange(Number(e.target.value))}
                       />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -202,13 +231,13 @@ export const ProductForm = ({
                   value={field.value || ''}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <h3 className="text-lg font-medium">Dimensões</h3>
-            <span className="text-sm text-muted-foreground">(opcional)</span>
           </div>
           <div className="flex gap-2">
             <FormField
@@ -220,10 +249,12 @@ export const ProductForm = ({
                   <FormControl>
                     <Input
                       type="number"
+                      step="0.01"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -236,10 +267,12 @@ export const ProductForm = ({
                   <FormControl>
                     <Input
                       type="number"
+                      step="0.01"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -252,10 +285,12 @@ export const ProductForm = ({
                   <FormControl>
                     <Input
                       type="number"
+                      step="0.01"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -273,6 +308,7 @@ export const ProductForm = ({
                       onChange={(e) => field.onChange(Number(e.target.value))}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -280,7 +316,12 @@ export const ProductForm = ({
         </div>
         <Separator />
         <div className="flex gap-2">
-          <Button type="button" variant="outline" className="w-1/2">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-1/2"
+            onClick={onCancel}
+          >
             Cancelar
           </Button>
           <Button type="submit" className="w-1/2">

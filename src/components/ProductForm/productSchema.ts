@@ -6,21 +6,19 @@ const categorySchema = z.object({
 })
 
 const fileSchema = z.object({
-  id: z.number(),
+  id: z.number().min(1, 'A imagem é obrigatória'),
   name: z.string(),
   url: z.string(),
   size: z.number(),
   contentType: z.string(),
 })
 
-const dimensionsSchema = z
-  .object({
-    width: z.number().min(0, 'A largura deve ser maior ou igual a 0'),
-    height: z.number().min(0, 'A altura deve ser maior ou igual a 0'),
-    length: z.number().min(0, 'O comprimento deve ser maior ou igual a 0'),
-    weight: z.number().min(0, 'O peso deve ser maior ou igual a 0'),
-  })
-  .optional()
+const dimensionsSchema = z.object({
+  width: z.number().min(0.01, 'A largura deve ser maior que zero'),
+  height: z.number().min(0.01, 'A altura deve ser maior que zero'),
+  length: z.number().min(0.01, 'O comprimento deve ser maior que zero'),
+  weight: z.number().min(0.01, 'O peso deve ser maior que zero'),
+})
 
 export const productSchema = z.object({
   id: z.number().optional(),
@@ -28,10 +26,8 @@ export const productSchema = z.object({
   description: z.string().min(1, 'A descrição é obrigatória'),
   price: z
     .number()
-    .min(0, 'O preço deve ser maior ou igual a 0')
-    .nullable()
-    .optional(),
-  stock: z.number().min(0, 'O estoque deve ser maior ou igual a 0'),
+    .min(0.01, 'O preço é obrigatório e deve ser maior que zero'),
+  stock: z.number().min(0, 'O estoque deve ser maior ou igual a 0').optional(),
   category: categorySchema,
   file: fileSchema,
   status: z.string().min(1, 'O status é obrigatório'),
