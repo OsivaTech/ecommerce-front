@@ -2785,11 +2785,11 @@ export interface components {
     }
     CreateStockMovementRequest: {
       /** Format: int32 */
-      productId?: number
+      productId: number
       /** Format: int32 */
-      quantity?: number
-      movementType?: components['schemas']['StockMovementType']
-      source?: string
+      quantity: number
+      movementType: components['schemas']['StockMovementType']
+      source: components['schemas']['StockMovementSource']
     }
     Error: {
       code?: string | null
@@ -3047,16 +3047,18 @@ export interface components {
     }
     StockMovementResponse: {
       /** Format: int32 */
-      id?: number
+      id: number
       /** Format: int32 */
-      productId?: number
+      productId: number
       /** Format: int32 */
-      quantity?: number
-      movementType?: components['schemas']['StockMovementType']
+      quantity: number
+      movementType: components['schemas']['StockMovementType']
       /** Format: date-time */
-      createdAt?: string
-      source?: string
+      createdAt: string
+      source: components['schemas']['StockMovementSource']
     }
+    /** @enum {unknown} */
+    StockMovementSource: 'None' | 'Site' | 'External'
     /** @enum {unknown} */
     StockMovementType: 'None' | 'InitialStock' | 'Entry' | 'Exit' | 'Adjustment'
     UpdateAddressRequest: {

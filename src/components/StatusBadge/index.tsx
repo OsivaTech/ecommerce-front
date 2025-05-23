@@ -1,21 +1,22 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
 
-type StatusBadgeProps = {
+export type StatusBadgeProps = {
   status:
     | 'none'
+    | 'enabled'
+    | 'outOfStock'
+    | 'disabled'
     | 'pending'
     | 'processing'
     | 'approved'
     | 'completed'
     | 'canceled'
     | 'rejected'
-    | 'enabled'
-    | 'outOfStock'
-    | 'disabled'
-  variant?: 'default' | 'destructive'
+  variant?: 'default' | 'secondary' | 'outline'
   label: string
 }
+
 export const StatusBadge = ({
   status,
   variant = 'default',
@@ -24,7 +25,7 @@ export const StatusBadge = ({
   return (
     <Badge
       className={cn(
-        'cursor-pointer text-title',
+        'cursor-pointer text-title w-24 text-center',
         status === 'none' && 'bg-[#B0BEC5]',
         status === 'disabled' && 'bg-[#B0BEC5]',
         status === 'pending' && 'bg-[#FFEB3B]',

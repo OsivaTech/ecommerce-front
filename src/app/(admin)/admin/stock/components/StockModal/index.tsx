@@ -4,6 +4,8 @@ import { ProductFormData } from '@/components/ProductForm/productSchema'
 import { ProductHttp } from '@/http/Product'
 import { toast } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import { StockMovementModal } from '../StockMovementModal'
 
 export const StockModal = ({
   open,
@@ -17,6 +19,7 @@ export const StockModal = ({
   mode?: 'create' | 'update'
 }) => {
   const router = useRouter()
+  const [stockModalOpen, setStockModalOpen] = useState(false)
 
   const onSubmit = async (data: ProductFormData) => {
     if (mode === 'create') {
@@ -73,23 +76,42 @@ export const StockModal = ({
     }
   }
 
+  const handleStockUpdateSuccess = () => {
+    setStockModalOpen(false)
+    setOpen(false)
+  }
+
   return (
-    <Modal
-      title={mode === 'create' ? 'Adicionar produto' : 'Atualizar produto'}
-      description={
-        mode === 'create'
-          ? 'Adicione um produto ao estoque'
-          : 'Atualize as informações do produto'
-      }
-      open={open}
-      setOpen={setOpen}
-      className="w-[800px]"
-    >
-      <ProductForm
-        onSubmit={onSubmit}
-        defaultValues={product}
-        onCancel={() => setOpen(false)}
-      />
-    </Modal>
+    <>
+      <Modal
+        title={mode === 'create' ? 'Adicionar produto' : 'Atualizar produto'}
+        description={
+          mode === 'create'
+            ? 'Adicione um produto ao estoque'
+            : 'Atualize as informações do produto'
+        }
+        open={open}
+        setOpen={setOpen}
+        className="w-[800px]"
+      >
+        <ProductForm
+          onSubmit={onSubmit}
+          defaultValues={product}
+          onCancel={() => setOpen(false)}
+          disableStockInput={mode === 'update'}
+          onStockUpdateClick={() => setStockModalOpen(true)}
+        />
+      </Modal>
+
+      {product?.id && (
+        <StockMovementModal
+          open={stockModalOpen}
+          setOpen={setStockModalOpen}
+          productId={product.id.toString()}
+          currentStock={product.stock || 0}
+          onSuccess={handleStockUpdateSuccess}
+        />
+      )}
+    </>
   )
 }

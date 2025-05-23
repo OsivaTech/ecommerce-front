@@ -14,7 +14,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Separator } from '@/components/ui/separator'
 import { UploadFrame } from '@/components/UploadField'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -24,6 +23,7 @@ import { useEffect, useState } from 'react'
 import { ProductHttp } from '@/http/Product'
 import { toast } from 'react-hot-toast'
 import { RichTextEditor } from '@/components/RichTextEditor'
+import { PencilIcon } from '@heroicons/react/24/outline'
 
 const statusOptions = [
   { label: 'Ativo', value: 'Enabled' },
@@ -35,10 +35,14 @@ export const ProductForm = ({
   onSubmit,
   defaultValues,
   onCancel,
+  disableStockInput,
+  onStockUpdateClick,
 }: {
   onSubmit: (data: ProductFormData) => void
   defaultValues?: ProductFormData | null
   onCancel?: () => void
+  disableStockInput?: boolean
+  onStockUpdateClick?: () => void
 }) => {
   const [categories, setCategories] = useState<CategoryResponse>([])
 
@@ -205,13 +209,30 @@ export const ProductForm = ({
                 render={({ field }) => (
                   <FormItem className="w-2/5">
                     <FormLabel>Quantidade</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
+                    <div className="flex gap-2">
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number(e.target.value))
+                          }
+                          disabled={disableStockInput}
+                        />
+                      </FormControl>
+                      {disableStockInput && onStockUpdateClick && (
+                        <Button
+                          type="button"
+                          variant="primary"
+                          size="icon"
+                          onClick={onStockUpdateClick}
+                          className="w-4/6"
+                        >
+                          <PencilIcon className="h-4 w-4" />
+                          Alterar estoque
+                        </Button>
+                      )}
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -253,6 +274,7 @@ export const ProductForm = ({
                       step="0.01"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
+                      value={field.value || ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -271,6 +293,7 @@ export const ProductForm = ({
                       step="0.01"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
+                      value={field.value || ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -289,6 +312,7 @@ export const ProductForm = ({
                       step="0.01"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
+                      value={field.value || ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -307,6 +331,7 @@ export const ProductForm = ({
                       step="0.01"
                       {...field}
                       onChange={(e) => field.onChange(Number(e.target.value))}
+                      value={field.value || ''}
                     />
                   </FormControl>
                   <FormMessage />
@@ -315,19 +340,13 @@ export const ProductForm = ({
             />
           </div>
         </div>
-        <Separator />
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-1/2"
-            onClick={onCancel}
-          >
-            Cancelar
-          </Button>
-          <Button type="submit" className="w-1/2">
-            Salvar
-          </Button>
+        <div className="flex justify-end space-x-3 pt-4">
+          {onCancel && (
+            <Button type="button" variant="outline" onClick={onCancel}>
+              Cancelar
+            </Button>
+          )}
+          <Button type="submit">Salvar</Button>
         </div>
       </form>
     </Form>
