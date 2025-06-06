@@ -8,7 +8,7 @@ import { CreateCategoryRequest } from '@/types/api/Request/CategoryRequest'
 
 export class CategoryHttp {
   static async getAllCategories() {
-    const response = await baseHttp.get<CategoryResponse>(CategoryEndpoint)
+    const response = await baseHttp.get<CategoryResponse[]>(CategoryEndpoint)
     return response
   }
 

@@ -67,8 +67,23 @@ export default function MyInformationPage() {
       try {
         const response = await UserHttp.getCurrentUser()
         if (response.hasError || !response.data) {
-          setError(response.error?.message || 'Failed to load user data.')
-          console.error('Error fetching user data:', response.error)
+          let errorMessage = 'Failed to load user data.'; // Default error message
+          if (response.error) {
+            if (Array.isArray(response.error) && response.error.length > 0) {
+              // If response.error is an array, try to get message from the first element
+              // Assuming the elements of the array follow the 'Error' schema { code?, message? }
+              errorMessage = response.error[0]?.message || errorMessage;
+            } else if (typeof response.error === 'object' && response.error !== null && 'message' in response.error && typeof response.error.message === 'string') {
+              // If response.error is an object with a message property
+              errorMessage = response.error.message;
+            }
+            // If response.error is just a string, it could be used directly (optional, current structure implies object or array)
+            // else if (typeof response.error === 'string') {
+            //   errorMessage = response.error;
+            // }
+          }
+          setError(errorMessage);
+          console.error('Error fetching user data:', response.error); // Keep the original log for debugging
         } else {
           const apiData = response.data as UserResponse
           const profileData: UserProfile = {
