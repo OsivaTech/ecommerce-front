@@ -25,6 +25,7 @@ export const ShoppingCartResume = () => {
   const [selectedFreight, setSelectedFreight] = useState<{
     carrier: string
     option: {
+      serviceId?: number
       type?: string
       price?: number
       sla?: number
@@ -38,6 +39,7 @@ export const ShoppingCartResume = () => {
         quantity: item.quantity,
         price: item.product.price ?? 0,
       })),
+      freightServiceId: selectedFreight?.option.serviceId ?? 0,
       freightPrice: selectedFreight?.option.price ?? 0,
     })
 

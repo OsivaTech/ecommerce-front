@@ -2746,6 +2746,8 @@ export interface components {
     }
     CreateOrderRequest: {
       items: components['schemas']['OrderItemRequest'][]
+      /** Format: int32 */
+      freightServiceId: number
       /** Format: double */
       freightPrice: number
     }
@@ -3032,6 +3034,8 @@ export interface components {
       options: components['schemas']['ShippingOptions'][]
     }
     ShippingOptions: {
+      /** Format: int32 */
+      serviceId: number
       type: string
       /** Format: double */
       price: number
