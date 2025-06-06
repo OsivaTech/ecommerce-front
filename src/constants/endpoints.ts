@@ -21,3 +21,4 @@ export const UploadProductImageEndpoint = '/products/images/upload'
 export const SettingsEndpoint = '/settings'
 export const SettingsByIdEndpoint = (id: string) => `${SettingsEndpoint}/${id}`
 export const StockMovementsEndpoint = '/stock'
+export const AddressEndpoint = '/address'
