@@ -16,7 +16,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { useToast } from '@/components/ui/use-toast' // Import useToast
+import { showToast } from '@/utils/toast' // Correct import for showToast
 
 interface UserProfile {
   id: number
@@ -58,7 +58,7 @@ export default function MyInformationPage() {
     address_state?: string | null
     address_zip?: string | null
   }>>({})
-  const { toast } = useToast() // Initialize toast
+  // const { toast } = useToast() // Remove useToast initialization
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -144,17 +144,17 @@ export default function MyInformationPage() {
 
     // Basic Frontend Validation
     if (!formData.name || formData.name.trim() === '') {
-      toast({ title: 'Erro de Validação', description: 'O nome é obrigatório.', variant: 'destructive' })
+      showToast.error('O nome é obrigatório.')
       return
     }
     if (!formData.email || formData.email.trim() === '') {
-      toast({ title: 'Erro de Validação', description: 'O email é obrigatório.', variant: 'destructive' })
+      showToast.error('O email é obrigatório.')
       return
     }
     // Basic regex for email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(formData.email)) {
-      toast({ title: 'Erro de Validação', description: 'Formato de email inválido.', variant: 'destructive' })
+      showToast.error('Formato de email inválido.')
       return
     }
 
@@ -167,15 +167,15 @@ export default function MyInformationPage() {
 
     if (isEditingAddress) {
       if (!formData.address_street || formData.address_street.trim() === '') {
-        toast({ title: 'Erro de Validação', description: 'O logradouro do endereço é obrigatório.', variant: 'destructive' });
+        showToast.error('O logradouro do endereço é obrigatório.');
         return;
       }
       if (!formData.address_city || formData.address_city.trim() === '') {
-        toast({ title: 'Erro de Validação', description: 'A cidade do endereço é obrigatória.', variant: 'destructive' });
+        showToast.error('A cidade do endereço é obrigatória.');
         return;
       }
       if (!formData.address_zip || formData.address_zip.trim() === '') {
-        toast({ title: 'Erro de Validação', description: 'O CEP do endereço é obrigatório.', variant: 'destructive' });
+        showToast.error('O CEP do endereço é obrigatório.');
         return;
       }
     }
@@ -251,19 +251,15 @@ export default function MyInformationPage() {
             address_state: newUserData.address?.state,
             address_zip: newUserData.address?.postalCode,
         })
-        toast({ title: 'Sucesso!', description: 'Suas informações foram atualizadas.' })
+        showToast.success('Suas informações foram atualizadas.')
         setIsEditMode(false)
       } else {
-        toast({ title: 'Nenhuma alteração', description: 'Nenhuma alteração foi detectada.' })
+        showToast.success('Nenhuma alteração foi detectada.') // Using success as per instruction
         setIsEditMode(false) // Still exit edit mode
       }
     } catch (error: any) {
       console.error('Error saving changes:', error)
-      toast({
-        title: 'Erro!',
-        description: error.message || 'Não foi possível atualizar suas informações. Tente novamente.',
-        variant: 'destructive',
-      })
+      showToast.error(error.message || 'Não foi possível atualizar suas informações. Tente novamente.')
     } finally {
       setIsSaving(false)
     }
