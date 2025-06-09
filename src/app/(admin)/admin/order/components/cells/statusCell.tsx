@@ -1,41 +1,30 @@
-import { Order } from '@/types/api/Response/OrderResponse'
+import { Order, OrderStatus } from '@/types/api/Response/OrderResponse'
 import { Row } from '@tanstack/react-table'
 import { StatusBadge } from '@/components/StatusBadge'
 
 const getStatusConfig = (
   status: string,
 ): {
-  status:
-    | 'none'
-    | 'pending'
-    | 'processing'
-    | 'approved'
-    | 'completed'
-    | 'canceled'
+  status: OrderStatus
   label: string
 } => {
   const statusMap: Record<
     string,
     {
-      status:
-        | 'none'
-        | 'pending'
-        | 'processing'
-        | 'approved'
-        | 'completed'
-        | 'canceled'
+      status: OrderStatus
       label: string
     }
   > = {
-    None: { status: 'none', label: 'Nenhum' },
-    Pending: { status: 'pending', label: 'Pendente' },
-    Processing: { status: 'processing', label: 'Processando' },
-    Approved: { status: 'approved', label: 'Aprovado' },
-    Completed: { status: 'completed', label: 'Concluído' },
-    Canceled: { status: 'canceled', label: 'Cancelado' },
+    None: { status: 'None', label: 'Nenhum' },
+    Pending: { status: 'Pending', label: 'Pendente' },
+    Processing: { status: 'Processing', label: 'Em Separação' },
+    WaitingShipment: { status: 'WaitingShipment', label: 'Aguardando Envio' },
+    Shipped: { status: 'Shipped', label: 'Enviado' },
+    Completed: { status: 'Completed', label: 'Concluído' },
+    Canceled: { status: 'Canceled', label: 'Cancelado' },
   }
 
-  return statusMap[status] || { status: 'none', label: 'Desconhecido' }
+  return statusMap[status] || { status: 'None', label: 'Desconhecido' }
 }
 
 export const StatusCell = ({ row }: { row: Row<Order> }) => {

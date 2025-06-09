@@ -5,23 +5,23 @@ import { StatusBadge } from '@/components/StatusBadge'
 const getStatusConfig = (
   status: string,
 ): {
-  status: 'none' | 'enabled' | 'outOfStock' | 'disabled'
+  status: 'None' | 'Enabled' | 'OutOfStock' | 'Disabled'
   label: string
 } => {
   const statusMap: Record<
     string,
     {
-      status: 'none' | 'enabled' | 'outOfStock' | 'disabled'
+      status: 'None' | 'Enabled' | 'OutOfStock' | 'Disabled'
       label: string
     }
   > = {
-    None: { status: 'none', label: 'Nenhum' },
-    Enabled: { status: 'enabled', label: 'Disponível' },
-    OutOfStock: { status: 'outOfStock', label: 'Sem estoque' },
-    Disabled: { status: 'disabled', label: 'Desativado' },
+    None: { status: 'None', label: 'Nenhum' },
+    Enabled: { status: 'Enabled', label: 'Disponível' },
+    OutOfStock: { status: 'OutOfStock', label: 'Sem estoque' },
+    Disabled: { status: 'Disabled', label: 'Desativado' },
   }
 
-  return statusMap[status] || { status: 'none', label: 'Desconhecido' }
+  return statusMap[status] || { status: 'None', label: 'Desconhecido' }
 }
 
 export const StatusCell = ({ row }: { row: Row<Product> }) => {

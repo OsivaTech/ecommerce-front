@@ -16,10 +16,10 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
   const [isPending, startTransition] = useTransition()
 
   const mappedStatus: Record<string, string> = {
-    Pending: 'pending',
-    Approved: 'approved',
-    Rejected: 'rejected',
-    None: 'none',
+    Pending: 'Pending',
+    Approved: 'Approved',
+    Rejected: 'Rejected',
+    None: 'None',
   }
 
   const labelStatus = {
@@ -63,7 +63,7 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
 
   return (
     <>
-      {status === 'pending' ? (
+      {status === 'Pending' ? (
         <StatusPopover
           status={status}
           label={labelStatus[row.original.status!]}
@@ -78,7 +78,7 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
         />
       ) : (
         <StatusBadge
-          status={status as 'pending' | 'approved' | 'rejected'}
+          status={status as 'Pending' | 'Approved' | 'Rejected'}
           label={labelStatus[row.original.status!]}
         />
       )}

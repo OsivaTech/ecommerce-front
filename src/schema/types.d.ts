@@ -1132,12 +1132,103 @@ export interface paths {
         }
       }
       responses: {
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    trace?: never
+  }
+  '/orders/{id}/dispatch': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /**
+     * Dispatch order
+     * @description Dispatch order to the customer. (Starts the freight buying with the courier)
+     */
+    patch: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
         /** @description OK */
         200: {
           headers: {
             [name: string]: unknown
           }
+          content: {
+            'application/json': components['schemas']['OrderShipmentDetailsResponse2']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
           content?: never
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
         }
       }
     }
@@ -2762,6 +2853,7 @@ export interface components {
       user: components['schemas']['UserResponse']
       /** Format: date-time */
       createdAt: string
+      shipmentDetails?: components['schemas']['OrderShipmentDetailsResponse']
     }
     CreateProductRequest: {
       name: string
@@ -2832,6 +2924,7 @@ export interface components {
     OrderItemResponse: {
       /** Format: int32 */
       productId: number
+      productName: string
       /** Format: int32 */
       quantity: number
       /** Format: double */
@@ -2847,13 +2940,25 @@ export interface components {
       user: components['schemas']['UserResponse']
       /** Format: date-time */
       createdAt: string
+      shipmentDetails?: components['schemas']['OrderShipmentDetailsResponse']
+    }
+    OrderShipmentDetailsResponse: {
+      melhorEnvioLabelUrl: string
+      melhorEnvioOrderId: string
+      melhorEnvioProtocol: string
+    } | null
+    OrderShipmentDetailsResponse2: {
+      melhorEnvioLabelUrl: string
+      melhorEnvioOrderId: string
+      melhorEnvioProtocol: string
     }
     /** @enum {unknown} */
     OrderStatus:
       | 'None'
       | 'Pending'
       | 'Processing'
-      | 'Approved'
+      | 'WaitingShipment'
+      | 'Shipped'
       | 'Completed'
       | 'Canceled'
     /** @enum {unknown} */
@@ -3111,6 +3216,7 @@ export interface components {
       id: number
       name: string
       email: string
+      phone: string
       personalDocument: components['schemas']['PersonalDocument']
       professionalDocument: components['schemas']['ProfessionalDocumentResponse']
       /** Format: date-time */

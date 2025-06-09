@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { useState } from 'react'
 
 type StatusPopoverProps = {
-  status: 'pending' | 'approved' | 'rejected'
+  status: 'Pending' | 'Approved' | 'Rejected'
   label: string
   onApprove: () => void
   onReject: () => void
