@@ -2,6 +2,7 @@ import { OrderCompleteEndpoint, OrderEndpoint } from '@/constants/endpoints'
 import {
   CreateOrderResponse,
   OrderResponse,
+  OrderShipmentDetailsResponse,
 } from '@/types/api/Response/OrderResponse'
 import baseHttp from '../BaseHttp'
 import {
@@ -32,5 +33,21 @@ export class OrderHttp {
       body: JSON.stringify(data),
     })
     return true
+  }
+
+  static async dispatchOrder(id: number) {
+    await this.http.setUseAuth(true)
+    const response = await this.http.patch<OrderShipmentDetailsResponse>(
+      `${OrderEndpoint}/${id}/dispatch`,
+    )
+    return response
+  }
+
+  static async updateStatus(id: number, status: string) {
+    await this.http.setUseAuth(true)
+    const response = await this.http.patch(`${OrderEndpoint}/${id}`, {
+      body: JSON.stringify({ status }),
+    })
+    return response
   }
 }

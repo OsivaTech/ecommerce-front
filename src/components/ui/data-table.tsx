@@ -12,9 +12,11 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
+  OnChangeFn,
 } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
+import { ChevronUp, ChevronDown } from 'lucide-react'
 
 import {
   Table,
@@ -25,14 +27,22 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  sorting?: SortingState
+  onSortingChange?: OnChangeFn<SortingState>
+}
+
 export function DataTable<TData, TValue>({
   data,
   columns,
-}: {
-  data: TData[]
-  columns: ColumnDef<TData, TValue>[]
-}) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  sorting: initialSorting,
+  onSortingChange,
+}: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>(
+    initialSorting || [],
+  )
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   )
@@ -40,10 +50,17 @@ export function DataTable<TData, TValue>({
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
 
+  const handleSortingChange: OnChangeFn<SortingState> = (updater) => {
+    const newSorting =
+      typeof updater === 'function' ? updater(sorting) : updater
+    setSorting(newSorting)
+    onSortingChange?.(updater)
+  }
+
   const table = useReactTable({
     data,
     columns,
-    onSortingChange: setSorting,
+    onSortingChange: handleSortingChange,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -63,18 +80,49 @@ export function DataTable<TData, TValue>({
     <div className="w-full">
       <div className="rounded-md border bg-[#F7FAFA]">
         <Table>
-          <TableHeader className="h-14 ">
+          <TableHeader className="h-14">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
+                    <TableHead
+                      key={header.id}
+                      className="cursor-pointer"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <div className="flex items-center space-x-2">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                        {header.column.getCanSort() && (
+                          <div className="flex flex-col items-center ml-1 gap-0.5">
+                            {header.column.getIsSorted() === 'asc' && (
+                              <ChevronUp className="h-3 w-3" strokeWidth={3} />
+                            )}
+                            {header.column.getIsSorted() === 'desc' && (
+                              <ChevronDown
+                                className="h-3 w-3"
+                                strokeWidth={3}
+                              />
+                            )}
+                            {header.column.getIsSorted() === false && (
+                              <>
+                                <ChevronUp
+                                  className="h-3 w-3 text-gray-400 -mb-1"
+                                  strokeWidth={3}
+                                />
+                                <ChevronDown
+                                  className="h-3 w-3 text-gray-400 -mt-1"
+                                  strokeWidth={3}
+                                />
+                              </>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </TableHead>
                   )
                 })}

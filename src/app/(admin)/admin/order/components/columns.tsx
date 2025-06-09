@@ -24,27 +24,34 @@ export const columns: ColumnDef<Order>[] = [
     header: 'Cliente',
     accessorKey: 'cliente',
     cell: CustomerCell,
+    enableSorting: false,
   },
   {
     header: 'Itens',
     accessorKey: 'items',
     cell: ({ row }) => {
-      return <div>{row.original.items?.length}</div>
+      const total =
+        row.original.items?.reduce((acc, item) => acc + item.quantity, 0) || 0
+      return <div>{total}</div>
     },
+    enableSorting: false,
   },
   {
     header: 'Status',
     accessorKey: 'status',
     cell: StatusCell,
+    enableSorting: false,
   },
   {
     header: 'Total',
     accessorKey: 'total',
     cell: TotalCell,
+    enableSorting: false,
   },
   {
     header: 'Ações',
     accessorKey: 'actions',
     cell: ActionCell,
+    enableSorting: false,
   },
 ]
