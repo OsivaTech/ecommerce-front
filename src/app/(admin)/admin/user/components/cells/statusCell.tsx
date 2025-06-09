@@ -4,14 +4,16 @@ import { User, UserStatus } from '@/types/api/Response/UserResponse'
 import { Row } from '@tanstack/react-table'
 
 export const StatusCell = ({ row }: { row: Row<User> }) => {
-  const mappedStatus: Record<UserStatus, 'pending' | 'approved' | 'rejected'> =
-    {
-      None: 'rejected',
-      Active: 'approved',
-      Inactive: 'pending',
-      Blocked: 'rejected',
-      Deleted: 'rejected',
-    }
+  const mappedStatus: Record<
+    UserStatus,
+    'None' | 'Active' | 'Inactive' | 'Blocked' | 'Deleted'
+  > = {
+    None: 'None',
+    Active: 'Active',
+    Inactive: 'Inactive',
+    Blocked: 'Blocked',
+    Deleted: 'Deleted',
+  }
 
   return (
     <StatusBadge

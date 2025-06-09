@@ -4,6 +4,10 @@ import { cn } from '@/lib/utils'
 export type StatusBadgeProps = {
   status:
     | 'None'
+    | 'Active'
+    | 'Inactive'
+    | 'Blocked'
+    | 'Deleted'
     | 'Enabled'
     | 'OutOfStock'
     | 'Disabled'
@@ -29,6 +33,10 @@ export const StatusBadge = ({
       className={cn(
         'cursor-pointer text-title w-28 text-center',
         status === 'None' && 'bg-[#B0BEC5]',
+        status === 'Active' && 'bg-[#39D233]',
+        status === 'Inactive' && 'bg-[#B0BEC5]',
+        status === 'Blocked' && 'bg-[#FF0000]',
+        status === 'Deleted' && 'bg-[#FF0000]',
         status === 'Disabled' && 'bg-[#B0BEC5]',
         status === 'Pending' && 'bg-[#FFA726]',
         status === 'Processing' && 'bg-[#FFEB3B]',
