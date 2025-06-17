@@ -7,9 +7,10 @@ import { StatusBadge } from '@/components/StatusBadge'
 import { Check, ChevronDown, X } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
 import { useState } from 'react'
+import { RegistrationStatus } from '@/types/api/Types/RegistrationStatus'
 
 type StatusPopoverProps = {
-  status: 'pending' | 'approved' | 'rejected'
+  status: RegistrationStatus
   label: string
   onApprove: () => void
   onReject: () => void

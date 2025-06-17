@@ -15,21 +15,14 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
   const [rejectReason, setRejectReason] = useState('')
   const [isPending, startTransition] = useTransition()
 
-  const mappedStatus: Record<string, string> = {
-    Pending: 'pending',
-    Approved: 'approved',
-    Rejected: 'rejected',
-    None: 'none',
-  }
-
   const labelStatus = {
     Pending: 'Em aprovação',
     Approved: 'Aprovado',
     Rejected: 'Rejeitado',
-    None: 'Não iniciado',
+    None: 'Desconhecido',
   }
 
-  const status = mappedStatus[row.original.status!]
+  const status = row.original.status
 
   const handleApprove = async () => {
     startTransition(async () => {
@@ -63,7 +56,7 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
 
   return (
     <>
-      {status === 'pending' ? (
+      {status === 'Pending' ? (
         <StatusPopover
           status={status}
           label={labelStatus[row.original.status!]}
@@ -78,7 +71,7 @@ export const StatusCell = ({ row }: { row: Row<RegistrationPending> }) => {
         />
       ) : (
         <StatusBadge
-          status={status as 'pending' | 'approved' | 'rejected'}
+          status={status}
           label={labelStatus[row.original.status!]}
         />
       )}

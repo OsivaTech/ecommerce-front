@@ -1,20 +1,12 @@
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/utils'
+import { OrderStatus } from '@/types/api/Types/OrderStatus'
+import { ProductStatus } from '@/types/api/Types/ProductStatus'
+import { RegistrationStatus } from '@/types/api/Types/RegistrationStatus'
+import { UserStatus } from '@/types/api/Types/UserStatus'
 
 export type StatusBadgeProps = {
-  status:
-    | 'None'
-    | 'Enabled'
-    | 'OutOfStock'
-    | 'Disabled'
-    | 'Pending'
-    | 'Processing'
-    | 'WaitingShipment'
-    | 'Approved'
-    | 'Shipped'
-    | 'Completed'
-    | 'Canceled'
-    | 'Rejected'
+  status: UserStatus | RegistrationStatus | OrderStatus | ProductStatus
   variant?: 'default' | 'secondary' | 'outline'
   label: string
 }

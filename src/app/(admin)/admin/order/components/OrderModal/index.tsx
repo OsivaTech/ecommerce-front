@@ -8,13 +8,13 @@ import { formatPrice } from '@/utils/mask'
 import {
   Order,
   OrderShipmentDetailsResponse,
-  OrderStatus,
 } from '@/types/api/Response/OrderResponse'
 import { Button } from '@/components/ui/button'
 import { OrderHttp } from '@/http/Order'
 import { useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import { Separator } from '@/components/ui/separator'
+import { OrderStatus } from '@/types/api/Types/OrderStatus'
 
 interface OrderModalProps {
   open: boolean
