@@ -14,6 +14,7 @@ interface CustomInputProps {
   mask?: string
   isLoading?: boolean
   className?: string
+  readOnly?: boolean
 }
 
 export default function Input({
@@ -51,8 +52,10 @@ export default function Input({
           onChange={mask ? handleMaskedInput : onChange}
           className={cn(
             'bg-background rounded-xl text-[16px] max-h-[50px] p-4 outline-none border placeholder:text-muted-foreground border-[#D1DBE8]',
+            rest.readOnly && 'bg-gray-100 text-gray-500 cursor-not-allowed',
             className,
           )}
+          readOnly={rest.readOnly}
         />
         {isLoading && (
           <ClipLoader

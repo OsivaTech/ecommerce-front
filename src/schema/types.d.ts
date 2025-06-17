@@ -975,6 +975,45 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  '/orders/me': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get orders for current user
+     * @description Get all orders for the authenticated user
+     */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['OrderResponse'][]
+          }
+        }
+      }
+    }
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/orders/{id}': {
     parameters: {
       query?: never
@@ -2661,7 +2700,68 @@ export interface paths {
       cookie?: never
     }
     get?: never
-    put?: never
+    /**
+     * Update user data
+     * @description Update user name, email and phone
+     */
+    put: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['UpdateUserRequest']
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['UserResponse']
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+        /** @description Conflict */
+        409: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
     post?: never
     delete?: never
     options?: never
@@ -3207,6 +3307,11 @@ export interface components {
       quantity?: number
       movementType?: components['schemas']['StockMovementType']
       source?: string
+    }
+    UpdateUserRequest: {
+      name: string
+      email: string
+      phone: string
     }
     UpdateUserStatusRequest: {
       status: components['schemas']['UserStatus']

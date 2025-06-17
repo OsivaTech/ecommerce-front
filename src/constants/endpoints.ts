@@ -9,7 +9,7 @@ export const OrderCompleteEndpoint = (id: number) =>
   `${OrderEndpoint}/${id}/complete`
 export const UserEndpoint = '/users'
 export const UserMeEndpoint = '/users/me'
-export const UserStatusEndpoint = (id: string) => `/users/${id}`
+export const UserIdEndpoint = (id: string) => `/users/${id}`
 export const ProductEndpoint = '/products'
 export const ProductFeaturedEndpoint = '/products/featured'
 export const CategoryEndpoint = '/categories'
@@ -21,3 +21,4 @@ export const UploadProductImageEndpoint = '/products/images/upload'
 export const SettingsEndpoint = '/settings'
 export const SettingsByIdEndpoint = (id: string) => `${SettingsEndpoint}/${id}`
 export const StockMovementsEndpoint = '/stock'
+export const AddressEndpoint = '/address'

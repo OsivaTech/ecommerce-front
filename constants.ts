@@ -24,4 +24,5 @@ export const APP_LINKS_ADMIN = {
 export const APP_LINKS_ACCOUNT = {
   INFO: () => `/account/info`,
   ORDERS: () => `/account/orders`,
+  ADDRESS: () => `/account/address`,
 }

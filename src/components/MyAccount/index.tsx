@@ -1,6 +1,6 @@
 'use client'
 
-import { User, ShoppingCart, Settings, LogOut } from 'lucide-react'
+import { User, ShoppingCart, Settings, LogOut, MapPin } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { APP_LINKS, APP_LINKS_ACCOUNT } from '../../../constants'
 import { useAuth } from '../../providers/Auth/AuthContext'
@@ -32,6 +32,9 @@ export const MyAccountPage = () => {
       case 'Minhas informações':
         router.push(APP_LINKS_ACCOUNT.INFO())
         break
+      case 'Endereço':
+        router.push(APP_LINKS_ACCOUNT.ADDRESS())
+        break
       case 'Seus pedidos':
         router.push(APP_LINKS_ACCOUNT.ORDERS())
         break
@@ -51,6 +54,11 @@ export const MyAccountPage = () => {
       icon: <User size={24} />,
       title: 'Minhas informações',
       description: 'Aqui você pode editar suas informações pessoais.',
+    },
+    {
+      icon: <MapPin size={24} />,
+      title: 'Endereço',
+      description: 'Gerencie seu endereço de entrega.',
     },
     {
       icon: <ShoppingCart size={24} />,
