@@ -34,6 +34,18 @@ export default function StoreProducts({
       product.name.toLowerCase().includes(searchTerm.toLowerCase()),
     )
 
+  // Função para ordenar produtos: com estoque primeiro, sem estoque no final
+  const sortProductsByStock = (productsToSort: ProductResponse) => {
+    return [...productsToSort].sort((a, b) => {
+      const aHasStock = a.stock > 0
+      const bHasStock = b.stock > 0
+
+      if (aHasStock && !bHasStock) return -1
+      if (!aHasStock && bHasStock) return 1
+      return 0
+    })
+  }
+
   const handleScroll = () => {
     if (window.scrollY > 300) {
       setShowScrollToTop(true)
@@ -103,11 +115,13 @@ export default function StoreProducts({
         >
           <h2 className="text-xl font-bold mb-4">{category.name}</h2>
           <div className="flex flex-wrap gap-6 w-full">
-            {productsFilter(searchTerm)
-              .filter((product) => product.category.id === category.id)
-              .map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            {sortProductsByStock(
+              productsFilter(searchTerm).filter(
+                (product) => product.category.id === category.id,
+              ),
+            ).map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
         </div>
       ))}
