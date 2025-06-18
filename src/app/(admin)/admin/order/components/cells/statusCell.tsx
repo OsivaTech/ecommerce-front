@@ -5,9 +5,9 @@ import { StatusBadge } from '@/components/StatusBadge'
 export const StatusCell = ({ row }: { row: Row<Order> }) => {
   const labelStatus = {
     None: 'Desconhecido',
-    Pending: 'Pendente',
-    Processing: 'Em Separação',
-    WaitingShipment: 'Aguardando Envio',
+    Pending: 'Pagamento pendente',
+    Processing: 'Em separação',
+    WaitingShipment: 'Aguardando envio',
     Shipped: 'Enviado',
     Completed: 'Concluído',
     Canceled: 'Cancelado',

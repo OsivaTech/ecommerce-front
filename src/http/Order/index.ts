@@ -1,6 +1,11 @@
-import { OrderCompleteEndpoint, OrderEndpoint } from '@/constants/endpoints'
+import {
+  OrderCompleteEndpoint,
+  OrderEndpoint,
+  OrderMyEndpoint,
+} from '@/constants/endpoints'
 import {
   CreateOrderResponse,
+  Order,
   OrderResponse,
   OrderShipmentDetailsResponse,
 } from '@/types/api/Response/OrderResponse'
@@ -48,6 +53,24 @@ export class OrderHttp {
     const response = await this.http.patch(`${OrderEndpoint}/${id}`, {
       body: JSON.stringify({ status }),
     })
+    return response
+  }
+
+  static async getMyOrders() {
+    await this.http.setUseAuth(true)
+    const response = await this.http.get<OrderResponse>(OrderMyEndpoint)
+    return response
+  }
+
+  static async getOrderById(id: number) {
+    await this.http.setUseAuth(true)
+    const response = await this.http.get<Order>(`${OrderEndpoint}/${id}`)
+    return response
+  }
+
+  static async payOrder(id: number) {
+    await this.http.setUseAuth(true)
+    const response = await this.http.post<string>(`${OrderEndpoint}/${id}/pay`)
     return response
   }
 }

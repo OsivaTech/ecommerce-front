@@ -1,19 +1,11 @@
 'use client'
-
 import AddressForm from '@/components/AddressForm'
-import { useRouter } from 'next/navigation'
+import { BackButton } from '@/components/BackButton'
 
 export default function AddressPage() {
-  const router = useRouter()
   return (
-    <div className="container mx-auto py-8 max-w-xl px-4">
-      <button
-        type="button"
-        className="mb-4 text-sm text-gray-600 hover:underline"
-        onClick={() => router.back()}
-      >
-        ← Voltar
-      </button>
+    <div className="container mx-auto py-8 px-4">
+      <BackButton className="mb-4" />
       <h1 className="text-3xl font-bold mb-8">Editar endereço</h1>
       <AddressForm />
     </div>

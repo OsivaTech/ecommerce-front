@@ -1200,6 +1200,79 @@ export interface paths {
     }
     trace?: never
   }
+  '/orders/{id}/pay': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /**
+     * Get payment link
+     * @description Get payment link for order
+     */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+        /** @description Unauthorized */
+        401: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Forbidden */
+        403: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+        /** @description Unprocessable Entity */
+        422: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   '/orders/{id}/dispatch': {
     parameters: {
       query?: never
@@ -2949,11 +3022,14 @@ export interface components {
       status: components['schemas']['OrderStatus']
       /** Format: double */
       totalAmount: number
+      /** Format: double */
+      freightPrice: number
       items: components['schemas']['OrderItemResponse'][]
       user: components['schemas']['UserResponse']
       /** Format: date-time */
       createdAt: string
       shipmentDetails?: components['schemas']['OrderShipmentDetailsResponse']
+      transactions?: components['schemas']['TransactionResponse'][] | null
     }
     CreateProductRequest: {
       name: string
@@ -3029,6 +3105,7 @@ export interface components {
       quantity: number
       /** Format: double */
       unitPrice: number
+      product: components['schemas']['ProductResponse']
     }
     OrderResponse: {
       /** Format: int32 */
@@ -3036,11 +3113,14 @@ export interface components {
       status: components['schemas']['OrderStatus']
       /** Format: double */
       totalAmount: number
+      /** Format: double */
+      freightPrice: number
       items: components['schemas']['OrderItemResponse'][]
       user: components['schemas']['UserResponse']
       /** Format: date-time */
       createdAt: string
       shipmentDetails?: components['schemas']['OrderShipmentDetailsResponse']
+      transactions?: components['schemas']['TransactionResponse'][] | null
     }
     OrderShipmentDetailsResponse: {
       melhorEnvioLabelUrl: string
@@ -3270,6 +3350,20 @@ export interface components {
     StockMovementSource: 'None' | 'Site' | 'External'
     /** @enum {unknown} */
     StockMovementType: 'None' | 'InitialStock' | 'Entry' | 'Exit' | 'Adjustment'
+    TransactionResponse: {
+      /** Format: int32 */
+      id: number
+      status: components['schemas']['TransactionStatus']
+      /** Format: double */
+      amount: number
+      /** Format: double */
+      paidAmount: number
+      paymentMethod: components['schemas']['PaymentMethod']
+      reference: string
+      receiptUrl: string
+    }
+    /** @enum {unknown} */
+    TransactionStatus: 'Pending' | 'Approved' | 'Declined' | 'Refunded'
     UpdateAddressRequest: {
       street?: string
       number?: string | null

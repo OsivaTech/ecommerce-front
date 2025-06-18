@@ -5,6 +5,7 @@ export const RegistrationRejectedEndpoint = (id: string) =>
   `/registration/${id}/reject`
 export const RegistrationEndpoint = '/registration'
 export const OrderEndpoint = '/orders'
+export const OrderMyEndpoint = '/orders/me'
 export const OrderCompleteEndpoint = (id: number) =>
   `${OrderEndpoint}/${id}/complete`
 export const UserEndpoint = '/users'
