@@ -25,7 +25,7 @@ export default async function RootAdminLayout({
         <CartProvider>
           <ToastProvider />
           <AuthProvider userIsAlreadyAuthenticated={await isAuthenticated()}>
-            <div className="flex flex-col h-full">
+            <div className="flex flex-col w-full h-screen">
               <Header />
               <div className="h-full py-5 px-6 flex">
                 <AdminSideMenu />
