@@ -14,27 +14,22 @@ function formatDate(dateStr: string) {
   )
 }
 
-function statusLabel(status: string) {
-  switch (status) {
-    case 'Completed':
-      return 'Entregue'
-    case 'Shipped':
-      return 'Enviado'
-    case 'Pending':
-      return 'Pendente'
-    case 'Canceled':
-      return 'Cancelado'
-    default:
-      return status
-  }
-}
-
 type Props = {
   orders: OrderResponse
 }
 
 export default function OrderList({ orders }: Props) {
   if (!orders.length) return <div>Você ainda não fez nenhum pedido.</div>
+
+  const labelOrderStatus = {
+    None: 'Desconhecido',
+    Pending: 'Pagamento pendente',
+    Processing: 'Em separação',
+    WaitingShipment: 'Aguardando envio',
+    Shipped: 'Enviado',
+    Completed: 'Concluído',
+    Canceled: 'Cancelado',
+  }
 
   return (
     <div className="flex flex-col gap-10">
@@ -56,7 +51,7 @@ export default function OrderList({ orders }: Props) {
             <div className="mt-3 md:mt-0 flex items-center gap-2">
               <StatusBadge
                 status={order.status}
-                label={statusLabel(order.status)}
+                label={labelOrderStatus[order.status]}
               />
             </div>
           </div>
