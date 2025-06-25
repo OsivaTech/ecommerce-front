@@ -22,6 +22,7 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
+  TooltipPortal,
 } from '@/components/ui/tooltip'
 
 const stockMovementSchema = z.object({
@@ -189,38 +190,52 @@ export const StockMovementModal = ({
                   <FormLabel>Tipo de Movimento</FormLabel>
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger>
-                        <Info className="h-4 w-4 text-muted-foreground" />
+                      <TooltipTrigger asChild>
+                        <button
+                          type="button"
+                          className="inline-flex items-center justify-center"
+                        >
+                          <Info className="h-4 w-4 text-muted-foreground" />
+                        </button>
                       </TooltipTrigger>
-                      <TooltipContent className="w-80 space-y-2">
-                        <p className="font-semibold">Entrada:</p>
-                        <p>
-                          Para quando for incluir estoque, ex: um carregamento
-                          de produtos chegou na loja, e o estoque foi reposto.
-                        </p>
+                      <TooltipPortal>
+                        <TooltipContent
+                          className="w-80 space-y-2 max-w-[90vw] z-[9999]"
+                          side="right"
+                          sideOffset={8}
+                          align="start"
+                          avoidCollisions={true}
+                        >
+                          <p className="font-semibold">Entrada:</p>
+                          <p>
+                            Para quando for incluir estoque, ex: um carregamento
+                            de produtos chegou na loja, e o estoque foi reposto.
+                          </p>
 
-                        <p className="font-semibold">Saída:</p>
-                        <p>
-                          Quando for feita uma venda do produto, e precisa dar
-                          baixa no estoque. No campo Fonte, normalmente será
-                          colocado &quot;Venda externa&quot;, para indicar uma
-                          venda pelo WhatsApp, por exemplo. Apenas em casos
-                          excepcionais será usado &quot;Venda no site&quot;,
-                          pois o site já faz automaticamente a baixa do estoque.
-                        </p>
+                          <p className="font-semibold">Saída:</p>
+                          <p>
+                            Quando for feita uma venda do produto, e precisa dar
+                            baixa no estoque. No campo Fonte, normalmente será
+                            colocado &quot;Venda externa&quot;, para indicar uma
+                            venda pelo WhatsApp, por exemplo. Apenas em casos
+                            excepcionais será usado &quot;Venda no site&quot;,
+                            pois o site já faz automaticamente a baixa do
+                            estoque.
+                          </p>
 
-                        <p className="font-semibold">Ajuste:</p>
-                        <p>
-                          Quando o estoque estiver divergente com a realidade, e
-                          não for possível determinar o motivo da movimentação
-                          (Entrada ou Saída desconhecidas).
-                        </p>
-                        <p>
-                          Exemplo: O estoque está com 100 unidades, mas o
-                          sistema está com 105 unidades. Nesse caso, o tipo da
-                          movimentação é um ajuste.
-                        </p>
-                      </TooltipContent>
+                          <p className="font-semibold">Ajuste:</p>
+                          <p>
+                            Quando o estoque estiver divergente com a realidade,
+                            e não for possível determinar o motivo da
+                            movimentação (Entrada ou Saída desconhecidas).
+                          </p>
+                          <p>
+                            Exemplo: O estoque está com 100 unidades, mas o
+                            sistema está com 105 unidades. Nesse caso, o tipo da
+                            movimentação é um ajuste.
+                          </p>
+                        </TooltipContent>
+                      </TooltipPortal>
                     </Tooltip>
                   </TooltipProvider>
                 </div>
