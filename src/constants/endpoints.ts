@@ -23,3 +23,5 @@ export const SettingsEndpoint = '/settings'
 export const SettingsByIdEndpoint = (id: string) => `${SettingsEndpoint}/${id}`
 export const StockMovementsEndpoint = '/stock'
 export const AddressEndpoint = '/address'
+export const PackageEndpoint = '/packages'
+export const PackageByIdEndpoint = (id: string) => `${PackageEndpoint}/${id}`

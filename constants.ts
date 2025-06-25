@@ -17,6 +17,7 @@ export const APP_LINKS_ADMIN = {
   USERS: () => `/admin/user-management`,
   ORDER: () => `/admin/order`,
   STOCK: () => `/admin/stock`,
+  PACKAGES: () => `/admin/packages`,
   USER: () => `/admin/user`,
   SETTINGS: () => `/admin/settings`,
 }

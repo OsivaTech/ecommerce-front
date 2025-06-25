@@ -15,6 +15,15 @@ import { useState, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
 import { Separator } from '@/components/ui/separator'
 import { OrderStatus } from '@/types/api/Types/OrderStatus'
+import { HttpPackage } from '@/http/Package'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { PackageResponse } from '@/types/api/Response/PackageResponse'
 
 interface OrderModalProps {
   open: boolean
@@ -26,15 +35,39 @@ export const OrderModal = ({ open, setOpen, order }: OrderModalProps) => {
   const [isLoading, setIsLoading] = useState(false)
   const [shipmentDetails, setShipmentDetails] =
     useState<OrderShipmentDetailsResponse | null>(order.shipmentDetails ?? null)
+  const [packages, setPackages] = useState<PackageResponse[]>([])
+  const [selectedPackageId, setSelectedPackageId] = useState<number | null>(
+    null,
+  )
+  const [packageError, setPackageError] = useState<string | null>(null)
 
   useEffect(() => {
     setShipmentDetails(order.shipmentDetails ?? null)
   }, [order])
 
+  useEffect(() => {
+    if (open && order.status === 'Processing') {
+      HttpPackage.getPackages().then((res) => {
+        if (res.hasError) {
+          toast.error('Erro ao buscar caixas')
+        } else {
+          setPackages(res.data)
+        }
+      })
+    }
+  }, [open, order.status])
+
   const handleDispatch = async () => {
+    if (!selectedPackageId) {
+      setPackageError('Selecione a caixa para despacho')
+      return
+    }
+    setPackageError(null)
     try {
       setIsLoading(true)
-      const response = await OrderHttp.dispatchOrder(order.id)
+      const response = await OrderHttp.dispatchOrder(order.id, {
+        packageId: selectedPackageId,
+      })
       if (!response.hasError) {
         setShipmentDetails(response.data)
         toast.success('Pedido despachado com sucesso!')
@@ -138,7 +171,26 @@ export const OrderModal = ({ open, setOpen, order }: OrderModalProps) => {
               </p>
             </div>
             {order.status === 'Processing' && (
-              <div className="flex items-end">
+              <div className="flex flex-col gap-2 w-full">
+                <Select
+                  value={selectedPackageId ? String(selectedPackageId) : ''}
+                  onValueChange={(v) => setSelectedPackageId(Number(v))}
+                  disabled={isLoading}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione a caixa para despacho" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {packages.map((pkg) => (
+                      <SelectItem key={pkg.id} value={String(pkg.id)}>
+                        {pkg.nameWithDimensions}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {packageError && (
+                  <span className="text-xs text-red-500">{packageError}</span>
+                )}
                 <Button
                   onClick={handleDispatch}
                   disabled={isLoading}

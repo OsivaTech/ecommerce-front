@@ -1299,7 +1299,11 @@ export interface paths {
         }
         cookie?: never
       }
-      requestBody?: never
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['DispatchOrderRequest']
+        }
+      }
       responses: {
         /** @description OK */
         200: {
@@ -1344,6 +1348,210 @@ export interface paths {
         }
       }
     }
+    trace?: never
+  }
+  '/packages': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get all packages
+     * @description Get all packages in the database
+     */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['PackageResponse'][]
+          }
+        }
+      }
+    }
+    put?: never
+    /**
+     * Create package
+     * @description Create package
+     */
+    post: {
+      parameters: {
+        query?: never
+        header?: never
+        path?: never
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['CreatePackageRequest']
+        }
+      }
+      responses: {
+        /** @description Created */
+        201: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['PackageResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+        /** @description Conflict */
+        409: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  '/packages/{id}': {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /**
+     * Get package by Id
+     * @description Get package by Id
+     */
+    get: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['PackageResponse']
+          }
+        }
+      }
+    }
+    /**
+     * Update package
+     * @description Update package
+     */
+    put: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody: {
+        content: {
+          'application/json': components['schemas']['UpdatePackageRequest']
+        }
+      }
+      responses: {
+        /** @description OK */
+        200: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['PackageResponse']
+          }
+        }
+        /** @description Bad Request */
+        400: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    post?: never
+    /**
+     * Delete package
+     * @description Delete package
+     */
+    delete: {
+      parameters: {
+        query?: never
+        header?: never
+        path: {
+          id: number
+        }
+        cookie?: never
+      }
+      requestBody?: never
+      responses: {
+        /** @description No Content */
+        204: {
+          headers: {
+            [name: string]: unknown
+          }
+          content?: never
+        }
+        /** @description Not Found */
+        404: {
+          headers: {
+            [name: string]: unknown
+          }
+          content: {
+            'application/json': components['schemas']['Error'][]
+          }
+        }
+      }
+    }
+    options?: never
+    head?: never
+    patch?: never
     trace?: never
   }
   '/products': {
@@ -3031,6 +3239,18 @@ export interface components {
       shipmentDetails?: components['schemas']['OrderShipmentDetailsResponse']
       transactions?: components['schemas']['TransactionResponse'][] | null
     }
+    CreatePackageRequest: {
+      name: string
+      /** Format: double */
+      width: number
+      /** Format: double */
+      height: number
+      /** Format: double */
+      length: number
+      /** Format: double */
+      maxWeight: number
+      materialType: components['schemas']['PackageMaterialType']
+    }
     CreateProductRequest: {
       name: string
       description: string
@@ -3060,6 +3280,10 @@ export interface components {
       quantity: number
       movementType: components['schemas']['StockMovementType']
       source: components['schemas']['StockMovementSource']
+    }
+    DispatchOrderRequest: {
+      /** Format: int32 */
+      packageId: number
     }
     Error: {
       code?: string | null
@@ -3141,6 +3365,25 @@ export interface components {
       | 'Shipped'
       | 'Completed'
       | 'Canceled'
+    /** @enum {unknown} */
+    PackageMaterialType: 'None' | 'Styrofoam' | 'Cardboard'
+    PackageResponse: {
+      /** Format: int32 */
+      id: number
+      name: string
+      /** Format: double */
+      width: number
+      /** Format: double */
+      height: number
+      /** Format: double */
+      length: number
+      /** Format: double */
+      maxWeight: number
+      /** Format: date-time */
+      createdAt: string
+      nameWithDimensions: string
+      materialType: components['schemas']['PackageMaterialType']
+    }
     /** @enum {unknown} */
     PaymentMethod: 'CreditCard' | 'DebitCard' | 'Boleto' | 'Pix'
     PersonalDocument: {
@@ -3378,6 +3621,18 @@ export interface components {
     }
     UpdateOrderStatusRequest: {
       status: components['schemas']['OrderStatus']
+    }
+    UpdatePackageRequest: {
+      name: string
+      /** Format: double */
+      width: number
+      /** Format: double */
+      height: number
+      /** Format: double */
+      length: number
+      /** Format: double */
+      maxWeight: number
+      materialType: components['schemas']['PackageMaterialType']
     }
     UpdateProductRequest: {
       name: string

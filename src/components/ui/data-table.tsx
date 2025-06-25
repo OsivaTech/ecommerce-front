@@ -13,6 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
   OnChangeFn,
+  TableMeta,
 } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
@@ -32,6 +33,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
   sorting?: SortingState
   onSortingChange?: OnChangeFn<SortingState>
+  meta?: TableMeta<TData>
 }
 
 export function DataTable<TData, TValue>({
@@ -39,6 +41,7 @@ export function DataTable<TData, TValue>({
   columns,
   sorting: initialSorting,
   onSortingChange,
+  meta,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>(
     initialSorting || [],
@@ -74,6 +77,7 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
     },
+    meta,
   })
 
   return (
@@ -97,31 +101,26 @@ export function DataTable<TData, TValue>({
                               header.column.columnDef.header,
                               header.getContext(),
                             )}
-                        {header.column.getCanSort() && (
-                          <div className="flex flex-col items-center ml-1 gap-0.5">
-                            {header.column.getIsSorted() === 'asc' && (
-                              <ChevronUp className="h-3 w-3" strokeWidth={3} />
-                            )}
-                            {header.column.getIsSorted() === 'desc' && (
-                              <ChevronDown
-                                className="h-3 w-3"
+                        <div className="flex flex-col items-center ml-1 gap-0.5">
+                          {header.column.getIsSorted() === 'asc' && (
+                            <ChevronUp className="h-3 w-3" strokeWidth={3} />
+                          )}
+                          {header.column.getIsSorted() === 'desc' && (
+                            <ChevronDown className="h-3 w-3" strokeWidth={3} />
+                          )}
+                          {header.column.getIsSorted() === false && (
+                            <>
+                              <ChevronUp
+                                className="h-3 w-3 text-gray-400 -mb-1"
                                 strokeWidth={3}
                               />
-                            )}
-                            {header.column.getIsSorted() === false && (
-                              <>
-                                <ChevronUp
-                                  className="h-3 w-3 text-gray-400 -mb-1"
-                                  strokeWidth={3}
-                                />
-                                <ChevronDown
-                                  className="h-3 w-3 text-gray-400 -mt-1"
-                                  strokeWidth={3}
-                                />
-                              </>
-                            )}
-                          </div>
-                        )}
+                              <ChevronDown
+                                className="h-3 w-3 text-gray-400 -mt-1"
+                                strokeWidth={3}
+                              />
+                            </>
+                          )}
+                        </div>
                       </div>
                     </TableHead>
                   )

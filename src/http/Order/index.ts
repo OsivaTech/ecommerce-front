@@ -13,6 +13,7 @@ import baseHttp from '../BaseHttp'
 import {
   CompleteOrderRequest,
   CreateOrderRequest,
+  DispatchOrderRequest,
 } from '@/types/api/Request/OrderRequest'
 
 export class OrderHttp {
@@ -40,10 +41,13 @@ export class OrderHttp {
     return true
   }
 
-  static async dispatchOrder(id: number) {
+  static async dispatchOrder(id: number, data: DispatchOrderRequest) {
     await this.http.setUseAuth(true)
     const response = await this.http.patch<OrderShipmentDetailsResponse>(
       `${OrderEndpoint}/${id}/dispatch`,
+      {
+        body: JSON.stringify(data),
+      },
     )
     return response
   }
