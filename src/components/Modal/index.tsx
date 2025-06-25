@@ -27,12 +27,16 @@ export const Modal = ({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className={className}>
+      <DialogContent
+        className={`max-h-[80vh] overflow-hidden ${className || ''}`}
+      >
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
-          {children}
         </DialogHeader>
+        <div className="overflow-y-auto max-h-[calc(80vh-120px)] pr-2">
+          {children}
+        </div>
       </DialogContent>
     </Dialog>
   )
