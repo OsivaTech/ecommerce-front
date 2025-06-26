@@ -2,22 +2,30 @@
 import { CartItem, useCart } from '@/context/useCart'
 import { Button } from '../ui/button'
 import Link from 'next/link'
-import { APP_LINKS } from '../../../constants'
+import { APP_LINKS, APP_LINKS_ACCOUNT } from '../../../constants'
 import { ChevronRight } from 'lucide-react'
 import { formatPrice } from '@/utils/mask'
-import Input from '../Input/Input'
 import { OrderHttp } from '@/http/Order'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { UserResponse } from '@/types/api/Response/UserResponse'
+import { useDebounce } from '@/hook/useDebounce'
 
 import { ShipmentSimulationRequest } from '@/types/api/Request/ShipmentSimulationRequest'
 import { ShipmentSimulationResponse } from '@/types/api/Response/ShipmentSimulationResponse'
 import { ShippingHttp } from '@/http/Shipping'
 
-export const ShoppingCartResume = () => {
+interface ShoppingCartResumeProps {
+  currentUser: UserResponse | null
+  isLoadingUser: boolean
+}
+
+export const ShoppingCartResume = ({
+  currentUser,
+  isLoadingUser,
+}: ShoppingCartResumeProps) => {
   const { items } = useCart()
   const router = useRouter()
-  const [postalCode, setPostalCode] = useState('')
   const [isLoadingSimulation, setIsLoadingSimulation] = useState(false)
   const [freightSimulations, setFreightSimulations] = useState<
     ShipmentSimulationResponse[]
@@ -31,6 +39,9 @@ export const ShoppingCartResume = () => {
       sla?: number
     }
   } | null>(null)
+
+  // Debounce dos itens do carrinho com delay de 1 segundo
+  const debouncedItems = useDebounce(items, 1000)
 
   async function createOrder(items: CartItem[]): Promise<void> {
     const response = await OrderHttp.createOrder({
@@ -50,14 +61,14 @@ export const ShoppingCartResume = () => {
     }
   }
 
-  async function simulateFreight() {
-    if (!postalCode) return
+  const simulateFreight = useCallback(async () => {
+    if (!currentUser?.address?.postalCode || debouncedItems.length === 0) return
 
     setIsLoadingSimulation(true)
     try {
       const simulationRequest: ShipmentSimulationRequest = {
-        postalCode: postalCode.replace(/\D/g, ''),
-        products: items.map((item) => ({
+        postalCode: currentUser.address.postalCode.replace(/\D/g, ''),
+        products: debouncedItems.map((item) => ({
           id: item.product.id,
           quantity: item.quantity,
         })),
@@ -90,10 +101,27 @@ export const ShoppingCartResume = () => {
     } finally {
       setIsLoadingSimulation(false)
     }
-  }
+  }, [currentUser?.address?.postalCode, debouncedItems])
+
+  // Simula frete automaticamente quando o usuário é carregado ou quando os itens mudam (com debounce)
+  useEffect(() => {
+    if (
+      !isLoadingUser &&
+      currentUser?.address?.postalCode &&
+      debouncedItems.length > 0
+    ) {
+      simulateFreight()
+    }
+  }, [
+    isLoadingUser,
+    currentUser?.address?.postalCode,
+    debouncedItems,
+    simulateFreight,
+  ])
 
   return (
     <div className="flex flex-col w-full justify-between border rounded-lg bg-background p-4 gap-4">
+      <h3 className="text-xl font-bold mb-2">Resumo da compra</h3>
       <div className="flex flex-col gap-2">
         {items.map((item) => (
           <div key={item.product.id} className="flex flex-row justify-between">
@@ -106,7 +134,9 @@ export const ShoppingCartResume = () => {
         <div className="flex justify-between items-center border-t pt-2">
           <p className="text-sm">Frete:</p>
           <p className="text-sm">
-            {formatPrice(selectedFreight?.option.price ?? 0)}
+            {isLoadingSimulation
+              ? 'Calculando...'
+              : formatPrice(selectedFreight?.option.price ?? 0)}
           </p>
         </div>
         <div className="flex justify-between items-center pt-2">
@@ -123,26 +153,13 @@ export const ShoppingCartResume = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="flex flex-row gap-2 items-end">
-          <div className="flex flex-col gap-1 flex-1">
-            <p className="text-sm">Estime o frete e prazo</p>
-            <Input
-              mask="cep"
-              placeholder="30494-170"
-              className="h-10"
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-            />
+        {!currentUser?.address?.postalCode && !isLoadingUser && (
+          <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
+            <p className="text-sm text-yellow-800">
+              Para calcular o frete, você precisa ter um endereço cadastrado.
+            </p>
           </div>
-          <Button
-            variant="primary"
-            className="py-2 px-4 h-10"
-            onClick={simulateFreight}
-            disabled={isLoadingSimulation || !postalCode}
-          >
-            {isLoadingSimulation ? 'Calculando...' : 'Consultar'}
-          </Button>
-        </div>
+        )}
         {freightSimulations.length > 0 && (
           <div className="flex flex-col gap-2">
             {freightSimulations.map((simulation) => (
@@ -189,13 +206,13 @@ export const ShoppingCartResume = () => {
                                   <div className="w-2 h-2 rounded-full bg-primary" />
                                 )}
                             </div>
-                            <p className="font-medium text-gray-900">
+                            <p className="font-medium text-gray-900 w-24 truncate">
                               {option.type}
                             </p>
+                            <p className="text-sm text-gray-600">
+                              Entrega em até {option.sla} dias úteis
+                            </p>
                           </div>
-                          <p className="text-sm text-gray-600 ml-6">
-                            Entrega em até {option.sla} dias úteis
-                          </p>
                         </div>
                         <p className="font-semibold text-gray-900 ml-4">
                           {formatPrice(option.price ?? 0)}
@@ -208,11 +225,52 @@ export const ShoppingCartResume = () => {
             ))}
           </div>
         )}
+        {/* Endereço de entrega */}
+        <div className="mb-2 p-3 border rounded-md flex flex-col">
+          <div className="flex justify-between">
+            <span className="font-semibold text-base">Endereço de entrega</span>
+            <Button
+              variant="outline"
+              onClick={() =>
+                (window.location.href = APP_LINKS_ACCOUNT.ADDRESS())
+              }
+            >
+              Alterar endereço
+            </Button>
+          </div>
+          {isLoadingUser ? (
+            <span className="text-sm text-muted">Carregando endereço...</span>
+          ) : currentUser?.address ? (
+            <div className="text-sm text-gray-700">
+              <div>
+                {currentUser.address.street}
+                {currentUser.address.number
+                  ? `, ${currentUser.address.number}`
+                  : ''}
+                {currentUser.address.complement
+                  ? `, ${currentUser.address.complement}`
+                  : ''}
+              </div>
+              <div>
+                {currentUser.address.neighborhood
+                  ? `${currentUser.address.neighborhood}, `
+                  : ''}
+                {currentUser.address.city} - {currentUser.address.state}
+              </div>
+              <div>CEP: {currentUser.address.postalCode}</div>
+            </div>
+          ) : (
+            <span className="text-sm text-muted">
+              Nenhum endereço cadastrado
+            </span>
+          )}
+        </div>
+        {/* Fim endereço de entrega */}
         <Button
           onClick={() => createOrder(items)}
           variant="primary"
           className="py-3 px-6"
-          disabled={!selectedFreight}
+          disabled={!selectedFreight || isLoadingSimulation}
         >
           Finalizar compra
         </Button>
