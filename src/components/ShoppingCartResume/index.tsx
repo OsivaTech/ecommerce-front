@@ -210,7 +210,9 @@ export const ShoppingCartResume = ({
                               {option.type}
                             </p>
                             <p className="text-sm text-gray-600">
-                              Entrega em até {option.sla} dias úteis
+                              {option.serviceId === 999
+                                ? 'Entrega em até 4 horas'
+                                : `Entrega em até ${option.sla} dias úteis`}
                             </p>
                           </div>
                         </div>

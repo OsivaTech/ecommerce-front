@@ -8,7 +8,7 @@ export const AdminSideMenu = () => {
   const selectedItem = pathname.split('/').pop()
 
   return (
-    <aside className="w-full lg:w-1/4 h-full text-title">
+    <aside className="w-full lg:w-1/5 h-full text-title">
       <nav className="space-y-2">
         {menuItems.map((item) => {
           const isActive = selectedItem === item.href.split('/').pop()
