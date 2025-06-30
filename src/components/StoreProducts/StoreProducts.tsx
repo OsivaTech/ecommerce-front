@@ -82,14 +82,14 @@ export default function StoreProducts({
   )
 
   return (
-    <div className="container mx-auto px-4 py-8 justify-items-start">
-      <div className="flex flex-wrap gap-3 justify-center mb-6">
+    <div className="md:container mx-auto py-8">
+      <div className="flex gap-3 px-4 mb-6 overflow-x-auto pb-2 w-full hide-scrollbar">
         {filteredCategories.map((cat) => (
-          <div key={cat.id}>
+          <div key={cat.id} className="flex-shrink-0">
             <Button
               variant="secondary"
               onClick={() => handleScrollToCategory(cat.name)}
-              className="text-muted"
+              className="text-muted whitespace-nowrap"
             >
               {cat.name}
             </Button>
@@ -97,7 +97,7 @@ export default function StoreProducts({
         ))}
       </div>
 
-      <div className="relative w-full mb-8">
+      <div className="relative w-full mb-8 px-4">
         <SearchInput
           className="h-[50px]"
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -110,17 +110,22 @@ export default function StoreProducts({
           ref={(el) => {
             categoryRefs.current[category.name] = el
           }}
-          id={`${category.name}`} // Adiciona um ID para vincular ao hash
+          id={`${category.name}`}
           className="mb-8"
         >
-          <h2 className="text-xl font-bold mb-4">{category.name}</h2>
-          <div className="flex flex-wrap gap-6 w-full">
+          <h2 className="text-xl font-bold mb-4 px-4">{category.name}</h2>
+          <div className="flex overflow-x-auto md:flex-wrap md:overflow-x-visible hide-scrollbar md:overflow-visible snap-x snap-mandatory">
             {sortProductsByStock(
               productsFilter(searchTerm).filter(
                 (product) => product.category.id === category.id,
               ),
             ).map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <div
+                key={product.id}
+                className="flex-shrink-0 md:flex-shrink snap-center px-2 py-2"
+              >
+                <ProductCard product={product} />
+              </div>
             ))}
           </div>
         </div>

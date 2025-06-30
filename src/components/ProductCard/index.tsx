@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/Auth/AuthContext'
 import AddToCart from '../AddToCart'
+import { Button } from '../ui/button'
 
 export const ProductCard = ({ product }: { product: Product }) => {
   const router = useRouter()
@@ -60,7 +61,13 @@ export const ProductCard = ({ product }: { product: Product }) => {
           <AddToCart product={product} />
         ) : (
           <div className="flex items-center justify-center">
-            <p className="text-lg text-red-500">Faça login para ver o preço</p>
+            <Button
+              onClick={() => router.push('/login')}
+              className="text-lg text-red-500"
+              variant="link"
+            >
+              Faça login para ver o preço
+            </Button>
           </div>
         )}
       </div>
