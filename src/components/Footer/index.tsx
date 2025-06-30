@@ -1,44 +1,21 @@
-'use client'
-
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { CategoryHttp } from '@/http/Category'
+import { APP_LINKS } from '../../../constants'
 import {
   RiThreadsLine,
   RiInstagramLine,
-  RiArrowDownSLine,
-  RiArrowUpSLine,
   RiFacebookFill,
   RiLinkedinFill,
 } from 'react-icons/ri'
-import { APP_LINKS } from '../../../constants'
-import { CategoryHttp } from '@/http/Category'
+import Link from 'next/link'
 
-export default function Footer() {
-  const [openSections, setOpenSections] = useState<number | null>(null)
-  const [categories, setCategories] = useState<{ name: string }[]>([]) // Estado para armazenar as categorias
-  const router = useRouter()
-
-  const toggleSection = (index: number) => {
-    setOpenSections(openSections === index ? null : index)
-  }
-
-  // Buscar categorias ao carregar o componente
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const fetchedCategories = await CategoryHttp.getAllCategories()
-      if (!fetchedCategories.hasError) {
-        setCategories(
-          fetchedCategories.data.map((category: { name: string }) => ({
-            name: category.name,
-          })),
-        )
-      } else {
-        console.error('Error fetching categories:', fetchedCategories.error)
-      }
-    }
-
-    fetchCategories()
-  }, [])
+export default async function Footer() {
+  // Buscar categorias no servidor
+  const categoriesResponse = await CategoryHttp.getAllCategories()
+  const categories = categoriesResponse.hasError
+    ? []
+    : categoriesResponse.data.map((category: { name: string }) => ({
+        name: category.name,
+      }))
 
   // Dados dos links
   const links = [
@@ -55,7 +32,7 @@ export default function Footer() {
       items: categories.map((category) => ({
         label: category.name,
         href: `${APP_LINKS.STORE()}#${category.name}`,
-      })), // Preenche dinamicamente com base nas categorias
+      })),
     },
     {
       title: 'Ajuda',
@@ -108,12 +85,12 @@ export default function Footer() {
                           {item.label}
                         </a>
                       ) : (
-                        <button
-                          onClick={() => router.push(item.href)}
+                        <Link
+                          href={item.href}
                           className="hover:text-app-secondary"
                         >
                           {item.label}
-                        </button>
+                        </Link>
                       )}
                     </li>
                   ))}
@@ -122,31 +99,14 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Links - Mobile Accordion */}
+          {/* Links - Mobile */}
           <div className="md:hidden space-y-4 text-sm mb-20">
             {links.map((section, idx) => (
-              <div
-                key={idx}
-                className="border-b border-gray-700 pb-2 transition-all duration-300"
-              >
-                <button
-                  className="text-app-secondary font-medium cursor-pointer flex justify-between items-center w-full"
-                  onClick={() => toggleSection(idx)}
-                >
-                  <span className="text-lg">{section.title}</span>
-                  {openSections === idx ? (
-                    <RiArrowUpSLine className="w-4 h-4" />
-                  ) : (
-                    <RiArrowDownSLine className="w-4 h-4" />
-                  )}
-                </button>
-                <ul
-                  className={`mt-2 ml-4 space-y-2 transition-all duration-300 ${
-                    openSections === idx
-                      ? 'max-h-screen opacity-100'
-                      : 'max-h-0 opacity-0 overflow-hidden'
-                  }`}
-                >
+              <div key={idx} className="border-b border-gray-700 pb-2">
+                <h4 className="text-app-secondary font-medium text-lg mb-2">
+                  {section.title}
+                </h4>
+                <ul className="ml-4 space-y-2">
                   {section.items.map((item, itemIdx) => (
                     <li key={itemIdx}>
                       {item.href.startsWith('http') ||
@@ -160,12 +120,12 @@ export default function Footer() {
                           {item.label}
                         </a>
                       ) : (
-                        <button
-                          onClick={() => router.push(item.href)}
+                        <Link
+                          href={item.href}
                           className="hover:text-app-secondary text-base"
                         >
                           {item.label}
-                        </button>
+                        </Link>
                       )}
                     </li>
                   ))}

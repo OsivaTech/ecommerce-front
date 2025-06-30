@@ -1,32 +1,19 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { AdvertisementHttp } from '@/http/Advertisement'
 import { AdvertisementResponse } from '@/types/api/Response/AdvertisementResponse'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
 
-export const Advertisement = () => {
+interface AdvertisementProps {
+  advertisements: AdvertisementResponse
+}
+
+export const Advertisement = ({ advertisements }: AdvertisementProps) => {
   const router = useRouter()
-  const [advertisements, setAdvertisements] = useState<AdvertisementResponse>(
-    [],
-  )
   const [currentIndex, setCurrentIndex] = useState(0)
-
-  useEffect(() => {
-    const fetchAdvertisements = async () => {
-      const response = await AdvertisementHttp.getAdvertisements()
-      if (response.hasError) {
-        console.error('Error fetching advertisements:', response.error)
-      } else {
-        setAdvertisements(response.data)
-      }
-    }
-
-    fetchAdvertisements()
-  }, [])
 
   // Auto-scroll logic
   useEffect(() => {
@@ -34,7 +21,7 @@ export const Advertisement = () => {
       setCurrentIndex((prevIndex) =>
         prevIndex === advertisements.length - 1 ? 0 : prevIndex + 1,
       )
-    }, 7000) // Auto-scroll every 5 seconds
+    }, 7000) // Auto-scroll every 7 seconds
 
     return () => clearInterval(interval) // Cleanup on unmount
   }, [advertisements])
@@ -51,14 +38,6 @@ export const Advertisement = () => {
     )
   }
 
-  if (advertisements.length === 0) {
-    return (
-      <div className="container mx-auto px-2 w-full max-w-5xl mt-2">
-        <div className="relative aspect-[21/9] rounded-lg shadow-lg overflow-hidden"></div>
-      </div>
-    )
-  }
-
   const currentAd = advertisements[currentIndex]
   const currentMedia = currentAd?.medias?.[0] || {
     title: '',
@@ -69,8 +48,8 @@ export const Advertisement = () => {
   }
 
   return (
-    <div className="container mx-auto px-2 w-full max-w-5xl mt-2">
-      <div className="relative aspect-[21/9] rounded-lg shadow-lg overflow-hidden">
+    <div className="container mx-auto w-full">
+      <div className="relative aspect-[21/9] md:rounded-lg shadow-lg overflow-hidden">
         {/* Imagem de fundo */}
         <div
           className="absolute inset-0 cursor-pointer"
