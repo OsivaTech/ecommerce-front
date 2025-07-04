@@ -7,6 +7,7 @@ import {
   Cog6ToothIcon,
   ArchiveBoxIcon,
   MegaphoneIcon,
+  TagIcon,
 } from '@heroicons/react/24/outline'
 import {
   ChartBarIcon as ChartBarIconSolid,
@@ -17,6 +18,7 @@ import {
   Cog6ToothIcon as Cog6ToothIconSolid,
   ArchiveBoxIcon as ArchiveBoxIconSolid,
   MegaphoneIcon as MegaphoneIconSolid,
+  TagIcon as TagIconSolid,
 } from '@heroicons/react/24/solid'
 import { APP_LINKS_ADMIN } from '../../constants'
 
@@ -55,6 +57,13 @@ export const menuItems = [
     icon: <CubeIcon className="h-6 w-6" />,
     iconSolid: <CubeIconSolid className="h-6 w-6" />,
     href: APP_LINKS_ADMIN.STOCK(),
+  },
+  {
+    id: 'categories',
+    title: 'Categorias',
+    icon: <TagIcon className="h-6 w-6" />,
+    iconSolid: <TagIconSolid className="h-6 w-6" />,
+    href: APP_LINKS_ADMIN.CATEGORIES(),
   },
   {
     id: 'packages',

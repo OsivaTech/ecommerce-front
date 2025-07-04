@@ -21,6 +21,7 @@ export const APP_LINKS_ADMIN = {
   USER: () => `/admin/user`,
   SETTINGS: () => `/admin/settings`,
   ADVERTISEMENTS: () => `/admin/advertisements`,
+  CATEGORIES: () => `/admin/categories`,
 }
 
 export const APP_LINKS_ACCOUNT = {
