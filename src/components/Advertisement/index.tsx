@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import { motion, AnimatePresence, PanInfo } from 'framer-motion'
 
 interface AdvertisementProps {
-  advertisements: AdvertisementResponse
+  advertisements: AdvertisementResponse[]
 }
 
 export const Advertisement = ({ advertisements }: AdvertisementProps) => {

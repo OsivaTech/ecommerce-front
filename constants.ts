@@ -20,6 +20,7 @@ export const APP_LINKS_ADMIN = {
   PACKAGES: () => `/admin/packages`,
   USER: () => `/admin/user`,
   SETTINGS: () => `/admin/settings`,
+  ADVERTISEMENTS: () => `/admin/advertisements`,
 }
 
 export const APP_LINKS_ACCOUNT = {

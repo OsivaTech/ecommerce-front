@@ -6,6 +6,7 @@ import {
   UsersIcon,
   Cog6ToothIcon,
   ArchiveBoxIcon,
+  MegaphoneIcon,
 } from '@heroicons/react/24/outline'
 import {
   ChartBarIcon as ChartBarIconSolid,
@@ -15,6 +16,7 @@ import {
   UsersIcon as UsersIconSolid,
   Cog6ToothIcon as Cog6ToothIconSolid,
   ArchiveBoxIcon as ArchiveBoxIconSolid,
+  MegaphoneIcon as MegaphoneIconSolid,
 } from '@heroicons/react/24/solid'
 import { APP_LINKS_ADMIN } from '../../constants'
 
@@ -25,6 +27,13 @@ export const menuItems = [
     icon: <ChartBarIcon className="h-6 w-6" />,
     iconSolid: <ChartBarIconSolid className="h-6 w-6" />,
     href: APP_LINKS_ADMIN.PANEL(),
+  },
+  {
+    id: 'advertisements',
+    title: 'Anúncios',
+    icon: <MegaphoneIcon className="h-6 w-6" />,
+    iconSolid: <MegaphoneIconSolid className="h-6 w-6" />,
+    href: APP_LINKS_ADMIN.ADVERTISEMENTS(),
   },
   {
     id: 'user-management',

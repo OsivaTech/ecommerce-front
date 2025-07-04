@@ -11,10 +11,16 @@ export const UploadFrame = ({
   onChange,
   uploadFunction,
   value,
+  className,
+  style,
+  label,
 }: {
   onChange: (file: FileResponse | null) => void
   value: FileResponse | null
   uploadFunction: (file: File) => Promise<ResponseData<FileResponse>>
+  className?: string
+  style?: React.CSSProperties
+  label?: string
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [isPending, startTransition] = useTransition()
@@ -45,9 +51,10 @@ export const UploadFrame = ({
         onChange={handleFileChange}
       />
       <div className="flex flex-col gap-2">
-        <Label>Imagem do Produto</Label>
+        {label && <Label>{label}</Label>}
         <div
-          className="border border-gray-300 overflow-hidden rounded-md w-[200px] h-[200px] flex items-center justify-center cursor-pointer"
+          className={`border border-gray-300 overflow-hidden rounded-md flex items-center justify-center cursor-pointer ${className || 'w-[200px] h-[200px]'}`}
+          style={style}
           onClick={() => inputRef.current?.click()}
         >
           {!uploadedFile?.url && !isPending && (
@@ -58,7 +65,7 @@ export const UploadFrame = ({
           )}
           {isPending && <Loader2 className="w-4 h-4 animate-spin" />}
           {uploadedFile?.url && (
-            <div className="w-[200px] h-[200px] relative overflow-hidden group">
+            <div className="w-full h-full relative overflow-hidden group">
               <Image
                 src={uploadedFile.url}
                 alt={uploadedFile.name}
