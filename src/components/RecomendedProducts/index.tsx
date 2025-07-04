@@ -8,7 +8,6 @@ import { Badge } from '@/components/ui/badge'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useAuth } from '@/providers/Auth/AuthContext'
-import { Star } from 'lucide-react'
 
 interface RecomendedProductsProps {
   products: ProductFeaturedResponse
@@ -47,7 +46,7 @@ export const RecomendedProducts = ({
             <div className="flex flex-col h-full">
               {/* Imagem do produto */}
               <div className="relative mb-4">
-                <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden">
+                <div className="w-full h-48 bg-white rounded-lg flex items-center justify-center overflow-hidden">
                   <Image
                     src={product.file.url}
                     alt={product.name}
@@ -63,10 +62,10 @@ export const RecomendedProducts = ({
                 </Badge>
 
                 {/* Avaliação */}
-                <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1">
+                {/* <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1 flex items-center gap-1">
                   <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
                   <span className="text-xs font-medium">4.8</span>
-                </div>
+                </div> */}
               </div>
 
               {/* Informações do produto */}

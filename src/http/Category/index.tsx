@@ -4,7 +4,10 @@ import {
   CategoryResponse,
   CreateCategoryResponse,
 } from '@/types/api/Response/CategoryResponse'
-import { CreateCategoryRequest, UpdateCategoryRequest } from '@/types/api/Request/CategoryRequest'
+import {
+  CreateCategoryRequest,
+  UpdateCategoryRequest,
+} from '@/types/api/Request/CategoryRequest'
 
 export class CategoryHttp {
   static async getAllCategories() {
