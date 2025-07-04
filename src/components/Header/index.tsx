@@ -25,6 +25,16 @@ export default function Header() {
 
           <nav className="hidden lg:flex gap-4">
             <Link
+              href={APP_LINKS.HOMEPAGE()}
+              className={`hover:text-primary ${
+                isActive(APP_LINKS.HOMEPAGE())
+                  ? 'text-primary border-b-2 border-primary'
+                  : ''
+              }`}
+            >
+              Início
+            </Link>
+            <Link
               href={APP_LINKS.STORE()}
               className={`hover:text-primary ${
                 isActive(APP_LINKS.STORE())
@@ -77,6 +87,17 @@ export default function Header() {
         }`}
       >
         <div className="flex items-center justify-center gap-4 w-full p-4">
+          <Link
+            onClick={() => setMenuOpen(false)}
+            href={APP_LINKS.HOMEPAGE()}
+            className={`hover:text-primary ${
+              isActive(APP_LINKS.HOMEPAGE())
+                ? 'text-primary border-b-2 border-primary'
+                : ''
+            }`}
+          >
+            Início
+          </Link>
           <Link
             onClick={() => setMenuOpen(false)}
             href={APP_LINKS.STORE()}

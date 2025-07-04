@@ -42,9 +42,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items])
 
   const addToCart = (product: Product, quantity: number) => {
+    if (quantity > product.stock) {
+      toast.error(
+        `Estoque insuficiente! Temos apenas ${product.stock} unidade${product.stock === 1 ? '' : 's'} de ${product.name}`,
+      )
+      return
+    }
+
     const existingItem = items.find((item) => item.product.id === product.id)
 
     if (existingItem) {
+      const newTotalQuantity = existingItem.quantity + quantity
+      if (newTotalQuantity > product.stock) {
+        toast.error(
+          `Estoque insuficiente! Você já tem ${existingItem.quantity} no carrinho e temos apenas ${product.stock} unidade${product.stock === 1 ? '' : 's'} disponível${product.stock === 1 ? '' : 's'} de ${product.name}`,
+        )
+        return
+      }
+
       toast.success(
         `Quantidade atualizada para ${existingItem.quantity + quantity} unidades`,
       )
@@ -82,6 +97,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const updateQuantity = (productId: number, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(productId)
+      return
+    }
+
+    const item = items.find((item) => item.product.id === productId)
+    if (item && quantity > item.product.stock) {
+      toast.error(
+        `Estoque insuficiente! Temos apenas ${item.product.stock} unidade${item.product.stock === 1 ? '' : 's'} disponível${item.product.stock === 1 ? '' : 's'} de ${item.product.name}`,
+      )
       return
     }
 

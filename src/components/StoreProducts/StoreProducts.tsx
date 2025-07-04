@@ -82,61 +82,122 @@ export default function StoreProducts({
   )
 
   return (
-    <div className="md:container mx-auto py-8">
-      <div className="flex gap-3 px-4 mb-6 overflow-x-auto pb-2 w-full hide-scrollbar">
-        {filteredCategories.map((cat) => (
-          <div key={cat.id} className="flex-shrink-0">
-            <Button
-              variant="secondary"
-              onClick={() => handleScrollToCategory(cat.name)}
-              className="text-muted whitespace-nowrap"
-            >
-              {cat.name}
-            </Button>
+    <div className="min-h-screen">
+      {/* Header da página */}
+      <div className="bg-transparent border-b border-gray-200">
+        <div className="md:container mx-auto py-8">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              Todos os produtos
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Descubra nossa coleção completa de produtos de qualidade para
+              você.
+            </p>
           </div>
-        ))}
-      </div>
 
-      <div className="relative w-full mb-8 px-4">
-        <SearchInput
-          className="h-[50px]"
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
+          {/* Barra de pesquisa melhorada */}
+          <div className="max-w-2xl mx-auto mb-8 px-4">
+            <SearchInput
+              className="h-14 text-lg shadow-sm border-0 focus:ring-2 focus:ring-primary/20"
+              placeholder="Buscar produtos..."
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
 
-      {filteredCategories.map((category) => (
-        <div
-          key={category.id}
-          ref={(el) => {
-            categoryRefs.current[category.name] = el
-          }}
-          id={`${category.name}`}
-          className="mb-8"
-        >
-          <h2 className="text-xl font-bold mb-4 px-4">{category.name}</h2>
-          <div className="flex overflow-x-auto md:flex-wrap md:overflow-x-visible hide-scrollbar md:overflow-visible snap-x snap-mandatory">
-            {sortProductsByStock(
-              productsFilter(searchTerm).filter(
-                (product) => product.category.id === category.id,
-              ),
-            ).map((product) => (
-              <div
-                key={product.id}
-                className="flex-shrink-0 md:flex-shrink snap-center px-2 py-2"
-              >
-                <ProductCard product={product} />
+          {/* Filtros por categoria */}
+          <div className="flex gap-3 overflow-x-auto pb-4 w-full hide-scrollbar px-4 md:px-0 md:justify-center">
+            {filteredCategories.map((cat) => (
+              <div key={cat.id} className="flex-shrink-0">
+                <Button
+                  variant="secondary"
+                  onClick={() => handleScrollToCategory(cat.name)}
+                  className="text-muted whitespace-nowrap px-6 py-3 rounded-full hover:bg-primary hover:text-white transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  {cat.name}
+                </Button>
               </div>
             ))}
           </div>
         </div>
-      ))}
+      </div>
 
+      {/* Conteúdo principal */}
+      <div className="md:container mx-auto py-12">
+        {filteredCategories.map((category) => (
+          <div
+            key={category.id}
+            ref={(el) => {
+              categoryRefs.current[category.name] = el
+            }}
+            id={`${category.name}`}
+            className="mb-16"
+          >
+            {/* Header da categoria */}
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-gray-900 mb-2">
+                {category.name}
+              </h2>
+              <div className="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+            </div>
+
+            {/* Grid de produtos */}
+            <div className="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory px-4 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-6 md:overflow-x-visible">
+              {sortProductsByStock(
+                productsFilter(searchTerm).filter(
+                  (product) => product.category.id === category.id,
+                ),
+              ).map((product) => (
+                <div
+                  key={product.id}
+                  className="flex-shrink-0 w-[85vw] max-w-xs md:w-auto md:max-w-full snap-center group hover:transform hover:scale-102 transition-all duration-300"
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+
+            {/* Mensagem quando não há produtos */}
+            {sortProductsByStock(
+              productsFilter(searchTerm).filter(
+                (product) => product.category.id === category.id,
+              ),
+            ).length === 0 && (
+              <div className="text-center py-12">
+                <div className="text-gray-400 text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-semibold text-gray-600 mb-2">
+                  Nenhum produto encontrado
+                </h3>
+                <p className="text-gray-500">
+                  Tente ajustar sua busca ou filtrar por outra categoria
+                </p>
+              </div>
+            )}
+          </div>
+        ))}
+
+        {/* Mensagem quando não há categorias */}
+        {filteredCategories.length === 0 && (
+          <div className="text-center py-20">
+            <div className="text-gray-400 text-6xl mb-4">📦</div>
+            <h3 className="text-2xl font-semibold text-gray-600 mb-2">
+              Nenhum produto encontrado
+            </h3>
+            <p className="text-gray-500 max-w-md mx-auto">
+              Não encontramos produtos que correspondam à sua busca. Tente usar
+              termos diferentes.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Botão voltar ao topo melhorado */}
       {showScrollToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-4 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary-hover"
+          className="fixed bottom-6 right-6 bg-primary text-white p-4 rounded-full shadow-xl hover:bg-primary/90 hover:shadow-2xl transition-all duration-300 z-50 group"
         >
-          {<ChevronUp className="w-6 h-6" />}
+          <ChevronUp className="w-6 h-6 group-hover:animate-bounce" />
         </button>
       )}
     </div>

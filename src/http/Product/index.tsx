@@ -24,6 +24,15 @@ export class ProductHttp {
     return response
   }
 
+  static async getProductsByCategory(
+    categoryId: number,
+  ): Promise<ResponseData<ProductResponse>> {
+    const response = await baseHttp.get<ProductResponse>(
+      `${ProductEndpoint}?categoryId=${categoryId}`,
+    )
+    return response
+  }
+
   static async getFeaturedProducts(): Promise<
     ResponseData<ProductFeaturedResponse>
   > {

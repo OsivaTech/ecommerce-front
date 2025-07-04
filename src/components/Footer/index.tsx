@@ -22,6 +22,7 @@ export default async function Footer() {
     {
       title: 'Navegação',
       items: [
+        { label: 'Início', href: `${APP_LINKS.HOMEPAGE()}` },
         { label: 'Loja', href: `${APP_LINKS.STORE()}` },
         { label: 'Sobre', href: `${APP_LINKS.ABOUT()}` },
         { label: 'Contate-nos', href: `${APP_LINKS.CONTACT()}` },
