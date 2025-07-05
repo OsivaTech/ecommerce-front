@@ -43,14 +43,7 @@ export const HeaderActions = () => {
   ) : (
     <div className="flex gap-2">
       <Link href={APP_LINKS.LOGIN()}>
-        <Button variant="secondary" className="w-[145px]">
-          Entrar
-        </Button>
-      </Link>
-      <Link href={APP_LINKS.REGISTER()}>
-        <Button variant="primary" className="w-[145px]">
-          Criar conta
-        </Button>
+        <Button variant="primary">Conecte-se</Button>
       </Link>
     </div>
   )

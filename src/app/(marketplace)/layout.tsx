@@ -33,7 +33,7 @@ export default async function RootLayout({
           <AuthProvider userIsAlreadyAuthenticated={await isAuthenticated()}>
             <div className="flex flex-col w-full h-screen">
               <Header />
-              <main className="flex-grow">{children}</main>
+              <main className="flex-grow pt-18">{children}</main>
               <Footer />
             </div>
           </AuthProvider>
