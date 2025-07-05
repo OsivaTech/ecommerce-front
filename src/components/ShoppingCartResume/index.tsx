@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { useState, useEffect, useCallback } from 'react'
 import { UserResponse } from '@/types/api/Response/UserResponse'
 import { useDebounce } from '@/hook/useDebounce'
+import { showToast } from '@/utils/toast'
 
 import { ShipmentSimulationRequest } from '@/types/api/Request/ShipmentSimulationRequest'
 import { ShipmentSimulationResponse } from '@/types/api/Response/ShipmentSimulationResponse'
@@ -27,6 +28,7 @@ export const ShoppingCartResume = ({
   const { items } = useCart()
   const router = useRouter()
   const [isLoadingSimulation, setIsLoadingSimulation] = useState(false)
+  const [isLoadingOrder, setIsLoadingOrder] = useState(false)
   const [freightSimulations, setFreightSimulations] = useState<
     ShipmentSimulationResponse[]
   >([])
@@ -44,6 +46,7 @@ export const ShoppingCartResume = ({
   const debouncedItems = useDebounce(items, 1000)
 
   async function createOrder(items: CartItem[]): Promise<void> {
+    setIsLoadingOrder(true)
     const response = await OrderHttp.createOrder({
       items: items.map((item) => ({
         productId: item.product.id,
@@ -55,10 +58,11 @@ export const ShoppingCartResume = ({
     })
 
     if (response.hasError) {
-      console.error('Error creating order:', response.error)
+      showToast.error(response.error?.[0]?.message ?? 'Erro ao criar pedido')
     } else {
       router.push(response.data.paymentPageUrl)
     }
+    setIsLoadingOrder(false)
   }
 
   const simulateFreight = useCallback(async () => {
@@ -169,8 +173,8 @@ export const ShoppingCartResume = ({
                   {simulation.options?.map((option) => (
                     <div
                       key={`${simulation.name}-${option.type}`}
-                      className={`
-                p-3 border-2 rounded-lg cursor-pointer 
+                      className={`                
+                        p-3 border-2 rounded-lg cursor-pointer 
                 transition-all duration-200 ease-in-out
                 ${
                   selectedFreight?.carrier === simulation.name &&
@@ -186,12 +190,12 @@ export const ShoppingCartResume = ({
                         })
                       }
                     >
-                      <div className="flex justify-between items-center relative">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
+                      <div className="flex flex-col w-full">
+                        <div className="flex flex-row justify-between items-center w-full">
+                          <div className="flex items-center gap-2 min-w-0 flex-1">
                             <div
                               className={`
-                        w-4 h-4 rounded-full border-2 flex items-center justify-center
+                        w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0
                         ${
                           selectedFreight?.carrier === simulation.name &&
                           selectedFreight?.option.type === option.type
@@ -206,19 +210,26 @@ export const ShoppingCartResume = ({
                                   <div className="w-2 h-2 rounded-full bg-primary" />
                                 )}
                             </div>
-                            <p className="font-medium text-gray-900 w-24 truncate">
+                            <p className="font-medium w-20 text-gray-900 min-w-0 truncate">
                               {option.type}
                             </p>
-                            <p className="text-sm text-gray-600">
+                            {/* Prazo de entrega na mesma linha em md+ */}
+                            <span className="hidden md:inline text-sm text-gray-600 whitespace-nowrap ml-1">
                               {option.serviceId === 999
                                 ? 'Entrega em até 4 horas'
                                 : `Entrega em até ${option.sla} dias úteis`}
-                            </p>
+                            </span>
                           </div>
+                          <p className="font-semibold text-gray-900 ml-4 flex-shrink-0">
+                            {formatPrice(option.price ?? 0)}
+                          </p>
                         </div>
-                        <p className="font-semibold text-gray-900 ml-4">
-                          {formatPrice(option.price ?? 0)}
-                        </p>
+                        {/* Prazo de entrega abaixo apenas em telas sm */}
+                        <span className="text-sm text-gray-600 mt-1 w-full md:hidden">
+                          {option.serviceId === 999
+                            ? 'Entrega em até 4 horas'
+                            : `Entrega em até ${option.sla} dias úteis`}
+                        </span>
                       </div>
                     </div>
                   ))}
@@ -272,9 +283,16 @@ export const ShoppingCartResume = ({
           onClick={() => createOrder(items)}
           variant="primary"
           className="py-3 px-6"
-          disabled={!selectedFreight || isLoadingSimulation}
+          disabled={!selectedFreight || isLoadingSimulation || isLoadingOrder}
         >
-          Finalizar compra
+          {isLoadingOrder ? (
+            <div className="flex items-center gap-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              Finalizando...
+            </div>
+          ) : (
+            'Finalizar compra'
+          )}
         </Button>
         <Link
           href={APP_LINKS.STORE()}

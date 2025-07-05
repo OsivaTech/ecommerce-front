@@ -1,6 +1,7 @@
 export const APP_LINKS = {
   HOMEPAGE: () => `/`,
   STORE: () => `/store`,
+  STORE_PRODUCT: (productId: number) => `/store/${productId}`,
   ABOUT: () => `/about`,
   CONTACT: () => `/contact`,
   FAQ: () => `/faq`,

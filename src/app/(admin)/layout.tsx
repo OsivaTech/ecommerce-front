@@ -27,7 +27,7 @@ export default async function RootAdminLayout({
           <AuthProvider userIsAlreadyAuthenticated={await isAuthenticated()}>
             <div className="flex flex-col min-h-screen">
               <Header />
-              <main className="flex flex-1 py-5 px-6 pt-18">
+              <main className="flex flex-1 py-5 px-6 pt-24">
                 <AdminSideMenu />
                 <div className="w-full px-6">{children}</div>
               </main>

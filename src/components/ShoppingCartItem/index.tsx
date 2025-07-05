@@ -3,6 +3,8 @@ import { formatPrice } from '@/utils/mask'
 import Image from 'next/image'
 import { CartItem, useCart } from '@/context/useCart'
 import { MinusIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline'
+import Link from 'next/link'
+import { APP_LINKS } from '../../../constants'
 
 export const ShoppingCartItem = ({ cartItem }: { cartItem: CartItem }) => {
   const { updateQuantity, removeFromCart } = useCart()
@@ -12,15 +14,22 @@ export const ShoppingCartItem = ({ cartItem }: { cartItem: CartItem }) => {
       key={cartItem.product.id}
       className="flex flex-row items-center bg-background p-4 rounded-lg border gap-4"
     >
-      <Image
-        src={cartItem.product.file.url}
-        alt={cartItem.product.name}
-        width={80}
-        height={80}
-        className="rounded-md object-cover w-[80px] h-[80px] flex-shrink-0"
-      />
+      <Link href={APP_LINKS.STORE_PRODUCT(cartItem.product.id)}>
+        <Image
+          src={cartItem.product.file.url}
+          alt={cartItem.product.name}
+          width={80}
+          height={80}
+          className="rounded-md object-cover w-[80px] h-[80px] flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+        />
+      </Link>
       <div className="flex flex-col justify-between h-full w-full">
-        <p className="font-semibold">{cartItem.product.name}</p>
+        <Link
+          href={APP_LINKS.STORE_PRODUCT(cartItem.product.id)}
+          className="font-semibold hover:text-primary transition-colors cursor-pointer"
+        >
+          {cartItem.product.name}
+        </Link>
         <div className="flex flex-row gap-2 justify-between items-center">
           <div className="flex items-center gap-2">
             {/* Contador de quantidade */}

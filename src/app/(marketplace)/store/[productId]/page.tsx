@@ -12,16 +12,17 @@ import { Product } from '@/types/api/Response/ProductResponse'
 import { formatPrice } from '@/utils/mask'
 import {
   ChevronRight,
-  Home,
   Truck,
   Shield,
   Share2,
   Eye,
   CreditCard,
+  Store,
 } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState, use } from 'react'
+import { APP_LINKS } from '../../../../../constants'
 
 export default function ProductPage({
   params,
@@ -90,11 +91,11 @@ export default function ProductPage({
         {/* Breadcrumb */}
         <nav className="flex items-center space-x-2 text-sm text-gray-600 mb-8">
           <button
-            onClick={() => router.push('/')}
+            onClick={() => router.push(APP_LINKS.STORE())}
             className="flex items-center gap-1 hover:text-blue-600 transition-colors"
           >
-            <Home size={16} />
-            Início
+            <Store size={16} />
+            Loja
           </button>
           <ChevronRight size={16} />
           <button
@@ -212,6 +213,21 @@ export default function ProductPage({
                   <p className="text-sm text-gray-600">
                     Em até 12x de no cartão de crédito
                   </p>
+
+                  {/* Stock Information */}
+                  <div className="flex items-center gap-2 py-2">
+                    <div
+                      className={`w-3 h-3 rounded-full ${product.stock && product.stock > 0 ? 'bg-green-500' : 'bg-red-500'}`}
+                    ></div>
+                    <span
+                      className={`text-sm font-medium ${product.stock && product.stock > 0 ? 'text-green-700' : 'text-red-700'}`}
+                    >
+                      {product.stock && product.stock > 0
+                        ? `${product.stock} unidade${product.stock > 1 ? 's' : ''} em estoque`
+                        : 'Produto indisponível'}
+                    </span>
+                  </div>
+
                   <AddToCart product={product} />
                 </div>
               ) : (
