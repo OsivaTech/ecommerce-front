@@ -1,11 +1,11 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
+import { useAuth } from '@/providers/Auth/AuthContext'
 import { Product } from '@/types/api/Response/ProductResponse'
 import { formatPrice } from '@/utils/mask'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/providers/Auth/AuthContext'
 import AddToCart from '../AddToCart'
 import { Button } from '../ui/button'
 
@@ -62,9 +62,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
                       {formatPrice(product.price ?? 0)}
                     </p>
                     <div className="text-sm text-gray-500">
-                      {product.stock > 0
-                        ? `${product.stock} em estoque`
-                        : 'Indisponível'}
+                      {product.stock === 0 && 'Indisponível'}
                     </div>
                   </div>
                 ) : (
