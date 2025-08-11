@@ -96,10 +96,15 @@ export const columns: ColumnDef<AdvertisementResponse>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const enabled = row.getValue('enabled') as boolean
+      const endDate = row.getValue('endDate') as string
+
+      // Verifica se está habilitado e se a data de fim não passou
+      const isActive = enabled && (!endDate || new Date(endDate) > new Date())
+
       return (
         <StatusBadge
-          status={enabled ? 'Enabled' : 'Disabled'}
-          label={enabled ? 'Ativo' : 'Inativo'}
+          status={isActive ? 'Enabled' : 'Disabled'}
+          label={isActive ? 'Ativo' : 'Inativo'}
         />
       )
     },
