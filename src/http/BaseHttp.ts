@@ -27,7 +27,6 @@ export class BaseHttp {
     includeContentType: boolean = false,
   ): Promise<RequestInit> {
     const headers = await this.getAuthHeaders()
-
     if (includeContentType && !(options?.body instanceof FormData)) {
       headers['Content-Type'] = 'application/json'
     }
@@ -53,7 +52,6 @@ export class BaseHttp {
     try {
       const queryString = params ? this.buildQueryString(params) : ''
       const fullUrl = `${this.baseUrl}${url}${queryString}`
-
       const response = await fetch(fullUrl, {
         method: 'GET',
         ...(await this.getRequestOptions(options)),

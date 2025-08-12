@@ -1,10 +1,4 @@
 'use client'
-
-import * as React from 'react'
-import { format } from 'date-fns'
-import { Calendar as CalendarIcon } from 'lucide-react'
-import { ptBR } from 'date-fns/locale'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -12,10 +6,28 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { cn } from '@/lib/utils'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { Calendar as CalendarIcon } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import * as React from 'react'
+import { useEffect } from 'react'
 import { DateRange } from 'react-day-picker'
 
 export function DatePicker() {
-  const [date, setDate] = React.useState<DateRange>()
+  const [date, setDate] = React.useState<DateRange>({
+    from: new Date(new Date().setDate(new Date().getDate() - 7)),
+    to: new Date(),
+  })
+  const router = useRouter()
+
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    url.searchParams.set('from', format(date.from!, 'yyyy-MM-dd'))
+    url.searchParams.set('to', format(date.to!, 'yyyy-MM-dd'))
+    router.push(url.toString())
+  }, [date])
 
   return (
     <Popover>
@@ -42,7 +54,7 @@ export function DatePicker() {
         <Calendar
           mode="range"
           selected={date}
-          onSelect={setDate}
+          onSelect={(range) => setDate(range as DateRange)}
           initialFocus
           locale={ptBR}
         />

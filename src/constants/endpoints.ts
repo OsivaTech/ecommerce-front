@@ -1,4 +1,7 @@
 export const RegistrationPendingEndpoint = '/registration'
+export const ReportSalesSummaryEndpoint = '/reports/sales/summary'
+export const ReportSalesTimeChartEndpoint = '/reports/sales/timechart'
+export const ReportSalesGridEndpoint = '/reports/sales/grid'
 export const RegistrationApprovedEndpoint = (id: string) =>
   `/registration/${id}/approve`
 export const RegistrationRejectedEndpoint = (id: string) =>

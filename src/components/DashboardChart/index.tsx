@@ -1,6 +1,6 @@
 'use client'
 
-import { Chart } from 'react-chartjs-2'
+import { GetSalesTimeChartResponse } from '@/types/api/Response/ReportResponse'
 import {
   BarElement,
   CategoryScale,
@@ -14,6 +14,8 @@ import {
   Tooltip,
   registerables,
 } from 'chart.js'
+import { format } from 'date-fns'
+import { Chart } from 'react-chartjs-2'
 
 ChartJS.register(
   CategoryScale,
@@ -27,17 +29,33 @@ ChartJS.register(
   ...registerables,
 )
 
-export const DashboardChart = () => {
+export const DashboardChart = ({
+  data,
+}: {
+  data: GetSalesTimeChartResponse[]
+}) => {
   const chartData = {
-    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+    labels: data?.map((item) => format(item.date, 'dd/MM/yyyy')),
     datasets: [
       {
-        label: 'Vendas',
-        data: [200, 150, 250, 300, 200, 350],
-        backgroundColor: '#8A1F1F',
-        borderColor: '#000',
-        borderWidth: 1,
-        tension: 0.5,
+        label: 'Total de vendas',
+        data: data?.map((item) => item.totalSales),
+        backgroundColor: 'rgba(34, 197, 94, 0.15)', // verde-600 com opacidade para fundo
+        borderColor: '#22c55e', // verde-600
+        borderWidth: 2,
+        tension: 0.4,
+        pointBackgroundColor: '#22c55e',
+        pointBorderColor: '#22c55e',
+      },
+      {
+        label: 'Total de pedidos',
+        data: data?.map((item) => item.totalOrder),
+        backgroundColor: 'rgba(30, 64, 175, 0.15)', // azul-700 com opacidade para fundo
+        borderColor: '#1e40af', // azul-700
+        borderWidth: 2,
+        tension: 0.4,
+        pointBackgroundColor: '#1e40af',
+        pointBorderColor: '#1e40af',
       },
     ],
   }
@@ -50,7 +68,15 @@ export const DashboardChart = () => {
     },
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        position: 'bottom',
+        align: 'start',
+        labels: {
+          font: {
+            size: 14,
+            weight: 'bold',
+          },
+        },
       },
     },
   }
